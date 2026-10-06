@@ -5,6 +5,12 @@ export interface Document {
   content: string;
 }
 export interface Chunk {
+  provenance?: {
+    page: number;
+    block: number;
+    revision: number;
+    origin: 'embedded' | 'vision' | 'reviewed';
+  };
   id: string;
   documentId: string;
   title: string;

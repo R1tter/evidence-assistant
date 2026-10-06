@@ -1,4 +1,10 @@
 node_modules/
+/apps/web/public/pdfjs/
+/apps/web/public/examples/
+/apps/web/public/brand/
+storybook-static/
+playwright-report/
+test-results/
 dist/
 coverage/
 playwright-report/

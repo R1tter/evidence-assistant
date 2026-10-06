@@ -4,7 +4,19 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 
 export default tseslint.config(
-  { ignores: ['**/dist/**', 'coverage/**', '.agents/**', 'node_modules/**'] },
+  {
+    ignores: [
+      '**/dist/**',
+      'coverage/**',
+      '.agents/**',
+      'node_modules/**',
+      'apps/web/public/pdfjs/**',
+      'apps/web/public/examples/**',
+      'storybook-static/**',
+      'test-results/**',
+      'playwright-report/**',
+    ],
+  },
   js.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   {

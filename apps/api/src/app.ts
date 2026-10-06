@@ -11,12 +11,20 @@ import type { Chunk, Document } from '@evidence/core';
 import type { AnswerGenerator, RequestLog } from './contracts.js';
 import { PublicError } from './errors.js';
 import { createProviderQueue } from './provider-queue.js';
+import { createDocumentSessions } from './document-session.js';
+import type { SessionOptions } from './document-session.js';
+import { registerDocumentRoutes } from './document-routes.js';
+import { registerRecognitionRoutes } from './recognition-routes.js';
+import type { Recognizer } from './recognition.js';
 
 const inputSchema = z.strictObject({
   question: z.string().trim().min(1).max(1000),
   mode: z.enum(['demo', 'llm']),
 });
 interface AppOptions {
+  recognize?: Recognizer['recognize'];
+  recognitionDeadlineMs?: number;
+  sessionOptions?: SessionOptions;
   chunks: Chunk[];
   documents?: Document[];
   generate?: AnswerGenerator['generate'];
@@ -54,6 +62,34 @@ export function buildApp(options: AppOptions) {
   );
   const queue = createProviderQueue(options.deadlineMs);
   const states = new WeakMap<FastifyRequest, RequestState>();
+  const signalFor = (request: FastifyRequest, mode: RequestLog['mode']) => {
+    const state = states.get(request);
+    if (state) state.mode = mode;
+    return state?.controller.signal;
+  };
+  const sessions = createDocumentSessions(options.sessionOptions);
+  const sessionCleanup = setInterval(() => sessions.cleanup(), 60000);
+  sessionCleanup.unref();
+  app.addHook('onClose', (_instance, done) => {
+    clearInterval(sessionCleanup);
+    sessions.clear();
+    done();
+  });
+  registerDocumentRoutes(app, {
+    sessions,
+    queue,
+    generate: options.generate,
+    signal: (request, mode) => signalFor(request, mode),
+  });
+  registerRecognitionRoutes(app, {
+    sessions,
+    queue,
+    recognize: options.recognize,
+    signal: (request) => signalFor(request, 'recognition'),
+    ...(options.recognitionDeadlineMs
+      ? { deadlineMs: options.recognitionDeadlineMs }
+      : {}),
+  });
   app.addHook('onRequest', (request, reply, done) => {
     const controller = new AbortController();
     const cancel = () => controller.abort();
@@ -102,6 +138,7 @@ export function buildApp(options: AppOptions) {
   });
   app.get('/api/config', () => ({
     llmAvailable: options.generate !== undefined,
+    recognitionAvailable: options.recognize !== undefined,
   }));
   app.get('/api/documents', () =>
     documents.map(({ id, title, path }) => ({ id, title, path })),

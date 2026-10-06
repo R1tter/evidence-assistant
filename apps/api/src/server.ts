@@ -2,16 +2,19 @@ import { fileURLToPath } from 'node:url';
 import { loadCorpus, chunkDocuments } from '@evidence/core';
 import { buildApp } from './app.js';
 import { generatorFromEnvironment } from './provider.js';
+import { recognitionFromEnvironment } from './recognition-provider.js';
 
 try {
   const documents = await loadCorpus(
     fileURLToPath(new URL('../../../corpus/', import.meta.url)),
   );
   const provider = generatorFromEnvironment();
+  const recognition = recognitionFromEnvironment();
   const app = buildApp({
     documents,
     chunks: chunkDocuments(documents),
     ...(provider ? { generate: provider.generate } : {}),
+    ...(recognition ? { recognize: recognition.recognize } : {}),
     log: (entry) => console.log(JSON.stringify(entry)),
   });
   await app.listen({

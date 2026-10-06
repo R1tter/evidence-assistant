@@ -100,6 +100,7 @@ describe('HTTP API', () => {
     });
     expect((await api.inject('/api/config')).json()).toEqual({
       llmAvailable: false,
+      recognitionAvailable: false,
     });
     expect((await api.inject('/api/documents')).json()).toEqual([
       { id: 'api', title: 'API contracts', path: 'api.md' },
