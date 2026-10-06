@@ -49,7 +49,7 @@ export function DocumentInput({
             </button>
           </div>
           {file && <p className="file-card">{file.name}</p>}
-          <div className="actions">
+          <div className="upload-actions">
             <button
               className="primary"
               disabled={!file || busy}
