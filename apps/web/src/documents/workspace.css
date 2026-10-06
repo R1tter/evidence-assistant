@@ -475,6 +475,30 @@ header {
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
   gap: 24px;
   margin-bottom: 48px;
+  align-items: start;
+}
+.document-app {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+.document-app > main {
+  flex: 1;
+}
+.upload-heading {
+  margin-bottom: 24px;
+}
+.upload-heading h1 {
+  font-size: 1.75rem;
+  margin: 12px 0;
+}
+.upload-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 8px;
+  background: transparent;
+  border-color: transparent;
 }
 .panel {
   background: white;

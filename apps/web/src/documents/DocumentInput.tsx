@@ -18,13 +18,15 @@ export function DocumentInput({
   };
   return (
     <section className="upload-view view-heading">
-      <button onClick={home} disabled={busy}>
-        {t.back}
-      </button>
-      <h1>{t.uploadTitle}</h1>
-      <p>{t.uploadBody}</p>
       <div className="upload-grid">
         <div className="panel">
+          <div className="upload-heading">
+            <button className="upload-back" onClick={home} disabled={busy}>
+              <span aria-hidden="true">←</span> {t.back}
+            </button>
+            <h1>{t.uploadTitle}</h1>
+            <p>{t.uploadBody}</p>
+          </div>
           <div
             className="drop-area"
             onDragOver={(event) => event.preventDefault()}

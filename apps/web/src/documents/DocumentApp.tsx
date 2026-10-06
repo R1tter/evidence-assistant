@@ -26,7 +26,7 @@ export function DocumentApp({
   };
   const loaded = controller.loaded;
   return (
-    <>
+    <div className="document-app">
       <a href="#main" className="skip">
         {t.skip}
       </a>
@@ -104,6 +104,6 @@ export function DocumentApp({
         <span>{t.footer}</span>
         <span>{t.footerNote}</span>
       </footer>
-    </>
+    </div>
   );
 }
