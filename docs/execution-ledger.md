@@ -1,6 +1,12 @@
 # Execution ledger
 
-Approved revised plan: 6 October 2026. Current delivery: Task 4 complete; Task 5 visual proposal awaiting human feedback.
+Original approved plan: 6 October 2026. Tasks 1–4 integrated; Task 5 partly implemented locally. Current work: revised document-workspace scope and plan for human review.
+
+Update: Marcelo approved the visual proposal and merge on 6 October 2026. origin/main was fast-forwarded and verified at fa0438d8acb298affeb8501612730b5b62575d21. Task 5 implementation is underway on the working branch. React 19.3.0, Vite 8.3.3, Storybook 10.6.1 and Playwright 1.63.0 were resolved from the registry and pinned; install reported zero vulnerabilities. Component RED failed on missing App import; initial GREEN passed four behavior tests (locale preservation, unavailable AI/source disclosure, abstention/safe error, cancellation/stale results). Remaining acceptance includes complete component decomposition/stories, protocol-safe HTTP client tests, Playwright/axe/screenshots, manual visual review and full gates. No Task 5 completion is claimed yet.
+
+Direction revision: Marcelo requested a useful visitor-facing product for uploaded, scanned and handwritten documents and a more colorful/illustrated UX with purposeful motion, citing Stripe. Prepared proposed specification `docs/superpowers/specs/2026-10-06-document-workspace-design.md` and roadmap `docs/superpowers/plans/2026-10-06-document-workspace.md`. Product code execution is held for written-scope review; current uncommitted web work is preserved. No upload/OCR implementation, real OCR evaluation, paid calls or deployment occurred. Markdown formatting checks passed. Suggested file/session/time limits are initial bounded design choices, not measured production capacity. Original corpus remains independent; no Black Box materials used.
+
+UI verification checkpoint before scope change: first two browser tests passed against the actual demo API, including keyboard source disclosure and axe on exercised app states. Expanded run created eight Windows screenshot candidates, four tests passed, and Storybook accessibility/200% text reflow failed. Reflow was corrected and passed on follow-up; Storybook heading-one rule remains failing. Screenshots have not been visually approved. These are unfinished local changes, not a completed or merged UI delivery.
 
 - Ruling: implement in this repository root, rather than nesting another evidence-assistant directory; the user's current instruction explicitly selects this folder. Cost if wrong: relocate the project.
 - Ruling: work in place in the new independent repository requested by the user, on a codex branch; no pre-existing application or tests exist. Cost if wrong: less checkout isolation.

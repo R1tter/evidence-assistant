@@ -6,6 +6,8 @@ A recruiter can understand the product and try a useful question within one minu
 
 ## Direction
 
+Planning update, 6 October 2026: Marcelo requested a document-first product with restrained color, images, brand sketches and meaningful motion, inspired by Stripe. The proposed replacement direction is in `docs/superpowers/specs/2026-10-06-document-workspace-design.md`; it permits a localized entrance gradient and original illustrations while keeping reading surfaces neutral. The older visual constraints below describe the baseline, not approval of the new draft. Review the revised written scope before implementing it.
+
 An editorial research workspace: neutral slate background, dark readable text, restrained blue accent and generous spacing. Use a system font stack initially, consistent type scale and semantic tokens for color, spacing, radius and focus. Avoid gradients, arbitrary badges, animated charts and chat bubbles without purpose.
 
 Desktop: compact header; question composer and suggested questions; answer in the main reading column; sources in a secondary column. Mobile: single column with answer first, sources afterward. Cap reading width; prevent horizontal overflow at 320 CSS pixels.
