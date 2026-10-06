@@ -1,0 +1,13 @@
+# Execution ledger
+
+Approved revised plan: 6 October 2026. Current delivery: Task 1.
+
+- Ruling: implement in this repository root, rather than nesting another evidence-assistant directory; the user's current instruction explicitly selects this folder. Cost if wrong: relocate the project.
+- Ruling: work in place in the new independent repository requested by the user, on a codex branch; no pre-existing application or tests exist. Cost if wrong: less checkout isolation.
+- Preflight: retrieval contracts are compatible across Tasks 1–4; API factory must consume a startup-built Retriever. Source loading remains server-only; future web contracts must use type-only exports.
+- UI UX Pro Max: repeated `knowledge base search workspace --design-system`; verified FAQ/Documentation Landing and Minimalism & Swiss Style, consistent with the approved UX brief. Retain brief tokens and system fonts; omit contact escalation and analytics recommendations outside scope.
+- Task 1 RED: `npm test -- retrieval` failed all 12 cases because exports were absent. Boundary fixture failed because `checkBoundaries` was absent. Runs required escalation because sandbox blocked tool startup.
+- Ruling: cap-test query changed from one common term to a complete matching phrase; common terms in seven identical chunks legitimately fall below the approved 0.15 threshold. Ranking algorithm and threshold remain unchanged. Cost if wrong: weaker single-term test coverage (unsupported and single-term positive cases remain separately tested).
+- Dependency setup: npm 10 peer resolution failed on Vitest 4.1.11. Vitest 4.0.18 installed but audit identified advisories; replaced with Vitest/coverage 5.0.3, installation reported zero vulnerabilities. ESLint 9.39.5 retained because jsx-a11y 6.10.2 declares support through ESLint 9; ESLint 10 installation rejected peers. ESLint 9 emits a support deprecation notice; future upgrade requires a compatible accessibility plugin.
+- Task 1 review: contracts are explicit; index copies and freezes source chunks; no provider or transport dependencies; corpus I/O occurs only on load; deterministic ID tie sorting avoids locale dependence. API/UI error handling and accessibility remain future deliveries.
+- Task 1 complete: npm ci passed with zero audit vulnerabilities; npm run verify passed formatting, zero-warning lint, boundaries (0 violations), typecheck, 16/16 tests, coverage (100% lines, 93.47% branches), and core build. The fixture with a prohibited core-to-app import was rejected and removed by test cleanup. Runtime workspace import was also exercised against the original corpus. Remaining plan tasks are unchecked.

@@ -54,13 +54,13 @@
 
 **Interfaces:** `Document {id,title,path,content}`, `Chunk {id,documentId,title,section,text}`, `Evidence {chunk:Chunk,score:number}`. Export `loadCorpus(directory:string): Promise<Document[]>`, `chunkDocuments(documents:Document[]):Chunk[]`, and `search(chunks:Chunk[], question:string, limit?:number):Evidence[]` from `@evidence/core`.
 
-- [ ] Create workspace configuration and write `retrieval.test.ts`: assert identical repeated rankings, fixed chunk identifiers, limit <=5, scores finite, unrelated query empty, and ID ordering for tied scores.
-- [ ] Configure the quality gates and `AGENTS.md`: strict compiler settings, lint rules, formatting and dependency-boundary checks. Verify a fixture containing a prohibited core-to-app import is rejected before removing the fixture.
-- [ ] Run `npm test -- retrieval`; confirm the test fails because the required exports are absent.
-- [ ] Implement heading-based chunks, Unicode-aware lowercased tokenization, documented stopwords, BM25 lexical score normalized by `score/(1+score)` and cosine similarity over a corpus-fixed term-frequency vocabulary. Final score = `0.65 * lexical + 0.35 * cosine`; accept scores >=0.15; ties sort by chunk ID. Return no match for empty or unknown vocabulary. Describe these as sparse term vectors, not neural semantic embeddings.
-- [ ] Expose `Retriever { search(question:string, limit?:number):Evidence[] }` and a factory `createRetriever(chunks:Chunk[]):Retriever` that builds immutable index data once. Preserve the public `search` helper for tests; application adapters use the long-lived instance. API and MCP must not rebuild the index per request.
-- [ ] Author four short English documents on regression strategy, CI gates, API contracts and AI evidence validation. Add an adversarial fixture outside the production corpus. Test heading changes and punctuation-only queries.
-- [ ] Run retrieval tests and TypeScript checking; commit the independently verified retrieval deliverable.
+- [x] Create workspace configuration and write `retrieval.test.ts`: assert identical repeated rankings, fixed chunk identifiers, limit <=5, scores finite, unrelated query empty, and ID ordering for tied scores.
+- [x] Configure the quality gates and `AGENTS.md`: strict compiler settings, lint rules, formatting and dependency-boundary checks. Verify a fixture containing a prohibited core-to-app import is rejected before removing the fixture.
+- [x] Run `npm test -- retrieval`; confirm the test fails because the required exports are absent.
+- [x] Implement heading-based chunks, Unicode-aware lowercased tokenization, documented stopwords, BM25 lexical score normalized by `score/(1+score)` and cosine similarity over a corpus-fixed term-frequency vocabulary. Final score = `0.65 * lexical + 0.35 * cosine`; accept scores >=0.15; ties sort by chunk ID. Return no match for empty or unknown vocabulary. Describe these as sparse term vectors, not neural semantic embeddings.
+- [x] Expose `Retriever { search(question:string, limit?:number):Evidence[] }` and a factory `createRetriever(chunks:Chunk[]):Retriever` that builds immutable index data once. Preserve the public `search` helper for tests; application adapters use the long-lived instance. API and MCP must not rebuild the index per request.
+- [x] Author four short English documents on regression strategy, CI gates, API contracts and AI evidence validation. Add an adversarial fixture outside the production corpus. Test heading changes and punctuation-only queries.
+- [x] Run retrieval tests and TypeScript checking; commit the independently verified retrieval deliverable.
 
 ### Task 2: Extractive answers and evidence validation
 
