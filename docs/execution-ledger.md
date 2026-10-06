@@ -1,6 +1,6 @@
 # Execution ledger
 
-Approved revised plan: 6 October 2026. Current delivery: Task 2 complete; next: Task 3.
+Approved revised plan: 6 October 2026. Current delivery: Task 3 complete; next: Task 4.
 
 - Ruling: implement in this repository root, rather than nesting another evidence-assistant directory; the user's current instruction explicitly selects this folder. Cost if wrong: relocate the project.
 - Ruling: work in place in the new independent repository requested by the user, on a codex branch; no pre-existing application or tests exist. Cost if wrong: less checkout isolation.
@@ -15,3 +15,9 @@ Approved revised plan: 6 October 2026. Current delivery: Task 2 complete; next: 
 - Task 2 RED: npm test -- validation failed 21/21 tests because validateAnswer/createDemoAnswer were absent. GREEN: 21/21 new tests passed; npm run verify passed all gates with 37/37 total tests, 100% core lines and 93.75% branches. Zod 4.6.5 is pinned in core; npm installation reported zero audit vulnerabilities. A formatting/lint conflict on chained iterator access was resolved with a named local variable.
 - Task 2 contract decision: validateAnswer accepts strict content-only input; trusted evidence and validation checks are attached by core rather than accepted from provider content. Demo extracts the first whole sentence per fragment, skipping sentences exceeding the output budget. Semantic support and source truth remain unverified. Adversarial fixture proves quoted demo data only.
 - Task 2 review: validation and extraction have separate responsibilities and use canonical schema-derived types; generic errors contain no upstream content; no transport/provider dependencies or paid calls; public exports checked. Product accessibility and async cleanup do not apply to this synchronous core delivery.
+
+- Task 2 integration: human authorized merge; origin/main advanced by fast-forward from 786d77c to 6b975ff. Task 3 remains on the working branch.
+- Task 3 RED: 12 API/queue tests failed because exports were absent; six provider tests failed because the adapter was absent. Regression for undefined Promise rejection failed before normalizing non-Error provider failures. GREEN: npm ci and npm run verify passed, 58/58 tests, zero-warning lint, formatting, boundaries, types, core coverage (100% lines, 93.75% branches), core/API build. npm ci reported zero audit vulnerabilities; ESLint support notice remains documented.
+- Task 3 smoke: compiled server started without credentials on an allocated loopback port, config disabled AI, POST demo returned 200 with three citations and semantic not_verified. The child process was stopped. No live provider call or deployment occurred.
+- Task 3 review: API owns orchestration, startup-built retrieval and public mode; provider owns SDK requests only; queue owns capacity/deadlines/cancellation. Documents resolve by trusted IDs. Logs and error bodies omit fixture prompts and fake secrets. Real HTTP disconnect reaches the provider signal. Explicit local lint exception only for deliberately malformed test rejection. UI accessibility remains a future delivery.
+- Task 3 contract clarification: buildApp accepts optional original documents in addition to chunks, since chunks cannot reconstruct original document content. Production startup supplies both. Server binds loopback by default and environment examples contain empty secrets. OpenAI adapter is verified only against mocked external HTTP; source truth, semantic correctness, injection resistance and remote cancellation/billing are not proven.

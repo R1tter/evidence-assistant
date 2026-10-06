@@ -6,13 +6,20 @@ A primeira entrega inclui quatro documentos originais, fragmentação por títul
 
 O demo agora produz respostas extrativas com frases completas das fontes. A validação rejeita estruturas inválidas, citações desconhecidas e trechos alterados. Esses checks não comprovam correção semântica. Consulte os [contratos e limites das respostas](docs/answers.md).
 
-API HTTP, MCP, geração opcional com IA e interface são etapas posteriores ainda não implementadas.
+A API HTTP e o adaptador opcional OpenAI no servidor estão implementados. Consulte [configuração e limites da API](docs/api.md). Chamadas reais ao provedor não foram verificadas; os testes de baseline simulam apenas o HTTP externo. MCP e interface são etapas posteriores ainda não implementadas.
 
 Com Node.js 22.12 ou superior e npm:
 
 ```sh
 npm ci
 npm run verify
+```
+
+Para executar a API local:
+
+```sh
+npm run build
+npm run start:api
 ```
 
 As verificações cobrem formatação, lint sem avisos, dependências entre pacotes, tipos, testes, cobertura do core e build. Nenhuma credencial externa é necessária. Consulte o [baseline de recuperação](docs/retrieval.md) para as fórmulas, regras e limitações.

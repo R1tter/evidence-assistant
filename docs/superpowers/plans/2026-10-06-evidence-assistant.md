@@ -76,12 +76,12 @@
 
 **Interfaces:** `buildApp({chunks,generate?}):FastifyInstance`; `generate(question:string,evidence:Evidence[]):Promise<unknown>`. `POST /api/ask` accepts `{question,mode:'demo'|'llm'}` and returns Answer. `GET /api/documents` lists public metadata; `GET /api/documents/:id` returns one public document; `GET /api/config` returns only `{llmAvailable:boolean}`.
 
-- [ ] Write Fastify injection tests for valid demo, whitespace, 1,001-character question, invalid mode, unsupported question, invalid citation from stub, disabled LLM mode, and timeout. Assert failed input never calls `generate` and error bodies contain no stub secret.
-- [ ] Run tests and confirm failures.
-- [ ] Implement input limits, 16KB body limit, safe error envelopes, and corpus-only document lookup by ID (never user-supplied filesystem paths). Missing LLM configuration returns HTTP 503; upstream invalid output or refusal returns 502; timeout returns 504.
-- [ ] Implement optional OpenAI Responses adapter with strict structured output, `OPENAI_API_KEY`, mandatory `OPENAI_MODEL` when enabled, 20-second timeout, max 800 output tokens and zero automatic retries. Use separate instructions and JSON-encoded untrusted evidence. Test request construction, adversarial-text separation, refusal and malformed responses using mocks; no paid calls. State prompt-injection resistance is not guaranteed.
-- [ ] Implement `AnswerGenerator.generate(question,evidence,signal?:AbortSignal)` behind the injected `generate` adapter. Write queue tests first: two requests run, eight wait, eleventh is rejected with 429; timeout includes queue time; abort removes queued work and releases running capacity. Propagate disconnect cancellation and emit only request ID, mode, status and duration in logs. Verify fixture prompts and fake secrets never appear in captured logs.
-- [ ] Run API/core tests and types; commit.
+- [x] Write Fastify injection tests for valid demo, whitespace, 1,001-character question, invalid mode, unsupported question, invalid citation from stub, disabled LLM mode, and timeout. Assert failed input never calls `generate` and error bodies contain no stub secret.
+- [x] Run tests and confirm failures.
+- [x] Implement input limits, 16KB body limit, safe error envelopes, and corpus-only document lookup by ID (never user-supplied filesystem paths). Missing LLM configuration returns HTTP 503; upstream invalid output or refusal returns 502; timeout returns 504.
+- [x] Implement optional OpenAI Responses adapter with strict structured output, `OPENAI_API_KEY`, mandatory `OPENAI_MODEL` when enabled, 20-second timeout, max 800 output tokens and zero automatic retries. Use separate instructions and JSON-encoded untrusted evidence. Test request construction, adversarial-text separation, refusal and malformed responses using mocks; no paid calls. State prompt-injection resistance is not guaranteed.
+- [x] Implement `AnswerGenerator.generate(question,evidence,signal?:AbortSignal)` behind the injected `generate` adapter. Write queue tests first: two requests run, eight wait, eleventh is rejected with 429; timeout includes queue time; abort removes queued work and releases running capacity. Propagate disconnect cancellation and emit only request ID, mode, status and duration in logs. Verify fixture prompts and fake secrets never appear in captured logs.
+- [x] Run API/core tests and types; commit.
 
 ### Task 4: MCP protocol integration
 

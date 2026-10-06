@@ -8,7 +8,7 @@ Four original public documents, heading-based chunks, stable IDs, Unicode term m
 
 Demo answers quote complete source sentences and explicitly identify extraction. Strict answer validation checks structure, retrieved source IDs and exact quote substrings; semantic correctness remains unverified. See [answer contracts and limits](docs/answers.md).
 
-HTTP, MCP, optional AI generation and the product interface are subsequent plan stages and are not available yet.
+The HTTP API and optional server-side OpenAI adapter are implemented. See [API setup and limits](docs/api.md). Live provider calls have not been verified; baseline tests use mocked external HTTP responses. MCP and the product interface are subsequent plan stages and are not available yet.
 
 ## Local verification
 
@@ -17,6 +17,13 @@ Use Node.js 22.12 or newer (verified locally with 22.17.0) and npm. No external 
 ```sh
 npm ci
 npm run verify
+```
+
+Start the local API after building:
+
+```sh
+npm run build
+npm run start:api
 ```
 
 `verify` checks formatting, zero-warning lint, dependency boundaries, TypeScript, all current tests with core coverage gates, and the core build. The coverage floors are 90% lines and 85% branches. See [retrieval decisions](docs/retrieval.md), [engineering rules](docs/engineering-quality.md) and [UX brief](docs/ux-design.md).
