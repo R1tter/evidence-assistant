@@ -1,4 +1,7 @@
 node_modules/
+storybook-static/
+playwright-report/
+test-results/
 dist/
 coverage/
 playwright-report/

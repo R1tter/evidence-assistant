@@ -11,11 +11,16 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "types": ["node"],
-    "noEmit": true
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": [
     "packages/**/*.ts",
     "apps/**/*.ts",
+    "apps/**/*.tsx",
+    "apps/web/.storybook/*.ts",
+    "tests/e2e/**/*.ts",
+    "playwright.config.ts",
     "scripts/**/*.ts",
     "vitest.config.ts"
   ]
