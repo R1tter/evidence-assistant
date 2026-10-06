@@ -6,6 +6,10 @@ export { validateAnswer, answerContentSchema } from './validation.js';
 export { createDemoAnswer } from './answers.js';
 export { createExtractiveDocumentAnswer } from './document-answers.js';
 export {
+  extractDocumentSection,
+  SectionTooLargeError,
+} from './document-sections.js';
+export {
   pageTextSchema,
   pageTextsSchema,
   documentRevisionSchema,

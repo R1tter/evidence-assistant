@@ -2,13 +2,25 @@ import type { FastifyInstance, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import {
   createExtractiveDocumentAnswer,
+  extractDocumentSection,
+  SectionTooLargeError,
   validateAnswer,
   pageTextsSchema,
 } from '@evidence/core';
 import type { AnswerGenerator } from './contracts.js';
+import type { DocumentRevision } from '@evidence/core';
 import type { DocumentSessions } from './document-session.js';
 import type { ProviderQueue } from './provider-queue.js';
 import { PublicError } from './errors.js';
+function requestedSection(question: string, document: DocumentRevision) {
+  try {
+    return extractDocumentSection(question, document);
+  } catch (error) {
+    if (error instanceof SectionTooLargeError)
+      throw new PublicError('SECTION_TOO_LARGE');
+    throw error;
+  }
+}
 const createSchema = z.strictObject({
   title: z.string().trim().min(1).max(120),
   pages: pageTextsSchema,
@@ -85,10 +97,13 @@ export function registerDocumentRoutes(
     const session = sessions.assertRevision(capability, input.revision);
     if (input.mode === 'llm' && !options.generate)
       throw new PublicError('AI_UNAVAILABLE');
-    const evidence = session.retriever.search(input.question);
+    const section = requestedSection(input.question, session.document);
+    const evidence =
+      section?.evidence ?? session.retriever.search(input.question);
     if (input.mode === 'demo' || evidence.length === 0)
       return {
-        ...createExtractiveDocumentAnswer(input.question, evidence),
+        ...(section ??
+          createExtractiveDocumentAnswer(input.question, evidence)),
         mode: input.mode,
         revision: input.revision,
       };

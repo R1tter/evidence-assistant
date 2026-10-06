@@ -1,4 +1,5 @@
 export type ErrorCode =
+  | 'SECTION_TOO_LARGE'
   | 'SESSION_EXPIRED'
   | 'SESSION_CAPACITY'
   | 'REVISION_CONFLICT'
@@ -12,6 +13,7 @@ export type ErrorCode =
   | 'REQUEST_CANCELLED'
   | 'INTERNAL_ERROR';
 const statuses: Record<ErrorCode, number> = {
+  SECTION_TOO_LARGE: 422,
   SESSION_EXPIRED: 410,
   SESSION_CAPACITY: 429,
   REVISION_CONFLICT: 409,
@@ -26,6 +28,8 @@ const statuses: Record<ErrorCode, number> = {
   INTERNAL_ERROR: 500,
 };
 const messages: Record<ErrorCode, string> = {
+  SECTION_TOO_LARGE:
+    'The complete section exceeds the answer limit. Read it in the document transcription.',
   SESSION_EXPIRED: 'The document session is unavailable or expired.',
   SESSION_CAPACITY: 'Document capacity is temporarily unavailable.',
   REVISION_CONFLICT: 'The document revision changed. Refresh before asking.',

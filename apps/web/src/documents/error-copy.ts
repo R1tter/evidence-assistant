@@ -2,6 +2,8 @@ import type { ExampleLocale } from './examples.js';
 export function errorCopy(locale: ExampleLocale, code: string) {
   const messages: Record<ExampleLocale, Record<string, string>> = {
     'pt-BR': {
+      SECTION_TOO_LARGE:
+        'A conclusão completa excede o limite da resposta. Confira a seção inteira na transcrição do documento.',
       SESSION_UNCERTAIN:
         'Não foi possível confirmar a revisão salva. Recupere a revisão antes de continuar; seu rascunho foi preservado.',
       FILE_TOO_LARGE: 'O arquivo ou as páginas selecionadas excedem 10 MiB.',
@@ -21,6 +23,8 @@ export function errorCopy(locale: ExampleLocale, code: string) {
         'O texto mudou. A revisão disponível foi recuperada; confira o texto antes de continuar.',
     },
     en: {
+      SECTION_TOO_LARGE:
+        'The complete conclusion exceeds the answer limit. Read the entire section in the document transcription.',
       SESSION_UNCERTAIN:
         'The saved revision could not be confirmed. Recover it before continuing; your draft was preserved.',
       FILE_TOO_LARGE: 'The file or selected pages exceed 10 MiB.',
@@ -40,6 +44,8 @@ export function errorCopy(locale: ExampleLocale, code: string) {
         'The text changed. The available revision was recovered; check the text before continuing.',
     },
     es: {
+      SECTION_TOO_LARGE:
+        'La conclusión completa supera el límite de respuesta. Consulta la sección entera en la transcripción del documento.',
       SESSION_UNCERTAIN:
         'No se pudo confirmar la revisión guardada. Recupérala antes de continuar; se conservó tu borrador.',
       FILE_TOO_LARGE: 'El archivo o las páginas seleccionadas superan 10 MiB.',

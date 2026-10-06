@@ -10,6 +10,47 @@ const pages = [
     uncertainties: [],
   },
 ];
+it('returns complete multi-paragraph conclusions through the private demo route and reports size limits', async () => {
+  const app = buildApp({ chunks: [] });
+  try {
+    for (const content of [
+      'CONCLUSÃO:\nPrimeiro achado.\n\nSegundo achado.\nRECOMENDAÇÕES\nOutro texto.',
+      'CONCLUSÃO:\n' + 'Achado fictício. '.repeat(300),
+    ]) {
+      const created = await app.inject({
+        method: 'POST',
+        url: '/api/document-sessions',
+        payload: {
+          title: 'Exemplo fictício',
+          pages: [{ ...pages[0], text: content }],
+        },
+      });
+      const { token } = created.json<{ token: string }>();
+      const result = await app.inject({
+        method: 'POST',
+        url: '/api/document-session/ask',
+        headers: { 'x-document-session': token },
+        payload: {
+          question: 'Quero a conclusão completa',
+          revision: 1,
+          mode: 'demo',
+          locale: 'pt-BR',
+        },
+      });
+      if (content.length > 4000) {
+        expect(result.statusCode).toBe(422);
+        expect(result.body).toContain('SECTION_TOO_LARGE');
+      } else {
+        expect(result.statusCode).toBe(200);
+        expect(result.json<{ answer: string }>().answer).toBe(
+          'CONCLUSÃO:\nPrimeiro achado.\n\nSegundo achado.',
+        );
+      }
+    }
+  } finally {
+    await app.close();
+  }
+});
 it('answers the current private document and rejects absent or foreign capability tokens', async () => {
   const app = buildApp({ chunks: [] });
   try {
