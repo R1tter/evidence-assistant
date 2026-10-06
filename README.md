@@ -47,6 +47,8 @@ npm run test:e2e
 
 [Executed measurements and limitations](eval/documents/README.md). CI uses Windows for reviewed baselines; hosted CI and deployment are separate results.
 
+The browser stores only the interface-language preference. Without one, the app selects a supported browser language or falls back to English. Revision drafts survive page and view changes during the session. If a save response is lost, the app recovers the existing server revision; questions remain disabled while that revision cannot be confirmed, and the draft is preserved.
+
 `verify` checks formatting, zero-warning lint, dependency boundaries, TypeScript, all current tests with core coverage gates, and core/API/MCP builds. Tests build workspace runtime exports first, so a clean checkout does not depend on ignored build artifacts. The coverage floors are 90% lines and 85% branches. See [retrieval decisions](docs/retrieval.md), [engineering rules](docs/engineering-quality.md) and [UX brief](docs/ux-design.md).
 
 After `npm run build`, the runtime exports are available as `@evidence/core` from this workspace:

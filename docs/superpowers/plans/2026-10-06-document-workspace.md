@@ -8,7 +8,7 @@
 
 **Tech Stack:** TypeScript/React/Vite existentes; PDF.js em worker (versão e compatibilidade a verificar); Fastify; adaptador visual OpenAI opcional; Vitest, Playwright, axe e Storybook existentes.
 
-**Status:** roteiro e proposta visual aprovados por Marcelo nesta conversa em 6 October 2026. Tasks 1–5 concluídas; Task 6 em execução. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
+**Status:** roteiro e proposta visual aprovados por Marcelo nesta conversa em 6 October 2026. Tasks 1–6 concluídas; identidade A selecionada. CI remota completa passou no commit 1de929e; PR #1 aberto para revisão. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
 
 ## Task 1 — proposta visual e baseline preservado
 
@@ -66,11 +66,11 @@ Arquivos: `apps/web/src/documents/{DocumentInput,DocumentViewer,TranscriptEditor
 
 Arquivos: `eval/documents/`, `scripts/{evaluate,benchmark}.ts`, `.github/workflows/ci.yml`, ADRs, README/README.pt-BR e avisos de privacidade.
 
-- [ ] RED para transcrição incorreta, fonte ausente, abstenção indevida, citação/revisão incompatível e regressão de isolamento. Comparar texto embedded, transcrição revisada e resultado real do provedor separadamente.
-- [ ] Publicar métricas executadas: CER/WER de transcrição com normalização definida, Recall@5/MRR, abstenção e citações. Sem casos live, reportar fixtures e revisão manual; não atribuir qualidade OCR ao mock.
-- [ ] CI sem segredos: npm ci, format/lint/boundaries/types/core coverage, tests/protocol/evaluation/build/storybook/browser/axe. Usar runner Windows para baselines Windows atuais ou revisar novos baselines por plataforma. Artefatos de falha; nenhum dado privado.
-- [ ] Benchmark original de 1.000 documentos, ADRs de parsing local, sessão efêmera e provedor opcional; explicar limites de memória/instância sem alegar produção distribuída.
-- [ ] Revisão final independente, correções com RED/GREEN, execução completa do lockfile, documentação do uso real e limites, commit/push autorizados. Merge exige autorização aplicável; hospedagem é separada.
+- [x] RED para transcrição incorreta, fonte ausente, abstenção indevida, citação/revisão incompatível e regressão de isolamento. Comparar texto embedded, transcrição revisada e resultado real do provedor separadamente.
+- [x] Publicar métricas executadas: CER/WER de transcrição com normalização definida, Recall@5/MRR, abstenção e citações. Sem casos live, reportar fixtures e revisão manual; não atribuir qualidade OCR ao mock.
+- [x] CI sem segredos: npm ci, format/lint/boundaries/types/core coverage, tests/protocol/evaluation/build/storybook/browser/axe. Usar runner Windows para baselines Windows atuais ou revisar novos baselines por plataforma. Artefatos de falha; nenhum dado privado.
+- [x] Benchmark original de 1.000 documentos, ADRs de parsing local, sessão efêmera e provedor opcional; explicar limites de memória/instância sem alegar produção distribuída.
+- [x] Revisão final independente, correções com RED/GREEN, execução completa do lockfile, documentação do uso real e limites, commit/push autorizados. Merge exige autorização aplicável; hospedagem é separada.
 
 ## Decisões antes de reconhecimento ao vivo
 

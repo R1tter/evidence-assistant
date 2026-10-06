@@ -2,6 +2,8 @@
 
 Scope, plan and visual proposal approved by Marcelo on 6 October 2026, with “agora sim” after viewing the interactive proposal. This review artifact covers revised Task 1; frontend consolidation can proceed.
 
+Marcelo subsequently selected identity direction A: the original page with a highlighted passage. The React header already uses that asset. Final review added explicit page/source provenance, preserved correction drafts across pages and views, and recovery of uncertain saves. Four affected desktop/mobile captures were inspected and the complete 27-test browser suite passed without snapshot updates. Review and illegible stories now assert the editor or marked transcription before accessibility checks. Browser-language selection and preference persistence passed; document text and tokens are not saved in browser storage.
+
 Open [the interactive proposal](ux-document-preview.html). The top selector exposes entrance, upload, reading, recognition, ready, review, answer, illegible, error and expired states. The language selector covers English, Brazilian Portuguese and Spanish. The identity disclosure contains two original vector sketches; monochrome variants are in `preview-assets/`.
 
 The proposal reads no file content and sends nothing. Example text, responses and recognition states are prepared for interaction review. The illustrations are original vectors, not real scanned/manuscript evaluation fixtures. Asking arbitrary questions is not implemented here; the suggested questions demonstrate answer-to-passage navigation. Local editing clears the previous answer. Provider recognition remains future implementation.
