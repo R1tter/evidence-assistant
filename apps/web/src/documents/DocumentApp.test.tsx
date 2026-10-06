@@ -1,13 +1,17 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest';
-import { afterEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { DocumentApp } from './DocumentApp.js';
 import { documentExamples } from './examples.js';
 import type { DocumentServices } from './useDocumentSession.js';
 import { SessionApiError } from './session-client.js';
-afterEach(cleanup);
+beforeEach(() => localStorage.setItem('evidence-interface-locale', 'pt-BR'));
+afterEach(() => {
+  cleanup();
+  localStorage.clear();
+});
 function services(): DocumentServices {
   const example = documentExamples('pt-BR')[1]!;
   const document = {
@@ -37,6 +41,7 @@ function services(): DocumentServices {
     ),
     read: vi.fn(),
     client: {
+      get: () => Promise.resolve({ document, expiresAt: 100000 }),
       config: () =>
         Promise.resolve({ llmAvailable: false, recognitionAvailable: false }),
       create: () =>
@@ -122,6 +127,141 @@ it('lets a visitor ask about an example, inspect its source and invalidate the a
   await user.click(screen.getByRole('button', { name: 'Salvar revisão' }));
   expect(screen.queryByTestId('document-answer')).not.toBeInTheDocument();
 });
+it('keeps a correction draft while consulting the original', async () => {
+  const user = userEvent.setup();
+  render(<DocumentApp services={services()} />);
+  await user.click(
+    screen.getByRole('button', { name: 'Experimentar um exemplo' }),
+  );
+  await user.click(
+    await screen.findByRole('button', { name: 'Revisar texto' }),
+  );
+  await user.clear(screen.getByLabelText('Texto da página'));
+  await user.type(
+    screen.getByLabelText('Texto da página'),
+    'Correção ainda não salva',
+  );
+  await user.click(screen.getByRole('button', { name: 'Original' }));
+  await user.click(screen.getByRole('button', { name: 'Revisar texto' }));
+  expect(screen.getByLabelText('Texto da página')).toHaveValue(
+    'Correção ainda não salva',
+  );
+});
+it('keeps separate page drafts when navigating pages and mobile tabs', async () => {
+  const user = userEvent.setup();
+  const deps = services();
+  const initial = await deps.client.create(
+    'title',
+    [],
+    new AbortController().signal,
+  );
+  const document = {
+    ...initial.document,
+    pages: [
+      ...initial.document.pages,
+      { ...initial.document.pages[0]!, page: 2, text: 'Segunda página' },
+    ],
+  };
+  deps.client.create = () => Promise.resolve({ ...initial, document });
+  const sample = await deps.example(
+    'pt-BR',
+    'scan',
+    new AbortController().signal,
+  );
+  deps.example = () =>
+    Promise.resolve({
+      ...sample,
+      document: {
+        ...sample.document,
+        pages: document.pages,
+        previews: [
+          ...sample.document.previews,
+          { ...sample.document.previews[0]!, page: 2 },
+        ],
+      },
+    });
+  render(<DocumentApp services={deps} />);
+  await user.click(
+    screen.getByRole('button', { name: 'Experimentar um exemplo' }),
+  );
+  await user.click(
+    await screen.findByRole('button', { name: 'Revisar texto' }),
+  );
+  await user.clear(screen.getByLabelText('Texto da página'));
+  await user.type(
+    screen.getByLabelText('Texto da página'),
+    'Primeiro rascunho',
+  );
+  await user.selectOptions(screen.getByLabelText('Documento'), '2');
+  expect(screen.getByLabelText('Texto da página')).toHaveValue(
+    'Segunda página',
+  );
+  await user.type(screen.getByLabelText('Texto da página'), ' alterada');
+  await user.selectOptions(screen.getByLabelText('Documento'), '1');
+  expect(screen.getByLabelText('Texto da página')).toHaveValue(
+    'Primeiro rascunho',
+  );
+  await user.click(screen.getByRole('button', { name: 'Perguntas' }));
+  await user.click(screen.getByRole('button', { name: 'Texto' }));
+  await user.click(screen.getByRole('button', { name: 'Revisar texto' }));
+  expect(screen.getByLabelText('Texto da página')).toHaveValue(
+    'Primeiro rascunho',
+  );
+  await user.selectOptions(screen.getByLabelText('Documento'), '2');
+  expect(screen.getByLabelText('Texto da página')).toHaveValue(
+    'Segunda página alterada',
+  );
+});
+it('recovers a committed revision after a lost save response without deleting the session', async () => {
+  const user = userEvent.setup();
+  const deps = services();
+  const original = await deps.client.create(
+    'title',
+    [],
+    new AbortController().signal,
+  );
+  const saved = {
+    document: {
+      ...original.document,
+      revision: 2,
+      pages: [
+        { ...original.document.pages[0]!, text: 'A oficina começa às 16h.' },
+      ],
+    },
+    expiresAt: 100000,
+  };
+  const get = vi.fn(() => Promise.resolve(saved));
+  Object.assign(deps.client, { get });
+  deps.client.edit = () => Promise.reject(new TypeError('response lost'));
+  deps.client.ask = vi.fn(deps.client.ask);
+  render(<DocumentApp services={deps} />);
+  await user.click(
+    screen.getByRole('button', { name: 'Experimentar um exemplo' }),
+  );
+  await user.click(
+    await screen.findByRole('button', { name: 'Revisar texto' }),
+  );
+  await user.clear(screen.getByLabelText('Texto da página'));
+  await user.type(
+    screen.getByLabelText('Texto da página'),
+    saved.document.pages[0]!.text,
+  );
+  await user.click(screen.getByRole('button', { name: 'Salvar revisão' }));
+  await vi.waitFor(() => expect(get).toHaveBeenCalled());
+  expect(deps.client.remove).not.toHaveBeenCalled();
+  await user.type(screen.getByLabelText('Sua pergunta'), 'oficina');
+  await user.click(
+    screen.getByRole('button', { name: 'Perguntar ao documento' }),
+  );
+  expect(deps.client.ask).toHaveBeenCalledWith(
+    original.token,
+    2,
+    'oficina',
+    'demo',
+    'pt-BR',
+    expect.any(AbortSignal),
+  );
+});
 it('does not upload a late local read after cancellation and disposes its previews', async () => {
   const user = userEvent.setup();
   const deps = services();
@@ -202,4 +342,43 @@ it('ignores a late answer after switching documents and deletes the previous ses
   finish(result);
   await vi.waitFor(() => expect(deps.client.remove).toHaveBeenCalled());
   expect(screen.queryByTestId('document-answer')).not.toBeInTheDocument();
+});
+
+it('preserves the draft and blocks questions until an uncertain revision can be recovered', async () => {
+  const user = userEvent.setup();
+  const deps = services();
+  const saved = await deps.client.get('token', new AbortController().signal);
+  const get = vi
+    .fn()
+    .mockRejectedValueOnce(new TypeError('offline'))
+    .mockResolvedValue(saved);
+  deps.client.get = get;
+  deps.client.edit = () => Promise.reject(new TypeError('response lost'));
+  render(<DocumentApp services={deps} />);
+  await user.click(
+    screen.getByRole('button', { name: 'Experimentar um exemplo' }),
+  );
+  await user.click(
+    await screen.findByRole('button', { name: 'Revisar texto' }),
+  );
+  await user.clear(screen.getByLabelText('Texto da página'));
+  await user.type(
+    screen.getByLabelText('Texto da página'),
+    'Rascunho preservado',
+  );
+  await user.click(screen.getByRole('button', { name: 'Salvar revisão' }));
+  await screen.findByText(/Não foi possível confirmar a revisão salva/);
+  await user.type(screen.getByLabelText('Sua pergunta'), 'oficina');
+  expect(
+    screen.getByRole('button', { name: 'Perguntar ao documento' }),
+  ).toBeDisabled();
+  await user.click(screen.getByRole('button', { name: 'Recuperar sessão' }));
+  await vi.waitFor(() => expect(get).toHaveBeenCalledTimes(2));
+  expect(screen.getByLabelText('Texto da página')).toHaveValue(
+    'Rascunho preservado',
+  );
+  expect(deps.client.remove).not.toHaveBeenCalled();
+  expect(
+    screen.getByRole('button', { name: 'Perguntar ao documento' }),
+  ).toBeEnabled();
 });

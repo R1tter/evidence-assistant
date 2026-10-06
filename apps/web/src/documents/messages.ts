@@ -504,5 +504,5 @@ export const documentMessages = {
   },
 } as const;
 export type DocumentMessages = {
-  [K in keyof typeof documentMessages.en]: string;
+  [K in keyof typeof import('./product-copy.js').workspaceMessages.en]: string;
 };

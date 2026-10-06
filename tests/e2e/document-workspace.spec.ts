@@ -112,6 +112,10 @@ test('all ten document story states pass axe in each interface language', async 
         `http://127.0.0.1:6006/iframe.html?id=document-workspace--home&viewMode=story&args=state:${state};locale:${locale}`,
       );
       await expect(page.locator('#storybook-root .shell')).toBeVisible();
+      if (state === 'review')
+        await expect(page.locator('#page-edit')).toBeVisible();
+      if (state === 'illegible')
+        await expect(page.locator('.page-text')).toContainText('[illegible]');
       expect(
         (
           await new AxeBuilder({ page })
@@ -224,4 +228,20 @@ test('reflows at 320px and supports all locales, text enlargement and reduced mo
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
+});
+
+test('browser language and saved interface preference survive reload', async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ locale: 'es-MX' });
+  const page = await context.newPage();
+  await page.goto('http://127.0.0.1:5173/');
+  await expect(page.locator('header select')).toHaveValue('es');
+  await page.locator('header select').selectOption('en');
+  await page.reload();
+  await expect(page.locator('header select')).toHaveValue('en');
+  expect(await page.evaluate(() => Object.keys(localStorage))).toEqual([
+    'evidence-interface-locale',
+  ]);
+  await context.close();
 });

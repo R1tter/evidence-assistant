@@ -29,7 +29,25 @@ export interface LoadedDocument {
   example: DocumentExample | undefined;
 }
 export type WorkStatus =
-  'home' | 'upload' | 'reading' | 'ready' | 'asking' | 'recognizing' | 'saving';
+  | 'home'
+  | 'upload'
+  | 'reading'
+  | 'ready'
+  | 'asking'
+  | 'recognizing'
+  | 'saving'
+  | 'syncing';
+function failureCode(failure: unknown): string {
+  if (failure instanceof SessionApiError) return failure.code;
+  if (failure instanceof Error && 'code' in failure)
+    return String(failure.code);
+  return 'REQUEST_FAILED';
+}
+function synchronizationFailure(failure: unknown): string {
+  return failureCode(failure) === 'SESSION_EXPIRED'
+    ? 'SESSION_EXPIRED'
+    : 'SESSION_UNCERTAIN';
+}
 export function useDocumentSession(services: DocumentServices) {
   const [status, setStatus] = useState<WorkStatus>('home');
   const [loaded, setLoaded] = useState<LoadedDocument>();
@@ -76,21 +94,13 @@ export function useDocumentSession(services: DocumentServices) {
   const run = async (
     next: WorkStatus,
     task: (signal: AbortSignal, id: number) => Promise<void>,
-  ) => {
+  ): Promise<void> => {
     const { controller, id } = start(next);
     try {
       await task(controller.signal, id);
       if (id === sequence.current) setStatus('ready');
     } catch (failure) {
-      if (id !== sequence.current || controller.signal.aborted) return;
-      setError(
-        failure instanceof SessionApiError
-          ? failure.code
-          : failure instanceof Error && 'code' in failure
-            ? String(failure.code)
-            : 'REQUEST_FAILED',
-      );
-      setStatus(current.current ? 'ready' : 'upload');
+      await handleFailure(next, failure, controller.signal, id);
     }
   };
   const clear = () => {
@@ -142,14 +152,54 @@ export function useDocumentSession(services: DocumentServices) {
     setLoaded(next);
     setAnswer(undefined);
   };
+  const reconcile = async (signal: AbortSignal, id: number): Promise<void> => {
+    const previous = current.current;
+    if (!previous) return;
+    const saved = await services.client.get(previous.token, signal);
+    if (id === sequence.current && previous.token === current.current?.token)
+      update(saved.document, saved.expiresAt);
+  };
+  const handleFailure = async (
+    next: WorkStatus,
+    failure: unknown,
+    signal: AbortSignal,
+    id: number,
+  ): Promise<void> => {
+    if (id !== sequence.current || signal.aborted) return;
+    let code =
+      next === 'syncing'
+        ? synchronizationFailure(failure)
+        : failureCode(failure);
+    if (
+      ['saving', 'recognizing'].includes(next) ||
+      code === 'REVISION_CONFLICT'
+    ) {
+      setStatus('syncing');
+      setAnswer(undefined);
+      try {
+        await reconcile(signal, id);
+      } catch (recoveryFailure) {
+        code = synchronizationFailure(recoveryFailure);
+      }
+    }
+    if (id !== sequence.current) return;
+    setError(code);
+    setStatus(current.current ? 'ready' : 'upload');
+  };
+  const refresh = () => {
+    setAnswer(undefined);
+    void run('syncing', reconcile);
+  };
   return {
     status,
     loaded,
     answer,
     error,
     config,
+    refresh,
     clearError: () => {
-      if (error !== 'SESSION_EXPIRED') setError(undefined);
+      if (error !== 'SESSION_EXPIRED' && error !== 'SESSION_UNCERTAIN')
+        setError(undefined);
     },
     upload: () => {
       clear();
@@ -162,7 +212,8 @@ export function useDocumentSession(services: DocumentServices) {
     cancel: () => {
       operation.current?.abort();
       sequence.current++;
-      setStatus(current.current ? 'ready' : 'upload');
+      if (status === 'recognizing') refresh();
+      else setStatus(current.current ? 'ready' : 'upload');
     },
     example: (locale: ExampleLocale, kind: ExampleKind) => {
       clear();
@@ -207,6 +258,7 @@ export function useDocumentSession(services: DocumentServices) {
     edit: (page: number, text: string) => {
       const document = current.current;
       if (!document) return;
+      setAnswer(undefined);
       void run('saving', async (signal, id) => {
         const saved = await services.client.edit(
           document.token,

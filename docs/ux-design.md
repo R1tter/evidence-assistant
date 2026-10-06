@@ -6,7 +6,7 @@ A recruiter can understand the product and try a useful question within one minu
 
 ## Direction
 
-Approved direction, 6 October 2026: Marcelo approved the document-first scope in `docs/superpowers/specs/2026-10-06-document-workspace-design.md` and the new visual proposal. Use indigo, teal and coral accents, original illustrations, a localized entrance gradient and purposeful motion; keep reading surfaces neutral and honor reduced motion. The older visual constraints below describe the preserved baseline.
+Approved direction, 6 October 2026: Marcelo approved the document-first scope in `docs/superpowers/specs/2026-10-06-document-workspace-design.md` and the new visual proposal. Use indigo, teal and coral accents, original illustrations, a localized entrance gradient and purposeful motion; keep reading surfaces neutral and honor reduced motion. Marcelo selected identity direction A: the original page with a highlighted passage (`brand-highlight.svg`). Use its color and monochrome variants consistently. The older visual constraints below describe the preserved baseline.
 
 An editorial research workspace: neutral slate background, dark readable text, restrained blue accent and generous spacing. Use a system font stack initially, consistent type scale and semantic tokens for color, spacing, radius and focus. Avoid gradients, arbitrary badges, animated charts and chat bubbles without purpose.
 

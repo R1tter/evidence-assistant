@@ -15,6 +15,7 @@ export interface RecognitionPage {
   data: string;
 }
 export interface SessionClient {
+  get(this: void, token: string, signal: AbortSignal): Promise<Session>;
   config(
     this: void,
     signal?: AbortSignal,
@@ -90,6 +91,16 @@ async function request(
     : (response.json() as Promise<unknown>);
 }
 export const sessionClient: SessionClient = {
+  get: async (token, signal) =>
+    sessionSchema.parse(
+      await request(
+        '/api/document-session',
+        'GET',
+        token,
+        undefined,
+        AbortSignal.any([signal, AbortSignal.timeout(10000)]),
+      ),
+    ),
   config: async (signal) =>
     assistantConfigSchema.parse(
       await request('/api/config', 'GET', undefined, undefined, signal),

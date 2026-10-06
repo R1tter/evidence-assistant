@@ -1120,3 +1120,7 @@ button,
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.page-provenance {
+  margin: 16px 20px;
+}

@@ -5,17 +5,20 @@ import type { PagePreview } from './types.js';
 import type { DocumentMessages } from './messages.js';
 export type DocumentView = 'original' | 'text' | 'edit';
 export function TranscriptEditor({
-  page,
   t,
   busy,
   save,
+  draft,
+  setDraft,
+  reset,
 }: {
-  page: PageText;
   t: DocumentMessages;
   busy: boolean;
   save(this: void, text: string): void;
+  draft: string;
+  setDraft(this: void, text: string): void;
+  reset(this: void): void;
 }) {
-  const [draft, setDraft] = useState(page.text);
   return (
     <div className="transcript">
       <label htmlFor="page-edit">{t.editLabel}</label>
@@ -30,7 +33,7 @@ export function TranscriptEditor({
         <button className="primary" disabled={busy} onClick={() => save(draft)}>
           {t.saveText}
         </button>
-        <button disabled={busy} onClick={() => setDraft(page.text)}>
+        <button disabled={busy} onClick={reset}>
           {t.undoText}
         </button>
       </div>
@@ -39,6 +42,7 @@ export function TranscriptEditor({
   );
 }
 export function DocumentViewer({
+  provenance,
   t,
   pages,
   previews,
@@ -52,6 +56,7 @@ export function DocumentViewer({
   save,
   returnToQuestion,
 }: {
+  provenance: string;
   t: DocumentMessages;
   pages: PageText[];
   previews: PagePreview[];
@@ -66,6 +71,7 @@ export function DocumentViewer({
   returnToQuestion(this: void): void;
 }) {
   const page = pages.find((item) => item.page === number)!;
+  const [drafts, setDrafts] = useState<Record<number, string>>({});
   const preview = previews.find((item) => item.page === number)!;
   return (
     <section className="document-panel" aria-label={t.documentAndText}>
@@ -96,6 +102,7 @@ export function DocumentViewer({
           </select>
         </label>
       </div>
+      <p className="page-provenance pill tag-teal">{provenance}</p>
       {view === 'original' && (
         <div className="original-page">
           <img
@@ -118,6 +125,7 @@ export function DocumentViewer({
               tabIndex={-1}
             >
               <strong>{t.passageTitle.replace('1', String(number))}</strong>
+              <p className="help">{provenance}</p>
               <p>{passage}</p>
               <button onClick={returnToQuestion}>{t.questionsTab}</button>
             </div>
@@ -127,11 +135,16 @@ export function DocumentViewer({
           )}
           {view === 'edit' && (
             <TranscriptEditor
-              key={`${number}:${page.text}`}
-              page={page}
               t={t}
               busy={busy}
               save={save}
+              draft={drafts[number] ?? page.text}
+              setDraft={(text) =>
+                setDrafts((previous) => ({ ...previous, [number]: text }))
+              }
+              reset={() =>
+                setDrafts((previous) => ({ ...previous, [number]: page.text }))
+              }
             />
           )}
           {page.uncertainties.length > 0 && (

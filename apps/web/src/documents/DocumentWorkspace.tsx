@@ -9,6 +9,32 @@ import type {
   DocumentController,
   LoadedDocument,
 } from './useDocumentSession.js';
+function pageProvenance(
+  loaded: LoadedDocument,
+  page: number,
+  t: DocumentMessages,
+) {
+  if (loaded.example && loaded.document.revision === 1) return t.demoLabel;
+  const origin = loaded.document.pages.find(
+    (item) => item.page === page,
+  )!.origin;
+  return {
+    embedded: t.originEmbedded,
+    vision: t.originVision,
+    reviewed: t.originReviewed,
+  }[origin];
+}
+function questionsUnavailable(
+  controller: DocumentController,
+  loaded: LoadedDocument,
+) {
+  return (
+    ['SESSION_EXPIRED', 'SESSION_UNCERTAIN'].includes(controller.error ?? '') ||
+    loaded.document.pages.every(
+      (page) => !page.text.trim() || page.text === '[illegible]',
+    )
+  );
+}
 export function DocumentWorkspace({
   controller,
   loaded,
@@ -60,7 +86,10 @@ export function DocumentWorkspace({
     setSourceFocused(false);
     requestAnimationFrame(() => citationRef.current?.focus());
   };
-  const busy = !['home', 'upload', 'ready'].includes(controller.status);
+  const busy =
+    !['home', 'upload', 'ready'].includes(controller.status) ||
+    controller.error === 'SESSION_UNCERTAIN';
+  const provenance = pageProvenance(loaded, page, t);
   return (
     <div id="workspace">
       <section className="workspace-heading">
@@ -97,6 +126,7 @@ export function DocumentWorkspace({
       </section>
       <div className="workspace-grid" data-mobile={mobile}>
         <DocumentViewer
+          provenance={provenance}
           t={t}
           pages={loaded.document.pages}
           previews={loaded.local.previews}
@@ -121,12 +151,7 @@ export function DocumentWorkspace({
             mode={mode}
             available={controller.config.llmAvailable}
             busy={busy}
-            disabled={
-              controller.error === 'SESSION_EXPIRED' ||
-              loaded.document.pages.every(
-                (page) => !page.text.trim() || page.text === '[illegible]',
-              )
-            }
+            disabled={questionsUnavailable(controller, loaded)}
             answer={controller.answer}
             suggestions={loaded.example?.questions ?? []}
             setQuestion={setQuestion}

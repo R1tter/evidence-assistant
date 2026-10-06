@@ -1,6 +1,45 @@
 import { test, expect } from '@playwright/test';
 import { pdfFixture, imagePdfFixture } from './pdf-fixture.js';
 import { transcriptionErrors } from '../../scripts/evaluation-metrics.js';
+test('accepts a phone JPEG whose EXIF orientation swaps decoded dimensions', async ({
+  page,
+}) => {
+  await page.goto('/');
+  const result = await page.evaluate(async () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 20;
+    canvas.height = 10;
+    canvas.getContext('2d')!.fillRect(0, 0, 20, 10);
+    const blob = await new Promise<Blob>((resolve) =>
+      canvas.toBlob((value) => resolve(value!), 'image/jpeg'),
+    );
+    const jpeg = new Uint8Array(await blob.arrayBuffer());
+    const exif = new Uint8Array([
+      255, 225, 0, 34, 69, 120, 105, 102, 0, 0, 73, 73, 42, 0, 8, 0, 0, 0, 1, 0,
+      18, 1, 3, 0, 1, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0,
+    ]);
+    const bytes = new Uint8Array(jpeg.length + exif.length);
+    bytes.set(jpeg.slice(0, 2));
+    bytes.set(exif, 2);
+    bytes.set(jpeg.slice(2), 2 + exif.length);
+    const modulePath = '/src/documents/read.ts';
+    const { readDocument } = (await import(
+      modulePath
+    )) as typeof import('../../apps/web/src/documents/read.js');
+    const doc = await readDocument(
+      new File([bytes], 'phone.jpg', { type: 'image/jpeg' }),
+      new AbortController().signal,
+    );
+    const preview = {
+      width: doc.previews[0]!.width,
+      height: doc.previews[0]!.height,
+      recognition: doc.requiresRecognition,
+    };
+    doc.dispose();
+    return preview;
+  });
+  expect(result).toEqual({ width: 10, height: 20, recognition: true });
+});
 test('a plausible PNG header with corrupt image data fails safely', async ({
   page,
 }) => {

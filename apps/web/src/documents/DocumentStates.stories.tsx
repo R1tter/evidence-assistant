@@ -97,6 +97,7 @@ function DocumentState({
     error: storyError(state),
     config: { llmAvailable: false, recognitionAvailable: true },
     clearError: noop,
+    refresh: noop,
     upload: noop,
     home: noop,
     cancel: noop,
@@ -139,6 +140,19 @@ const meta = {
   title: 'Document workspace',
   component: DocumentState,
   args: { state: 'home', locale: 'pt-BR' },
+  play: ({ canvasElement, args }) => {
+    const t = workspaceMessages[args.locale];
+    const text =
+      args.state === 'review'
+        ? t.editText
+        : args.state === 'illegible'
+          ? t.transcriptTab
+          : undefined;
+    if (text)
+      [...canvasElement.querySelectorAll('button')]
+        .find((button) => button.textContent === text)
+        ?.click();
+  },
   argTypes: {
     locale: { control: 'select', options: ['en', 'pt-BR', 'es'] },
     state: {

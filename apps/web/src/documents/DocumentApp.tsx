@@ -7,13 +7,14 @@ import { DocumentHome } from './DocumentHome.js';
 import { DocumentInput } from './DocumentInput.js';
 import { documentServices, useDocumentSession } from './useDocumentSession.js';
 import type { DocumentServices } from './useDocumentSession.js';
+import { initialLocale, persistLocale } from './locale.js';
 import './workspace.css';
 export function DocumentApp({
   services = documentServices,
 }: {
   services?: DocumentServices;
 }) {
-  const [locale, setLocale] = useState<ExampleLocale>('pt-BR');
+  const [locale, setLocale] = useState<ExampleLocale>(initialLocale);
   const t = workspaceMessages[locale];
   const controller = useDocumentSession(services);
   const busy = !['home', 'upload', 'ready'].includes(controller.status);
@@ -46,9 +47,11 @@ export function DocumentApp({
             <select
               aria-label={t.language}
               value={locale}
-              onChange={(event) =>
-                setLocale(event.target.value as ExampleLocale)
-              }
+              onChange={(event) => {
+                const selected = event.target.value as ExampleLocale;
+                setLocale(selected);
+                persistLocale(selected);
+              }}
             >
               <option value="en">English</option>
               <option value="pt-BR">Português (Brasil)</option>

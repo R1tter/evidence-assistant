@@ -2,6 +2,8 @@ import type { ExampleLocale } from './examples.js';
 export function errorCopy(locale: ExampleLocale, code: string) {
   const messages: Record<ExampleLocale, Record<string, string>> = {
     'pt-BR': {
+      SESSION_UNCERTAIN:
+        'Não foi possível confirmar a revisão salva. Recupere a revisão antes de continuar; seu rascunho foi preservado.',
       FILE_TOO_LARGE: 'O arquivo ou as páginas selecionadas excedem 10 MiB.',
       IMAGE_TOO_LARGE:
         'A imagem excede 16 megapixels ou as dimensões permitidas.',
@@ -16,9 +18,11 @@ export function errorCopy(locale: ExampleLocale, code: string) {
         'O reconhecimento ou a resposta excedeu o prazo. Seu texto foi preservado.',
       PROVIDER_BUSY: 'O serviço está ocupado. Tente novamente em instantes.',
       REVISION_CONFLICT:
-        'O texto mudou. Reabra o documento antes de continuar.',
+        'O texto mudou. A revisão disponível foi recuperada; confira o texto antes de continuar.',
     },
     en: {
+      SESSION_UNCERTAIN:
+        'The saved revision could not be confirmed. Recover it before continuing; your draft was preserved.',
       FILE_TOO_LARGE: 'The file or selected pages exceed 10 MiB.',
       IMAGE_TOO_LARGE:
         'The image exceeds 16 megapixels or the dimension limit.',
@@ -33,9 +37,11 @@ export function errorCopy(locale: ExampleLocale, code: string) {
         'Recognition or answering exceeded its deadline. Your text was preserved.',
       PROVIDER_BUSY: 'The service is busy. Try again shortly.',
       REVISION_CONFLICT:
-        'The text changed. Reopen the document before continuing.',
+        'The text changed. The available revision was recovered; check the text before continuing.',
     },
     es: {
+      SESSION_UNCERTAIN:
+        'No se pudo confirmar la revisión guardada. Recupérala antes de continuar; se conservó tu borrador.',
       FILE_TOO_LARGE: 'El archivo o las páginas seleccionadas superan 10 MiB.',
       IMAGE_TOO_LARGE:
         'La imagen supera 16 megapíxeles o el límite de dimensiones.',

@@ -20,6 +20,7 @@ export function DocumentNotice({
   }, [controller.error]);
   const expired = controller.error === 'SESSION_EXPIRED';
   const titles = {
+    syncing: t.syncingTitle,
     reading: t.readingTitle,
     recognizing: t.ocrTitle,
     asking: t.ask,
@@ -29,6 +30,7 @@ export function DocumentNotice({
     ready: '',
   };
   const bodies = {
+    syncing: t.syncingBody,
     reading: t.readingBody,
     recognizing: t.ocrBody,
     asking: t.modeHelp,
@@ -49,7 +51,10 @@ export function DocumentNotice({
           <h2>{expired ? t.expiredTitle : t.errorTitle}</h2>
           <p>{expired ? t.expiredBody : errorCopy(locale, controller.error)}</p>
           <button onClick={upload}>{t.reopen}</button>
-          {!expired && (
+          {controller.loaded && !expired && (
+            <button onClick={controller.refresh}>{t.retrySync}</button>
+          )}
+          {!expired && controller.error !== 'SESSION_UNCERTAIN' && (
             <button onClick={controller.clearError}>{t.cancel}</button>
           )}
         </div>
@@ -58,7 +63,9 @@ export function DocumentNotice({
         <div className="notice status-box" role="status">
           <h2>{titles[controller.status]}</h2>
           <p>{bodies[controller.status]}</p>
-          <button onClick={controller.cancel}>{t.cancel}</button>
+          {['reading', 'recognizing', 'asking'].includes(controller.status) && (
+            <button onClick={controller.cancel}>{t.cancel}</button>
+          )}
         </div>
       )}
     </>

@@ -26,6 +26,8 @@ npm run start:api
 
 Em outro terminal, execute `npm run dev:web` e abra `http://127.0.0.1:5173`. Escolha um exemplo ou **Usar meu documento**, confira a transcrição e pergunte no idioma do documento no modo extrativo. A fonte abre página/trecho. Salvar correções cria nova revisão e remove a resposta antiga.
 
+O seletor guarda somente a preferência de idioma no navegador. Sem preferência, usa um idioma compatível do navegador ou inglês. Rascunhos de revisão permanecem ao alternar páginas e visualizações durante a sessão. Se a resposta de um salvamento se perder, a aplicação recupera a revisão existente; enquanto não puder confirmá-la, bloqueia perguntas e mantém o rascunho.
+
 Limites: um documento, cinco páginas, 10 MiB, imagem de 16 MP, 40.000 caracteres e 15 segundos para leitura local. O original fica no navegador. O texto consultável vai para a API e fica em memória por 30 minutos sem atividade. Trocar documento solicita exclusão; fechamento abrupto ou falha na exclusão depende do TTL. Reiniciar perde sessões. Sem armazenamento permanente nem autenticação.
 
 Configure `OPENAI_API_KEY` e `OPENAI_VISION_MODEL` no processo da API para reconhecimento; adicione `OPENAI_MODEL` para respostas geradas. `.env` não é carregado automaticamente. Páginas selecionadas são enviadas somente após consentimento. Geração envia pergunta/trechos. Não executamos chamadas reais, testes pagos ou avaliação de manuscritos. Cancelar localmente não garante cancelamento/cobrança remotos.

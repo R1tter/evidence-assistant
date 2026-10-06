@@ -16,8 +16,12 @@ async function readImage(
   });
   try {
     signal.throwIfAborted();
-    if (bitmap.width !== input.width || bitmap.height !== input.height)
-      throw new InputError('INVALID_FILE');
+    const same = bitmap.width === input.width && bitmap.height === input.height;
+    const rotatedJpeg =
+      input.kind === 'jpeg' &&
+      bitmap.width === input.height &&
+      bitmap.height === input.width;
+    if (!same && !rotatedJpeg) throw new InputError('INVALID_FILE');
     return {
       pages: [
         { page: 1, text: '', origin: 'embedded' as const, uncertainties: [] },

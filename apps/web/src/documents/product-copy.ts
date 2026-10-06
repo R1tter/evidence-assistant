@@ -1,6 +1,13 @@
 import { documentMessages } from './messages.js';
 const updates = {
   'pt-BR': {
+    syncingTitle: 'Recuperando a sessão',
+    syncingBody:
+      'Conferindo a revisão salva no servidor. Seus rascunhos locais são preservados.',
+    retrySync: 'Recuperar sessão',
+    originEmbedded: 'Texto extraído do arquivo',
+    originVision: 'Transcrição por IA · confira o original',
+    originReviewed: 'Texto corrigido por você',
     modeAi: 'IA · resposta gerada',
     answerExtracted: 'Resposta extrativa · frase do documento',
     readingTitle: 'Lendo o arquivo',
@@ -24,6 +31,13 @@ const updates = {
     errorTitle: 'Não foi possível concluir',
   },
   en: {
+    syncingTitle: 'Recovering session',
+    syncingBody:
+      'Checking the saved server revision. Local drafts are preserved.',
+    retrySync: 'Recover session',
+    originEmbedded: 'Text extracted from the file',
+    originVision: 'AI transcription · inspect the original',
+    originReviewed: 'Text corrected by you',
     modeAi: 'AI · generated answer',
     answerExtracted: 'Extractive answer · sentence from the document',
     readingTitle: 'Reading file',
@@ -46,6 +60,13 @@ const updates = {
     errorTitle: 'The operation could not finish',
   },
   es: {
+    syncingTitle: 'Recuperando sesión',
+    syncingBody:
+      'Comprobando la revisión guardada. Se conservan los borradores locales.',
+    retrySync: 'Recuperar sesión',
+    originEmbedded: 'Texto extraído del archivo',
+    originVision: 'Transcripción por IA · comprueba el original',
+    originReviewed: 'Texto corregido por ti',
     modeAi: 'IA · respuesta generada',
     answerExtracted: 'Respuesta extractiva · frase del documento',
     readingTitle: 'Leyendo el archivo',
