@@ -8,7 +8,7 @@
 
 **Tech Stack:** TypeScript/React/Vite existentes; PDF.js em worker (versão e compatibilidade a verificar); Fastify; adaptador visual OpenAI opcional; Vitest, Playwright, axe e Storybook existentes.
 
-**Status:** roteiro e proposta visual aprovados por Marcelo nesta conversa em 6 October 2026. Tasks 1–2 concluídas; Task 3 em execução. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
+**Status:** roteiro e proposta visual aprovados por Marcelo nesta conversa em 6 October 2026. Tasks 1–3 concluídas; Task 4 em execução. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
 
 ## Task 1 — proposta visual e baseline preservado
 
@@ -37,10 +37,10 @@ Arquivos: `packages/core/src/{document-revisions,page-chunks}.ts`, `apps/api/src
 
 API proposta: `POST /api/document-sessions` inicia sessão a partir de texto validado; token em header `X-Document-Session` nas rotas `GET/DELETE /api/document-session`, `PATCH /api/document-session/pages/:page`, `POST /api/document-session/ask`. IDs/revisões vêm do servidor; erros não expõem dados de outras sessões.
 
-- [ ] RED para isolamento entre tokens, token ausente/inválido, revisão obsoleta, expiry, exclusão, orçamento 20 sessões/50 MiB, 40.000 caracteres e origem de página.
-- [ ] Implementar token criptograficamente aleatório, TTL de inatividade 30 min, limpeza previsível, índice uma vez por revisão e rejeição de conflitos. Token/conteúdo nunca nos logs.
-- [ ] Manter MCP sem acesso às sessões pessoais; testar regressão da coleção pública e core.
-- [ ] GREEN/gates e commit.
+- [x] RED para isolamento entre tokens, token ausente/inválido, revisão obsoleta, expiry, exclusão, orçamento 20 sessões/50 MiB, 40.000 caracteres e origem de página.
+- [x] Implementar token criptograficamente aleatório, TTL de inatividade 30 min, limpeza previsível, índice uma vez por revisão e rejeição de conflitos. Token/conteúdo nunca nos logs.
+- [x] Manter MCP sem acesso às sessões pessoais; testar regressão da coleção pública e core.
+- [x] GREEN/gates e commit.
 
 ## Task 4 — reconhecimento opcional e revisão
 

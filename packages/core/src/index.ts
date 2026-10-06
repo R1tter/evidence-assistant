@@ -4,3 +4,11 @@ export { createRetriever, search } from './retrieval.js';
 export type { Citation, Answer } from './validation.js';
 export { validateAnswer, answerContentSchema } from './validation.js';
 export { createDemoAnswer } from './answers.js';
+export {
+  pageTextSchema,
+  pageTextsSchema,
+  documentRevisionSchema,
+  createDocumentRevision,
+  pageChunks,
+} from './document-revisions.js';
+export type { PageText, DocumentRevision } from './document-revisions.js';

@@ -1,9 +1,5 @@
-export interface PageText {
-  page: number;
-  text: string;
-  origin: 'embedded' | 'vision' | 'reviewed';
-  uncertainties: string[];
-}
+import type { PageText } from '@evidence/core';
+export type { PageText } from '@evidence/core';
 export interface PagePreview {
   page: number;
   url: string;

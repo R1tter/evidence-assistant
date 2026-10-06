@@ -11,12 +11,16 @@ import type { Chunk, Document } from '@evidence/core';
 import type { AnswerGenerator, RequestLog } from './contracts.js';
 import { PublicError } from './errors.js';
 import { createProviderQueue } from './provider-queue.js';
+import { createDocumentSessions } from './document-session.js';
+import type { SessionOptions } from './document-session.js';
+import { registerDocumentRoutes } from './document-routes.js';
 
 const inputSchema = z.strictObject({
   question: z.string().trim().min(1).max(1000),
   mode: z.enum(['demo', 'llm']),
 });
 interface AppOptions {
+  sessionOptions?: SessionOptions;
   chunks: Chunk[];
   documents?: Document[];
   generate?: AnswerGenerator['generate'];
@@ -54,6 +58,20 @@ export function buildApp(options: AppOptions) {
   );
   const queue = createProviderQueue(options.deadlineMs);
   const states = new WeakMap<FastifyRequest, RequestState>();
+  const sessions = createDocumentSessions(options.sessionOptions);
+  const sessionCleanup = setInterval(() => sessions.cleanup(), 60000);
+  sessionCleanup.unref();
+  app.addHook('onClose', (_instance, done) => {
+    clearInterval(sessionCleanup);
+    sessions.clear();
+    done();
+  });
+  registerDocumentRoutes(app, {
+    sessions,
+    queue,
+    generate: options.generate,
+    signal: (request) => states.get(request)?.controller.signal,
+  });
   app.addHook('onRequest', (request, reply, done) => {
     const controller = new AbortController();
     const cancel = () => controller.abort();

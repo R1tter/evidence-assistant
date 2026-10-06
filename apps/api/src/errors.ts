@@ -1,4 +1,7 @@
 export type ErrorCode =
+  | 'SESSION_EXPIRED'
+  | 'SESSION_CAPACITY'
+  | 'REVISION_CONFLICT'
   | 'INVALID_REQUEST'
   | 'BODY_TOO_LARGE'
   | 'NOT_FOUND'
@@ -9,6 +12,9 @@ export type ErrorCode =
   | 'REQUEST_CANCELLED'
   | 'INTERNAL_ERROR';
 const statuses: Record<ErrorCode, number> = {
+  SESSION_EXPIRED: 410,
+  SESSION_CAPACITY: 429,
+  REVISION_CONFLICT: 409,
   INVALID_REQUEST: 400,
   BODY_TOO_LARGE: 413,
   NOT_FOUND: 404,
@@ -20,6 +26,9 @@ const statuses: Record<ErrorCode, number> = {
   INTERNAL_ERROR: 500,
 };
 const messages: Record<ErrorCode, string> = {
+  SESSION_EXPIRED: 'The document session is unavailable or expired.',
+  SESSION_CAPACITY: 'Document capacity is temporarily unavailable.',
+  REVISION_CONFLICT: 'The document revision changed. Refresh before asking.',
   INVALID_REQUEST: 'Check the question and selected mode.',
   BODY_TOO_LARGE: 'The request is too large.',
   NOT_FOUND: 'The requested resource was not found.',
