@@ -11,10 +11,10 @@
     "apps/*"
   ],
   "scripts": {
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
+    "test": "npm run build && vitest run",
+    "test:coverage": "npm run build && vitest run --coverage",
     "typecheck": "tsc --noEmit",
-    "build": "tsc -p packages/core/tsconfig.build.json && tsc -p apps/api/tsconfig.build.json",
+    "build": "tsc -p packages/core/tsconfig.build.json && tsc -p apps/api/tsconfig.build.json && tsc -p apps/mcp/tsconfig.build.json",
     "start:api": "npm run start --workspace @evidence/api",
     "lint": "eslint . --max-warnings=0",
     "format:check": "prettier --check .",

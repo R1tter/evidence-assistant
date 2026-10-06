@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Evidence Assistant — visual proposal</title>
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --surface: #fff;
+        --text: #1e293b;
+        --muted: #475569;
+        --accent: #2563eb;
+        --border: #e2e8f0;
+        --control: #64748b;
+        --radius: 12px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.6 system-ui,
+          sans-serif;
+      }
+      main,
+      header,
+      footer {
+        width: min(1120px, calc(100% - 48px));
+        margin: auto;
+      }
+      header {
+        padding: 28px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .brand {
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: -0.4px;
+      }
+      .muted,
+      small {
+        color: var(--muted);
+      }
+      .preview {
+        background: #eff6ff;
+        border-bottom: 1px solid var(--border);
+        padding: 12px 24px;
+      }
+      .preview-inner {
+        max-width: 1120px;
+        margin: auto;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      select,
+      button,
+      textarea {
+        font: inherit;
+      }
+      select,
+      button {
+        min-height: 44px;
+        border: 1px solid var(--control);
+        border-radius: 7px;
+        background: var(--surface);
+        color: var(--text);
+        padding: 8px 14px;
+      }
+      button,
+      summary,
+      select {
+        cursor: pointer;
+      }
+      button:hover,
+      summary:hover {
+        background: #eff6ff;
+      }
+      button:disabled {
+        cursor: default;
+        opacity: 0.7;
+      }
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 4px;
+      }
+      a {
+        color: #1d4ed8;
+        text-underline-offset: 3px;
+      }
+      h1 {
+        font-size: clamp(28px, 3vw, 40px);
+        line-height: 1.2;
+        letter-spacing: -1.3px;
+        margin: 0 0 16px;
+      }
+      h2 {
+        font-size: 22px;
+        line-height: 1.35;
+        margin: 0 0 16px;
+        letter-spacing: -0.4px;
+      }
+      h3 {
+        font-size: 16px;
+        margin: 0 0 8px;
+      }
+      p {
+        margin: 0 0 16px;
+      }
+      .intro {
+        padding: 40px 0 24px;
+        max-width: 720px;
+      }
+      .eyebrow {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+      .panel {
+        padding: 28px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        border-radius: var(--radius);
+      }
+      label,
+      legend {
+        font-weight: 600;
+      }
+      textarea {
+        display: block;
+        width: 100%;
+        resize: vertical;
+        min-height: 112px;
+        border: 1px solid var(--control);
+        border-radius: 8px;
+        padding: 14px;
+        margin: 8px 0;
+        color: var(--text);
+        background: var(--surface);
+      }
+      .suggestions,
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .suggestions {
+        margin: 16px 0 24px;
+      }
+      .suggestions button {
+        font-size: 14px;
+        text-align: left;
+      }
+      .controls {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      fieldset {
+        border: 0;
+        padding: 0;
+        margin: 0;
+      }
+      .mode-option {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        padding-right: 20px;
+        font-size: 14px;
+      }
+      input {
+        accent-color: var(--accent);
+      }
+      .helper {
+        font-size: 14px;
+        margin: 8px 0 0;
+      }
+      .primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+        font-weight: 600;
+      }
+      .primary:hover {
+        background: #1d4ed8;
+      }
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+        gap: 24px;
+        margin: 24px 0 48px;
+        align-items: start;
+      }
+      .answer {
+        min-height: 240px;
+      }
+      .answer p {
+        max-width: 65ch;
+      }
+      .source {
+        border-top: 1px solid var(--border);
+        padding-top: 20px;
+        margin-top: 20px;
+        overflow-wrap: anywhere;
+      }
+      blockquote {
+        margin: 16px 0;
+        padding: 0 0 0 16px;
+        border-left: 3px solid var(--border);
+        color: var(--muted);
+      }
+      summary {
+        min-height: 44px;
+        padding: 8px 0;
+        font-weight: 600;
+      }
+      details p {
+        font-size: 14px;
+      }
+      .checks {
+        border-top: 1px solid var(--border);
+        margin-top: 24px;
+        padding-top: 12px;
+      }
+      .notice {
+        border-left: 3px solid var(--accent);
+        padding-left: 16px;
+      }
+      .long {
+        overflow-wrap: anywhere;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 20px 0 32px;
+        font-size: 14px;
+      }
+      .skip {
+        position: absolute;
+        top: -100px;
+        left: 16px;
+        background: white;
+        padding: 12px;
+        z-index: 1;
+      }
+      .skip:focus {
+        top: 8px;
+      }
+      @media (max-width: 700px) {
+        main,
+        header,
+        footer {
+          width: calc(100% - 32px);
+        }
+        header {
+          align-items: start;
+          flex-direction: column;
+          padding: 20px 0;
+        }
+        .intro {
+          padding-top: 28px;
+        }
+        .panel {
+          padding: 20px;
+        }
+        .workspace {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        .controls {
+          align-items: stretch;
+          flex-direction: column;
+        }
+        .actions button {
+          flex: 1;
+        }
+        .preview {
+          padding: 12px 16px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to question</a>
+    <div class="preview">
+      <div class="preview-inner">
+        <strong>Visual proposal · simulated states</strong>
+        <label for="state">Preview state</label>
+        <select id="state">
+          <option value="initial">Initial</option>
+          <option value="loading">Loading</option>
+          <option value="success" selected>Answer &amp; sources</option>
+          <option value="abstention">No evidence</option>
+          <option value="error">Error</option>
+          <option value="long">Long content</option>
+          <option value="unavailable">AI unavailable</option>
+          <option value="ai">AI mode explanation</option>
+        </select>
+      </div>
+    </div>
+    <header>
+      <span class="brand">Evidence Assistant</span
+      ><span class="muted">Read the answer. Inspect the evidence.</span>
+    </header>
+    <main id="main">
+      <section class="intro">
+        <div class="eyebrow">A workspace for source-based questions</div>
+        <h1>Ask a question.<br />Keep the sources in view.</h1>
+        <p class="muted">
+          Explore four original documents about API contracts, evidence checks,
+          CI quality gates and regression testing.
+        </p>
+      </section>
+      <section class="panel" aria-label="Question composer">
+        <label for="question">Your question</label>
+        <textarea
+          id="question"
+          maxlength="1000"
+          aria-describedby="question-help"
+        >
+How are evidence citations checked?</textarea>
+        <p id="question-help" class="helper muted">
+          Ask about this collection · up to 1,000 characters.
+        </p>
+        <div class="suggestions" aria-label="Suggested questions">
+          <button
+            type="button"
+            data-question="How are evidence citations checked?"
+          >
+            How are citations checked?</button
+          ><button
+            type="button"
+            data-question="What should CI quality gates check?"
+          >
+            What should CI check?</button
+          ><button
+            type="button"
+            data-question="How should a regression strategy select tests?"
+          >
+            How should tests be selected?
+          </button>
+        </div>
+        <div class="controls">
+          <div>
+            <fieldset>
+              <legend>Answer mode</legend>
+              <label class="mode-option"
+                ><input type="radio" name="mode" value="demo" checked /> Demo ·
+                extractive answers</label
+              ><label class="mode-option"
+                ><input id="ai-mode" type="radio" name="mode" value="ai" /> AI ·
+                generated answers</label
+              >
+            </fieldset>
+            <p id="mode-help" class="helper muted">
+              Demo selects exact source sentences. AI generates text from
+              retrieved excerpts.
+            </p>
+          </div>
+          <div class="actions">
+            <button id="cancel" hidden>Cancel</button
+            ><button id="ask" class="primary">Ask the collection</button>
+          </div>
+        </div>
+      </section>
+      <div class="workspace">
+        <section class="panel answer" aria-labelledby="answer-title">
+          <div class="eyebrow" id="answer-mode">Demo · extractive answer</div>
+          <h2 id="answer-title">Answer</h2>
+          <div id="status" role="status" aria-live="polite"></div>
+          <div id="answer-content">
+            <p>
+              Check response structure, referenced chunk identifiers and exact
+              quote substrings.
+              <a href="#source-1" aria-label="Inspect source 1">[1]</a>
+            </p>
+            <p class="muted">This sentence was selected from the collection.</p>
+            <details class="checks">
+              <summary>What was checked?</summary>
+              <p>
+                Response structure, source identifiers and exact quoted text.
+                These checks do not establish semantic correctness or source
+                truth.
+              </p>
+            </details>
+          </div>
+        </section>
+        <aside class="panel" aria-labelledby="sources-title">
+          <div class="eyebrow">Compare with the collection</div>
+          <h2 id="sources-title">Sources</h2>
+          <p id="source-empty" class="muted" hidden>
+            Sources will appear here when the collection has relevant evidence.
+          </p>
+          <article class="source" id="source-1" tabindex="-1">
+            <h3>1. AI evidence validation</h3>
+            <p class="helper muted">Citation checks · relevance 0.57</p>
+            <p class="helper muted">
+              Selected source · lexical relevance is not certainty.
+            </p>
+            <blockquote>
+              “Check response structure, referenced chunk identifiers and exact
+              quote substrings.”
+            </blockquote>
+            <details id="original">
+              <summary>Read original document</summary>
+              <h3>AI evidence validation</h3>
+              <p>
+                <strong>Extractive demo</strong><br />Demo answers select exact
+                sentences from retrieved sources. They are extractive answers,
+                not LLM-generated responses. When the collection has
+                insufficient evidence, abstain instead of inventing content.
+              </p>
+              <p>
+                <strong>Citation checks</strong><br />Check response structure,
+                referenced chunk identifiers and exact quote substrings. Reject
+                fabricated citations and altered excerpts. Matching a quote to a
+                source does not prove that every claim is supported or
+                semantically correct. Semantic correctness remains unverified.
+              </p>
+              <p>
+                <strong>Untrusted evidence</strong><br />Treat retrieved
+                documents as data rather than instructions. Optional AI
+                generation separates instructions from JSON-encoded evidence and
+                validates returned citations. This separation does not guarantee
+                prompt-injection resistance. Baseline tests exercise adversarial
+                fixtures without paid provider requests.
+              </p>
+            </details>
+          </article>
+        </aside>
+      </div>
+    </main>
+    <footer>
+      Independent project · original collection · no conversation storage in
+      this proposal
+    </footer>
+    <script>
+      const state = document.querySelector('#state');
+      const content = document.querySelector('#answer-content');
+      const initialContent = content.innerHTML;
+      const status = document.querySelector('#status');
+      const source = document.querySelector('#source-1');
+      const ai = document.querySelector('#ai-mode');
+      const ask = document.querySelector('#ask');
+      const cancel = document.querySelector('#cancel');
+      function render() {
+        const value = state.value;
+        content.innerHTML = initialContent;
+        status.textContent = '';
+        source.hidden = !['success', 'long', 'ai'].includes(value);
+        document.querySelector('#source-empty').hidden = !source.hidden;
+        ask.disabled = value === 'loading';
+        cancel.hidden = value !== 'loading';
+        ai.disabled = value === 'unavailable';
+        document.querySelector('#mode-help').textContent =
+          value === 'unavailable'
+            ? 'AI is unavailable in this installation. Demo works without external credentials.'
+            : 'Demo selects exact source sentences. AI generates text from retrieved excerpts.';
+        document.querySelector('#answer-mode').textContent =
+          value === 'ai'
+            ? 'AI · generated answer preview'
+            : 'Demo · extractive answer';
+        if (['initial', 'loading', 'unavailable'].includes(value)) {
+          content.replaceChildren();
+          status.textContent =
+            value === 'loading'
+              ? 'Searching the collection… You can cancel this request.'
+              : 'Your answer starts here. Choose a suggested question or write your own.';
+        }
+        if (value === 'abstention')
+          content.innerHTML =
+            '<div class="notice"><p>The collection does not contain enough evidence to answer this question.</p><p class="muted">Try asking about citation checks, API contracts, CI gates or regression testing.</p></div>';
+        if (value === 'error')
+          content.innerHTML =
+            '<div class="notice"><p>We could not complete this request. Your question is still here.</p><button id="retry">Try again</button><details><summary>Troubleshooting details</summary><p>Request ID: preview-request</p></details></div>';
+        if (value === 'long') {
+          const paragraph = document.createElement('p');
+          paragraph.className = 'long';
+          paragraph.textContent =
+            'Long-content layout fixture: ' +
+            'Evidence and original sources stay readable as the response grows. '.repeat(
+              24,
+            );
+          content.append(paragraph);
+        }
+        if (value === 'ai') {
+          content.replaceChildren();
+          const paragraph = document.createElement('p');
+          paragraph.textContent =
+            'A generated answer would appear here with references to retrieved excerpts. This preview does not call an AI provider.';
+          content.append(paragraph);
+        }
+      }
+      state.addEventListener('change', render);
+      document.querySelectorAll('[data-question]').forEach((button) =>
+        button.addEventListener('click', () => {
+          document.querySelector('#question').value = button.dataset.question;
+          document.querySelector('#question').focus();
+        }),
+      );
+      ask.addEventListener('click', () => {
+        state.value = 'loading';
+        render();
+      });
+      cancel.addEventListener('click', () => {
+        state.value = 'initial';
+        render();
+      });
+      document.addEventListener('click', (event) => {
+        if (event.target.id === 'retry') {
+          state.value = 'loading';
+          render();
+        }
+      });
+      document.querySelectorAll('[name="mode"]').forEach((radio) =>
+        radio.addEventListener('change', () => {
+          state.value = radio.value === 'ai' ? 'ai' : 'success';
+          render();
+        }),
+      );
+      render();
+    </script>
+  </body>
+</html>

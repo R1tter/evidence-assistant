@@ -6,7 +6,7 @@ A primeira entrega inclui quatro documentos originais, fragmentação por títul
 
 O demo agora produz respostas extrativas com frases completas das fontes. A validação rejeita estruturas inválidas, citações desconhecidas e trechos alterados. Esses checks não comprovam correção semântica. Consulte os [contratos e limites das respostas](docs/answers.md).
 
-A API HTTP e o adaptador opcional OpenAI no servidor estão implementados. Consulte [configuração e limites da API](docs/api.md). Chamadas reais ao provedor não foram verificadas; os testes de baseline simulam apenas o HTTP externo. MCP e interface são etapas posteriores ainda não implementadas.
+A API HTTP, o servidor MCP de leitura e o adaptador opcional OpenAI estão implementados. Consulte [configuração e limites da API](docs/api.md) e [configuração do MCP](docs/mcp.md). Chamadas reais ao provedor não foram verificadas; os testes de baseline simulam apenas o HTTP externo. A interface ainda é uma etapa posterior.
 
 Com Node.js 22.12 ou superior e npm:
 

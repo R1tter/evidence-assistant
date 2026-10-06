@@ -87,10 +87,10 @@
 
 **Interfaces:** `createMcpServer(chunks:Chunk[])` registers `search_documents({query:string,limit?:number})` and `get_document({id:string})`. Stdio entry loads the same corpus as HTTP; stdout is protocol-only.
 
-- [ ] Write `mcp.test.ts` using an official SDK client and a spawned stdio process. Assert `listTools` exposes two tools; search IDs and scores equal core search; document lookup returns source content; unknown ID and invalid limits are errors.
-- [ ] Run tests; confirm server entry is initially missing.
-- [ ] Implement tool schemas (query 1–1,000 chars, limit integer 1–5), structured results and read-only document ID lookup. Handle shutdown and send diagnostics only to stderr.
-- [ ] Run protocol tests on Windows-compatible process invocation; commit.
+- [x] Write `mcp.test.ts` using an official SDK client and a spawned stdio process. Assert `listTools` exposes two tools; search IDs and scores equal core search; document lookup returns source content; unknown ID and invalid limits are errors.
+- [x] Run tests; confirm server entry is initially missing.
+- [x] Implement tool schemas (query 1–1,000 chars, limit integer 1–5), structured results and read-only document ID lookup. Handle shutdown and send diagnostics only to stderr.
+- [x] Run protocol tests on Windows-compatible process invocation; commit.
 
 ### Task 5: Accessible product interface
 

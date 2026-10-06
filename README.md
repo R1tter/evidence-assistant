@@ -8,7 +8,7 @@ Four original public documents, heading-based chunks, stable IDs, Unicode term m
 
 Demo answers quote complete source sentences and explicitly identify extraction. Strict answer validation checks structure, retrieved source IDs and exact quote substrings; semantic correctness remains unverified. See [answer contracts and limits](docs/answers.md).
 
-The HTTP API and optional server-side OpenAI adapter are implemented. See [API setup and limits](docs/api.md). Live provider calls have not been verified; baseline tests use mocked external HTTP responses. MCP and the product interface are subsequent plan stages and are not available yet.
+The HTTP API, read-only MCP server and optional server-side OpenAI adapter are implemented. See [API setup and limits](docs/api.md) and [MCP host configuration](docs/mcp.md). Live provider calls have not been verified; baseline tests use mocked external HTTP responses. The product interface remains a subsequent plan stage.
 
 ## Local verification
 
@@ -26,7 +26,7 @@ npm run build
 npm run start:api
 ```
 
-`verify` checks formatting, zero-warning lint, dependency boundaries, TypeScript, all current tests with core coverage gates, and the core build. The coverage floors are 90% lines and 85% branches. See [retrieval decisions](docs/retrieval.md), [engineering rules](docs/engineering-quality.md) and [UX brief](docs/ux-design.md).
+`verify` checks formatting, zero-warning lint, dependency boundaries, TypeScript, all current tests with core coverage gates, and core/API/MCP builds. Tests build workspace runtime exports first, so a clean checkout does not depend on ignored build artifacts. The coverage floors are 90% lines and 85% branches. See [retrieval decisions](docs/retrieval.md), [engineering rules](docs/engineering-quality.md) and [UX brief](docs/ux-design.md).
 
 After `npm run build`, the runtime exports are available as `@evidence/core` from this workspace:
 
