@@ -1,0 +1,11 @@
+# Optional recognition and shared capacity
+
+Recognition is a separate replaceable adapter, enabled only with a server API key and explicit `OPENAI_VISION_MODEL`. It receives selected page images after the user consents. Server validation checks base64 encoding, PNG/JPEG signatures and dimensions, unique existing page numbers, a 10 MiB aggregate decoded byte budget and 16 MP/16,384-side limits. It does not rasterize or fully decode uploaded images on the server; signature/dimension validation is not proof of valid pixels. Invalid downstream decoding must fail safely.
+
+OpenAI Responses receives image data and separate transcription instructions, requests strict JSON output, disables SDK retries and sets `store:false`. Structured output is validated locally again for exact selected pages, original language, bounded text and uncertainties. The output cap is 40,000 characters for the resulting document; incomplete, malformed or oversized output is rejected rather than truncated. Sole `[illegible]` markers produce no retrieval evidence. The provider's transcription, citation matching and answer semantics remain distinct checks.
+
+Generation and recognition share one process pool with two active/eight waiting jobs. Recognition has a 60-second deadline including queue wait; generation retains 20 seconds. Revision is checked before entering the provider and after it returns. A changed/deleted/expired session prevents a queued stale call from starting and prevents a completed stale result from being installed. The UI must still abort requests when changing documents.
+
+Verified with simulated external HTTP and route fixtures only: structured request shape, malformed/incomplete/oversized output, consent, new revisions, mixed generation/recognition capacity, queued stale work, deadlines, provider abort signal and operational logs omitting images/tokens. No live calls, handwriting quality, remote billing cancellation or provider retention guarantees are established. `store:false` is a request setting, not a complete retention policy.
+
+References consulted: [image inputs](https://developers.openai.com/api/docs/guides/images-vision) and [structured output](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=responses). No model is selected by default and no paid test is implicitly authorized.

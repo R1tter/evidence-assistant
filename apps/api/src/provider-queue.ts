@@ -7,6 +7,7 @@ export interface ProviderQueue {
   run<T>(
     task: (signal: AbortSignal) => Promise<T>,
     signal?: AbortSignal,
+    deadlineMs?: number,
   ): Promise<T>;
 }
 
@@ -20,12 +21,13 @@ export function createProviderQueue(deadlineMs = 20000): ProviderQueue {
     run<T>(
       task: (signal: AbortSignal) => Promise<T>,
       signal?: AbortSignal,
+      jobDeadlineMs = deadlineMs,
     ): Promise<T> {
       if (signal?.aborted)
         return Promise.reject(new PublicError('REQUEST_CANCELLED'));
       if (active >= 2 && waiting.length >= 8)
         return Promise.reject(new PublicError('PROVIDER_BUSY'));
-      const expires = Date.now() + deadlineMs;
+      const expires = Date.now() + jobDeadlineMs;
       return new Promise<T>((resolve, reject) => {
         const controller = new AbortController();
         let settled = false;
@@ -47,7 +49,10 @@ export function createProviderQueue(deadlineMs = 20000): ProviderQueue {
           finish(new PublicError(code));
         };
         const cancel = () => abort('REQUEST_CANCELLED');
-        const timer = setTimeout(() => abort('PROVIDER_TIMEOUT'), deadlineMs);
+        const timer = setTimeout(
+          () => abort('PROVIDER_TIMEOUT'),
+          jobDeadlineMs,
+        );
         const job: Job = {
           start() {
             if (Date.now() >= expires) {

@@ -9,7 +9,7 @@ export interface AnswerGenerator {
 }
 export interface RequestLog {
   requestId: string;
-  mode: 'demo' | 'llm' | 'unknown';
+  mode: 'demo' | 'llm' | 'recognition' | 'unknown';
   status: number;
   durationMs: number;
 }

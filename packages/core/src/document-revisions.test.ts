@@ -62,3 +62,14 @@ it('keeps continuous text in full-sized blocks rather than tiny repeated chunks'
   const chunks = pageChunks(revision);
   expect(chunks.map((chunk) => chunk.text.length)).toEqual([1200, 1200]);
 });
+it('does not index a solely illegible transcription marker as evidence', () => {
+  const revision = createDocumentRevision('doc-4', 'Illegible', [
+    {
+      page: 1,
+      text: '[illegible]',
+      origin: 'vision',
+      uncertainties: ['Unreadable page.'],
+    },
+  ]);
+  expect(pageChunks(revision)).toEqual([]);
+});

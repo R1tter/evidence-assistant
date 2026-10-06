@@ -38,6 +38,7 @@ export function createDocumentRevision(
   return Object.freeze(parsed);
 }
 function blocks(text: string): string[] {
+  if (!text.replaceAll('[illegible]', '').trim()) return [];
   const output: string[] = [];
   let rest = text.trim();
   while (rest) {

@@ -38,7 +38,10 @@ interface RouteOptions {
   sessions: DocumentSessions;
   queue: ProviderQueue;
   generate: AnswerGenerator['generate'] | undefined;
-  signal(request: FastifyRequest): AbortSignal | undefined;
+  signal(
+    request: FastifyRequest,
+    mode: 'demo' | 'llm',
+  ): AbortSignal | undefined;
 }
 export function registerDocumentRoutes(
   app: FastifyInstance,
@@ -77,6 +80,7 @@ export function registerDocumentRoutes(
   );
   app.post('/api/document-session/ask', async (request) => {
     const input = parse(askSchema, request.body);
+    const requestSignal = options.signal(request, input.mode);
     const capability = token(request);
     const session = sessions.assertRevision(capability, input.revision);
     if (input.mode === 'llm' && !options.generate)
@@ -95,10 +99,10 @@ export function registerDocumentRoutes(
         es: 'Spanish',
       }[input.locale];
       const question = `Answer in ${locale}, preserving original quotations.\nQuestion: ${input.question}`;
-      const output = await options.queue.run(
-        (signal) => options.generate!(question, evidence, signal),
-        options.signal(request),
-      );
+      const output = await options.queue.run((signal) => {
+        sessions.assertRevision(capability, input.revision);
+        return options.generate!(question, evidence, signal);
+      }, requestSignal);
       sessions.assertRevision(capability, input.revision);
       return {
         ...validateAnswer(output, evidence),

@@ -2,6 +2,21 @@ import { afterEach, expect, it, vi } from 'vitest';
 import { createProviderQueue } from './provider-queue.js';
 
 afterEach(() => vi.useRealTimers());
+it('allows recognition its sixty-second deadline in the same capacity pool', async () => {
+  vi.useFakeTimers();
+  const queue = createProviderQueue();
+  let settled = false;
+  const result = queue
+    .run(() => new Promise<void>(() => undefined), undefined, 60000)
+    .catch((error) => {
+      settled = true;
+      return error as unknown;
+    });
+  await vi.advanceTimersByTimeAsync(20000);
+  expect(settled).toBe(false);
+  await vi.advanceTimersByTimeAsync(40000);
+  expect(await result).toMatchObject({ code: 'PROVIDER_TIMEOUT' });
+});
 
 it('rejects non-Error failures instead of turning them into successful results', async () => {
   const queue = createProviderQueue();

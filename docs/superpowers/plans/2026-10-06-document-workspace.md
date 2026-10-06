@@ -8,7 +8,7 @@
 
 **Tech Stack:** TypeScript/React/Vite existentes; PDF.js em worker (versão e compatibilidade a verificar); Fastify; adaptador visual OpenAI opcional; Vitest, Playwright, axe e Storybook existentes.
 
-**Status:** roteiro e proposta visual aprovados por Marcelo nesta conversa em 6 October 2026. Tasks 1–3 concluídas; Task 4 em execução. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
+**Status:** roteiro e proposta visual aprovados por Marcelo nesta conversa em 6 October 2026. Tasks 1–4 concluídas; Task 5 em execução. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
 
 ## Task 1 — proposta visual e baseline preservado
 
@@ -46,11 +46,11 @@ API proposta: `POST /api/document-sessions` inicia sessão a partir de texto val
 
 Arquivos: `apps/api/src/{recognition,recognition-provider,recognition-routes}.ts`, contratos públicos de reconhecimento, testes de fila existentes estendidos. `recognize(pages,signal):Promise<PageText[]>` recebe imagens limitadas e devolve apenas transcrição/avisos por página.
 
-- [ ] RED com HTTP externo simulado: manuscrito legível, ilegível, instruções adversariais como dados, saída malformada/oversized, timeout, cancelamento, limite de fila e privacidade de logs.
-- [ ] Implementar schema canônico de páginas, input MIME/magic/dimensões e budget revalidados. `POST /api/document-session/recognize` aceita imagens selecionadas, somente após ação explícita do usuário. Limite de corpo específico sem aumentar globalmente o POST de perguntas.
-- [ ] Compartilhar capacidade de dois ativos/oito em espera com geração; deadline 60 s para OCR incluindo fila, 20 s para geração. Sem retries automáticos pagos.
-- [ ] Configuração de visão indisponível desabilita reconhecimento e deixa exemplos/PDF textual funcionais. Chaves e modelos explícitos, nenhuma chamada live neste marco.
-- [ ] Edição salva nova revisão, distingue correção humana e invalida respostas antigas. GREEN/gates e commit.
+- [x] RED com HTTP externo simulado: manuscrito legível, ilegível, instruções adversariais como dados, saída malformada/oversized, timeout, cancelamento, limite de fila e privacidade de logs.
+- [x] Implementar schema canônico de páginas, input MIME/magic/dimensões e budget revalidados. `POST /api/document-session/recognize` aceita imagens selecionadas, somente após ação explícita do usuário. Limite de corpo específico sem aumentar globalmente o POST de perguntas.
+- [x] Compartilhar capacidade de dois ativos/oito em espera com geração; deadline 60 s para OCR incluindo fila, 20 s para geração. Sem retries automáticos pagos.
+- [x] Configuração de visão indisponível desabilita reconhecimento e deixa exemplos/PDF textual funcionais. Chaves e modelos explícitos, nenhuma chamada live neste marco.
+- [x] Edição salva nova revisão, distingue correção humana e invalida respostas antigas. GREEN/gates e commit.
 
 ## Task 5 — workspace e respostas sobre o documento
 
