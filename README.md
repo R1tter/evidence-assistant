@@ -2,11 +2,13 @@
 
 An independently authored document assistant for inspecting retrieved evidence. The project is being implemented in verified stages from the approved [plan](docs/superpowers/plans/2026-10-06-evidence-assistant.md).
 
-## Implemented: deterministic retrieval
+## Implemented: retrieval and extractive answers
 
 Four original public documents, heading-based chunks, stable IDs, Unicode term matching, BM25 and sparse term-frequency cosine ranking. The immutable index can be reused without filesystem reads on each query. These vectors are not neural semantic embeddings; retrieval scores do not prove semantic correctness.
 
-HTTP, MCP, extractive answers and the product interface are subsequent plan stages and are not available yet.
+Demo answers quote complete source sentences and explicitly identify extraction. Strict answer validation checks structure, retrieved source IDs and exact quote substrings; semantic correctness remains unverified. See [answer contracts and limits](docs/answers.md).
+
+HTTP, MCP, optional AI generation and the product interface are subsequent plan stages and are not available yet.
 
 ## Local verification
 

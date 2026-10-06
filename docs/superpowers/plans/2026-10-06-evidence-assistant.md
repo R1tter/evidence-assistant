@@ -66,11 +66,11 @@
 
 **Interfaces:** `Citation {chunkId,quote}`; `Answer {mode:'demo'|'llm',answer:string,citations:Citation[],evidence:Evidence[],validation:{structure:boolean,references:boolean,quotes:boolean,semantic:'not_verified'},abstained:boolean}`. Export `validateAnswer(value:unknown,evidence:Evidence[]):Answer` and `createDemoAnswer(evidence:Evidence[]):Answer`.
 
-- [ ] Write `validation.test.ts` asserting rejection of unknown chunk IDs, fabricated quotes, absent citations on non-abstained answers, oversized output (>4,000 characters), and malformed types. Assert empty evidence yields `abstained:true` with no citations.
-- [ ] Run tests; confirm expected failures.
-- [ ] Implement Zod schema and exact substring checks against retrieved chunks. Demo quotes whole selected sentences, references their IDs and explicitly labels the response as extractive. Abstenção copy: `The collection does not contain enough evidence to answer this question.`
-- [ ] Test that adversarial corpus text remains quoted data in demo mode; do not claim this proves LLM injection resistance.
-- [ ] Run core tests and type checking; commit.
+- [x] Write `validation.test.ts` asserting rejection of unknown chunk IDs, fabricated quotes, absent citations on non-abstained answers, oversized output (>4,000 characters), and malformed types. Assert empty evidence yields `abstained:true` with no citations.
+- [x] Run tests; confirm expected failures.
+- [x] Implement Zod schema and exact substring checks against retrieved chunks. Demo quotes whole selected sentences, references their IDs and explicitly labels the response as extractive. Abstenção copy: `The collection does not contain enough evidence to answer this question.`
+- [x] Test that adversarial corpus text remains quoted data in demo mode; do not claim this proves LLM injection resistance.
+- [x] Run core tests and type checking; commit.
 
 ### Task 3: API and optional provider
 

@@ -4,7 +4,9 @@ Assistente independente para consultar documentos e inspecionar evidências. A i
 
 A primeira entrega inclui quatro documentos originais, fragmentação por títulos, identificadores estáveis e recuperação determinística combinando BM25 com similaridade de cosseno sobre frequências de termos. O índice é criado uma vez e reutilizado. Não são embeddings semânticos neurais; pontuações não comprovam a verdade de uma resposta.
 
-API HTTP, MCP, respostas extrativas e interface são etapas posteriores ainda não implementadas.
+O demo agora produz respostas extrativas com frases completas das fontes. A validação rejeita estruturas inválidas, citações desconhecidas e trechos alterados. Esses checks não comprovam correção semântica. Consulte os [contratos e limites das respostas](docs/answers.md).
+
+API HTTP, MCP, geração opcional com IA e interface são etapas posteriores ainda não implementadas.
 
 Com Node.js 22.12 ou superior e npm:
 

@@ -1,0 +1,9 @@
+# Extractive answers and evidence validation
+
+`createDemoAnswer(evidence)` selects the first complete English sentence from each of at most five retrieved fragments, using Node's sentence segmenter. Unpunctuated text is retained as a whole segment. Each quote is preserved exactly from the source and gets a numbered reference. Sentences that would exceed the 4,000-character answer budget are skipped rather than cut. If no sentence fits or no evidence is available, the demo abstains. Evidence remains available for inspection even if no sentence fits.
+
+`validateAnswer(value, evidence)` accepts unknown content with `mode`, `answer`, `citations` and `abstained`. A strict Zod schema rejects extra fields, malformed types, blank text, more than five citations and answer text longer than 4,000 characters. Provider content cannot supply its own evidence or validation claims. Non-abstained output requires at least one citation; abstained output requires none. Every accepted citation must identify a retrieved chunk and contain an exact, case-sensitive substring from that chunk. Invalid content produces a generic `Invalid answer` error without embedding provider content or source excerpts.
+
+The returned `Answer` adds trusted retrieved evidence and structural, reference and quote checks. `semantic` is always `not_verified`. The validator does not check whether the prose is entailed by the quote, whether the source is true, or whether every statement has a citation. A syntactically valid but semantically unsupported statement can pass these checks; the UI must explain this limitation.
+
+Adversarial source text is quoted as data by the deterministic demo. This demonstrates extractive behavior only. It does not establish prompt-injection resistance for the optional LLM provider, which is not implemented in this stage.

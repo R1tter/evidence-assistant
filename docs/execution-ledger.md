@@ -1,6 +1,6 @@
 # Execution ledger
 
-Approved revised plan: 6 October 2026. Current delivery: Task 1.
+Approved revised plan: 6 October 2026. Current delivery: Task 2 complete; next: Task 3.
 
 - Ruling: implement in this repository root, rather than nesting another evidence-assistant directory; the user's current instruction explicitly selects this folder. Cost if wrong: relocate the project.
 - Ruling: work in place in the new independent repository requested by the user, on a codex branch; no pre-existing application or tests exist. Cost if wrong: less checkout isolation.
@@ -11,3 +11,7 @@ Approved revised plan: 6 October 2026. Current delivery: Task 1.
 - Dependency setup: npm 10 peer resolution failed on Vitest 4.1.11. Vitest 4.0.18 installed but audit identified advisories; replaced with Vitest/coverage 5.0.3, installation reported zero vulnerabilities. ESLint 9.39.5 retained because jsx-a11y 6.10.2 declares support through ESLint 9; ESLint 10 installation rejected peers. ESLint 9 emits a support deprecation notice; future upgrade requires a compatible accessibility plugin.
 - Task 1 review: contracts are explicit; index copies and freezes source chunks; no provider or transport dependencies; corpus I/O occurs only on load; deterministic ID tie sorting avoids locale dependence. API/UI error handling and accessibility remain future deliveries.
 - Task 1 complete: npm ci passed with zero audit vulnerabilities; npm run verify passed formatting, zero-warning lint, boundaries (0 violations), typecheck, 16/16 tests, coverage (100% lines, 93.47% branches), and core build. The fixture with a prohibited core-to-app import was rejected and removed by test cleanup. Runtime workspace import was also exercised against the original corpus. Remaining plan tasks are unchecked.
+
+- Task 2 RED: npm test -- validation failed 21/21 tests because validateAnswer/createDemoAnswer were absent. GREEN: 21/21 new tests passed; npm run verify passed all gates with 37/37 total tests, 100% core lines and 93.75% branches. Zod 4.6.5 is pinned in core; npm installation reported zero audit vulnerabilities. A formatting/lint conflict on chained iterator access was resolved with a named local variable.
+- Task 2 contract decision: validateAnswer accepts strict content-only input; trusted evidence and validation checks are attached by core rather than accepted from provider content. Demo extracts the first whole sentence per fragment, skipping sentences exceeding the output budget. Semantic support and source truth remain unverified. Adversarial fixture proves quoted demo data only.
+- Task 2 review: validation and extraction have separate responsibilities and use canonical schema-derived types; generic errors contain no upstream content; no transport/provider dependencies or paid calls; public exports checked. Product accessibility and async cleanup do not apply to this synchronous core delivery.
