@@ -1,6 +1,6 @@
 # Evidence Assistant — documentos que você pode consultar
 
-Status: especificação aprovada por Marcelo nesta conversa em 6 October 2026. Substitui a direção de produto da coleção técnica fixa. A implementação anterior continua como baseline; não descartar trabalho local da interface. A proposta visual da Task 1 ainda aguarda revisão humana.
+Status: especificação e proposta visual aprovadas por Marcelo nesta conversa em 6 October 2026. Substitui a direção de produto da coleção técnica fixa. A implementação anterior continua como baseline; não descartar trabalho local da interface.
 
 ## Propósito
 

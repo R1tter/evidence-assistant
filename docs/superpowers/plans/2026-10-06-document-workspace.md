@@ -8,7 +8,7 @@
 
 **Tech Stack:** TypeScript/React/Vite existentes; PDF.js em worker (versão e compatibilidade a verificar); Fastify; adaptador visual OpenAI opcional; Vitest, Playwright, axe e Storybook existentes.
 
-**Status:** roteiro aprovado por Marcelo nesta conversa em 6 October 2026. Task 1 em execução; a prévia visual aguarda revisão humana antes de consolidar o frontend. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
+**Status:** roteiro e proposta visual aprovados por Marcelo nesta conversa em 6 October 2026. Tasks 1–2 concluídas; Task 3 em execução. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
 
 ## Task 1 — proposta visual e baseline preservado
 
@@ -16,7 +16,7 @@ Arquivos: `docs/ux-document-preview.html`, `docs/ux-design.md`, `docs/execution-
 
 - [x] Registrar aprovação da especificação/plano e ponto de retomada; preservar alterações locais atuais. Separar baseline antigo e nova experiência por commits, sem reset destrutivo.
 - [x] Aplicar UI UX Pro Max com stack React e foco/reduced motion. Criar preview dos caminhos exemplo/upload e estados leitura/OCR/revisão/resposta/ilegível/erro/expiração nos três idiomas; dois sketches de marca e miniaturas autorais.
-- [ ] Revisar desktop/mobile, propósito, contraste e fluxo com Marcelo antes de consolidar visual. Atualizar a proibição antiga de gradientes para a regra localizada da nova especificação.
+- [x] Revisar desktop/mobile, propósito, contraste e fluxo com Marcelo antes de consolidar visual. Atualizar a proibição antiga de gradientes para a regra localizada da nova especificação.
 - [x] Corrigir shell de stories com heading/landmark próprios; testar RED/GREEN. Rodar gates atuais e registrar capturas ainda não aprovadas. Commit somente após verificar o escopo efetivamente entregue.
 
 ## Task 2 — ingestão local e exemplos úteis
@@ -25,11 +25,11 @@ Arquivos novos: `apps/web/src/documents/{input,pdf,examples}.ts`, worker PDF, `e
 
 Contrato: `readDocument(file,signal):Promise<{pages:PageText[], previews:PagePreview[], requiresRecognition:boolean}>`; preview tem página, URL local e dimensões. Nunca gerar trecho para página sem texto.
 
-- [ ] Escrever casos para PDF textual, scan sem texto, PNG/JPEG, PDF protegido/inválido, limite cinco páginas/10 MiB/16 MP, worker cancelado e URL revogada. Executar RED.
-- [ ] Verificar versão PDF.js, worker Vite e fixtures reais no Windows/browser; decidir e registrar limitações verificadas. Instalar versão fixada somente nesta entrega.
-- [ ] Implementar extração/rasterização com orçamento de pixels e timeout de 15 s, cancelamento e limpeza; API revalida tudo posteriormente.
-- [ ] Criar exemplos nos três idiomas, originais e transcrições revisadas com autoria registrada. Identificar texto previamente preparado; não simular OCR.
-- [ ] GREEN, build/browser com demo sem chave e commit.
+- [x] Escrever casos para PDF textual, scan sem texto, PNG/JPEG, PDF protegido/inválido, limite cinco páginas/10 MiB/16 MP, worker cancelado e URL revogada. Executar RED.
+- [x] Verificar versão PDF.js, worker Vite e fixtures reais no Windows/browser; decidir e registrar limitações verificadas. Instalar versão fixada somente nesta entrega.
+- [x] Implementar extração/rasterização com orçamento de pixels e timeout de 15 s, cancelamento e limpeza; API revalida tudo posteriormente.
+- [x] Criar exemplos nos três idiomas, originais e transcrições revisadas com autoria registrada. Identificar texto previamente preparado; não simular OCR.
+- [x] GREEN, build/browser com demo sem chave e commit.
 
 ## Task 3 — proveniência e sessões temporárias
 

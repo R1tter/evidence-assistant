@@ -1,6 +1,6 @@
 # Document workspace visual review
 
-Scope and plan approved by Marcelo on 6 October 2026. This review artifact covers revised Task 1; the visual direction still awaits Marcelo's feedback before frontend consolidation.
+Scope, plan and visual proposal approved by Marcelo on 6 October 2026, with “agora sim” after viewing the interactive proposal. This review artifact covers revised Task 1; frontend consolidation can proceed.
 
 Open [the interactive proposal](ux-document-preview.html). The top selector exposes entrance, upload, reading, recognition, ready, review, answer, illegible, error and expired states. The language selector covers English, Brazilian Portuguese and Spanish. The identity disclosure contains two original vector sketches; monochrome variants are in `preview-assets/`.
 

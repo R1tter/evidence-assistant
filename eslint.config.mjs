@@ -10,6 +10,8 @@ export default tseslint.config(
       'coverage/**',
       '.agents/**',
       'node_modules/**',
+      'apps/web/public/pdfjs/**',
+      'apps/web/public/examples/**',
       'storybook-static/**',
       'test-results/**',
       'playwright-report/**',
