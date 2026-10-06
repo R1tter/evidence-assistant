@@ -32,7 +32,7 @@ const content: Record<ExampleLocale, Record<ExampleKind, ExampleContent>> = {
       text: 'Oficina criativa\nA oficina começa às 14h no sábado. Os materiais estão incluídos. Leve um avental e uma garrafa de água. O encontro acontece na sala 2 e termina às 17h.',
       questions: [
         'A que horas começa a oficina?',
-        'O que preciso levar?',
+        'Preciso levar um avental?',
         'Onde acontece o encontro?',
       ],
     },
@@ -90,7 +90,7 @@ const content: Record<ExampleLocale, Record<ExampleKind, ExampleContent>> = {
       text: 'Taller creativo\nEl taller empieza a las 14:00 el sábado. Los materiales están incluidos. Lleva un delantal y una botella de agua. El encuentro tiene lugar en la sala 2 y termina a las 17:00.',
       questions: [
         '¿A qué hora empieza el taller?',
-        '¿Qué necesito llevar?',
+        '¿Necesito un delantal?',
         '¿Dónde tiene lugar el encuentro?',
       ],
     },

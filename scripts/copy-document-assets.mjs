@@ -15,3 +15,8 @@ await cp(
   fileURLToPath(new URL('apps/web/public/examples/', root)),
   { recursive: true },
 );
+await cp(
+  fileURLToPath(new URL('docs/preview-assets/', root)),
+  fileURLToPath(new URL('apps/web/public/brand/', root)),
+  { recursive: true },
+);

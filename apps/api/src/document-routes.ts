@@ -1,7 +1,7 @@
 import type { FastifyInstance, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import {
-  createDemoAnswer,
+  createExtractiveDocumentAnswer,
   validateAnswer,
   pageTextsSchema,
 } from '@evidence/core';
@@ -88,7 +88,7 @@ export function registerDocumentRoutes(
     const evidence = session.retriever.search(input.question);
     if (input.mode === 'demo' || evidence.length === 0)
       return {
-        ...createDemoAnswer(evidence),
+        ...createExtractiveDocumentAnswer(input.question, evidence),
         mode: input.mode,
         revision: input.revision,
       };

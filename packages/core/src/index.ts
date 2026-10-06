@@ -4,6 +4,7 @@ export { createRetriever, search } from './retrieval.js';
 export type { Citation, Answer } from './validation.js';
 export { validateAnswer, answerContentSchema } from './validation.js';
 export { createDemoAnswer } from './answers.js';
+export { createExtractiveDocumentAnswer } from './document-answers.js';
 export {
   pageTextSchema,
   pageTextsSchema,

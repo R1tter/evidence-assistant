@@ -3,7 +3,7 @@ import { AxeBuilder } from '@axe-core/playwright';
 for (const width of [390, 1440]) {
   test(`curated states at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto('/');
+    await page.goto('/technical-demo.html');
     await expect(page).toHaveScreenshot(`initial-${width}.png`, {
       fullPage: true,
     });
@@ -63,7 +63,7 @@ test('all story states pass axe', async ({ page }) => {
 test('reflow, zoom, reduced motion and all locales', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 900 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  await page.goto('/technical-demo.html');
   for (const locale of ['en', 'pt-BR', 'es']) {
     await page.getByRole('combobox').selectOption(locale);
     expect(
@@ -83,7 +83,7 @@ test('reflow, zoom, reduced motion and all locales', async ({ page }) => {
   ).toBe(true);
 });
 test('real demo and keyboard source disclosure', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/technical-demo.html');
   await page
     .getByRole('button', { name: 'How are citations checked?' })
     .click();
@@ -97,7 +97,7 @@ test('real demo and keyboard source disclosure', async ({ page }) => {
 });
 test('abstention, error and mobile locale', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/technical-demo.html');
   await page.getByRole('textbox').fill('galactic penguin recipes');
   await page.getByRole('button', { name: 'Ask the collection' }).click();
   await expect(

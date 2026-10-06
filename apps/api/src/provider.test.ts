@@ -120,3 +120,11 @@ it('requires an explicit model when a key is supplied and keeps demo credential-
     createOpenAIProvider({ apiKey: 'fake-secret', model: ' ' }),
   ).toThrow('OPENAI_MODEL');
 });
+it('allows vision-only configuration without enabling generated answers', () => {
+  expect(
+    generatorFromEnvironment({
+      OPENAI_API_KEY: 'fake-key',
+      OPENAI_VISION_MODEL: 'explicit-vision',
+    }),
+  ).toBeUndefined();
+});

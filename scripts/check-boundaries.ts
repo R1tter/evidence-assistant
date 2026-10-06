@@ -84,6 +84,7 @@ function prohibitedCore(target: string): boolean {
 }
 
 function allowedPublicCore(from: string, dependency: Dependency): boolean {
+  if (dependency.specifier === '@evidence/core/contracts') return true;
   return (
     dependency.specifier === '@evidence/core' &&
     (from !== 'web' || dependency.typeOnly)

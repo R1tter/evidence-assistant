@@ -74,6 +74,7 @@ export function generatorFromEnvironment(
   const apiKey = environment.OPENAI_API_KEY?.trim();
   if (!apiKey) return undefined;
   const model = environment.OPENAI_MODEL?.trim();
+  if (!model && environment.OPENAI_VISION_MODEL?.trim()) return undefined;
   if (!model)
     throw new Error('OPENAI_MODEL is required when AI mode is enabled.');
   return createOpenAIProvider({ apiKey, model });

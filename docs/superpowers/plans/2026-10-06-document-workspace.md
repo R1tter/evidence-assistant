@@ -8,7 +8,7 @@
 
 **Tech Stack:** TypeScript/React/Vite existentes; PDF.js em worker (versão e compatibilidade a verificar); Fastify; adaptador visual OpenAI opcional; Vitest, Playwright, axe e Storybook existentes.
 
-**Status:** roteiro e proposta visual aprovados por Marcelo nesta conversa em 6 October 2026. Tasks 1–4 concluídas; Task 5 em execução. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
+**Status:** roteiro e proposta visual aprovados por Marcelo nesta conversa em 6 October 2026. Tasks 1–5 concluídas; Task 6 em execução. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
 
 ## Task 1 — proposta visual e baseline preservado
 
@@ -56,11 +56,11 @@ Arquivos: `apps/api/src/{recognition,recognition-provider,recognition-routes}.ts
 
 Arquivos: `apps/web/src/documents/{DocumentInput,DocumentViewer,TranscriptEditor,DocumentWorkspace}.tsx`, `useDocumentSession.ts`, `api.ts`, componentes existentes, stories/testes. `DocumentViewer` mostra página e bloco associado sem inventar coordenadas.
 
-- [ ] RED: upload/exemplo, consentimento antes de OCR, cancelar/trocar documento, texto revisado, perguntas/abstenção, resposta atrasada, idioma preservado e sessão expirada.
-- [ ] Implementar workspace aprovado e entradas acessíveis; integrar endpoints de sessão; pergunta usa revisão explícita. Modo demo não traduz citações nem promete busca entre idiomas; geração responde no idioma solicitado, com fontes originais.
-- [ ] Conectar referência à página/bloco; foco previsível e retorno ao acionador. Textos e transcrições renderizados como texto, sem HTML de documento.
-- [ ] Tokens/marca/miniaturas e animações aprovadas; reduced motion remove deslocamento. Stories para todos os estados e idiomas; nenhuma lógica de parser/provedor dentro de componentes de apresentação.
-- [ ] Playwright com exemplo, PDF textual e OCR simulado; fluxo com API real sem chave; axe app/stories; screenshots 390/1440, long text e imagem; revisar baselines. Inspeção de teclado, 320 px, aumento de texto e zoom 200%, reduced motion. GREEN/gates e commit.
+- [x] RED: upload/exemplo, consentimento antes de OCR, cancelar/trocar documento, texto revisado, perguntas/abstenção, resposta atrasada, idioma preservado e sessão expirada.
+- [x] Implementar workspace aprovado e entradas acessíveis; integrar endpoints de sessão; pergunta usa revisão explícita. Modo demo não traduz citações nem promete busca entre idiomas; geração responde no idioma solicitado, com fontes originais.
+- [x] Conectar referência à página/bloco; foco previsível e retorno ao acionador. Textos e transcrições renderizados como texto, sem HTML de documento.
+- [x] Tokens/marca/miniaturas e animações aprovadas; reduced motion remove deslocamento. Stories para todos os estados e idiomas; nenhuma lógica de parser/provedor dentro de componentes de apresentação.
+- [x] Playwright com exemplo, PDF textual e OCR simulado; fluxo com API real sem chave; axe app/stories; screenshots 390/1440, long text e imagem; revisar baselines. Inspeção de teclado, 320 px, aumento de texto e zoom 200%, reduced motion. GREEN/gates e commit.
 
 ## Task 6 — avaliação e publicação verificável
 

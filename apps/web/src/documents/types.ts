@@ -10,5 +10,5 @@ export interface ReadDocument {
   pages: PageText[];
   previews: PagePreview[];
   requiresRecognition: boolean;
-  dispose(): void;
+  dispose(this: void): void;
 }
