@@ -12,6 +12,12 @@ Desktop: compact header; question composer and suggested questions; answer in th
 
 Mode label uses plain language: `Demo · extractive answers` or `AI · generated answers`. Explain the distinction near the mode control; do not expose raw provider configuration. An unavailable AI mode has a clear explanation.
 
+## Interface languages
+
+Marcelo requested English, Brazilian Portuguese and Spanish on 6 October 2026 to broaden the portfolio audience. Use a labeled native selector in the header with language names `English`, `Português (Brasil)` and `Español`, without flag icons. Translate interface controls, notices, validation explanations and accessibility labels; update the document language. Switching language preserves the entered question and current state. Keep original quotes and source documents in their original language and identify that language visibly. Current original corpus and lexical retrieval are English; interface localization alone does not establish multilingual question support. Suggested labels can be localized while queries use the original collection language, with a visible explanation.
+
+The preview starts in Brazilian Portuguese for this review. Product preference persistence, locale fallback and browser-language selection will be verified with the React implementation. Do not promise translated extractive quotes or automatic multilingual retrieval without corresponding corpus and evaluation changes.
+
 ## Interaction and states
 
 - Initial: concise product explanation, collection overview and three realistic example questions. Example selection fills the composer; the user chooses when to submit.

@@ -94,6 +94,8 @@
 
 ### Task 5: Accessible product interface
 
+- [ ] Add English, Brazilian Portuguese and Spanish interface localization with a native header selector, localized accessibility labels and document lang. Preserve question and state on language switch; disclose original source language. Test all supported locales and distinguish UI translation from multilingual retrieval. Marcelo requested this extension during visual-preview review on 6 October 2026.
+
 **Interfaces:** `ask(input:{question:string,mode:'demo'|'llm'},signal?:AbortSignal):Promise<Answer>`; App uses this client plus `/api/config` and document endpoints.
 
 - [ ] Before product UI implementation, apply UI UX Pro Max and produce `docs/ux-preview.html` showing desktop/mobile layouts and all UX-brief states; review the reading hierarchy, source-disclosure flow and mode explanation against the brief. Incorporate Marcelo's feedback before treating the visual design as approved. Use the React stack guidance after the planned React dependencies exist; do not silently select another stack.

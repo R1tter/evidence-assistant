@@ -300,6 +300,12 @@
           scroll-behavior: auto;
         }
       }
+      .language-control {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
     </style>
   </head>
   <body>
@@ -321,6 +327,14 @@
       </div>
     </div>
     <header>
+      <div class="language-control">
+        <label for="language">Language</label
+        ><select id="language">
+          <option value="en">English</option>
+          <option value="pt-BR" selected>Português (Brasil)</option>
+          <option value="es">Español</option>
+        </select>
+      </div>
       <span class="brand">Evidence Assistant</span
       ><span class="muted">Read the answer. Inspect the evidence.</span>
     </header>
@@ -338,11 +352,15 @@
         <textarea
           id="question"
           maxlength="1000"
-          aria-describedby="question-help"
+          aria-describedby="question-help collection-language"
         >
 How are evidence citations checked?</textarea>
         <p id="question-help" class="helper muted">
           Ask about this collection · up to 1,000 characters.
+        </p>
+        <p id="collection-language" class="helper muted">
+          Collection language: English. Suggested questions use the original
+          language; quotes and source documents are not translated.
         </p>
         <div class="suggestions" aria-label="Suggested questions">
           <button
@@ -391,7 +409,7 @@ How are evidence citations checked?</textarea>
           <h2 id="answer-title">Answer</h2>
           <div id="status" role="status" aria-live="polite"></div>
           <div id="answer-content">
-            <p>
+            <p data-original lang="en">
               Check response structure, referenced chunk identifiers and exact
               quote substrings.
               <a href="#source-1" aria-label="Inspect source 1">[1]</a>
@@ -414,18 +432,18 @@ How are evidence citations checked?</textarea>
             Sources will appear here when the collection has relevant evidence.
           </p>
           <article class="source" id="source-1" tabindex="-1">
-            <h3>1. AI evidence validation</h3>
+            <h3 lang="en">1. AI evidence validation</h3>
             <p class="helper muted">Citation checks · relevance 0.57</p>
             <p class="helper muted">
               Selected source · lexical relevance is not certainty.
             </p>
-            <blockquote>
+            <blockquote lang="en">
               “Check response structure, referenced chunk identifiers and exact
               quote substrings.”
             </blockquote>
             <details id="original">
               <summary>Read original document</summary>
-              <h3>AI evidence validation</h3>
+              <h3 lang="en">AI evidence validation</h3>
               <p>
                 <strong>Extractive demo</strong><br />Demo answers select exact
                 sentences from retrieved sources. They are extractive answers,
@@ -457,6 +475,247 @@ How are evidence citations checked?</textarea>
       this proposal
     </footer>
     <script>
+      // Preview-only interface translations. Original source data stays in English.
+      const previewTranslations = {
+        Language: ['Idioma', 'Idioma'],
+        'Visual proposal · simulated states': [
+          'Proposta visual · estados simulados',
+          'Propuesta visual · estados simulados',
+        ],
+        'Preview state': ['Estado da proposta', 'Estado de la propuesta'],
+        Initial: ['Inicial', 'Inicial'],
+        Loading: ['Carregando', 'Cargando'],
+        'Answer & sources': ['Resposta e fontes', 'Respuesta y fuentes'],
+        'No evidence': ['Sem evidências', 'Sin evidencias'],
+        Error: ['Erro', 'Error'],
+        'Long content': ['Conteúdo longo', 'Contenido largo'],
+        'AI unavailable': ['IA indisponível', 'IA no disponible'],
+        'AI mode explanation': [
+          'Explicação do modo IA',
+          'Explicación del modo IA',
+        ],
+        'Skip to question': ['Ir para a pergunta', 'Ir a la pregunta'],
+        'Read the answer. Inspect the evidence.': [
+          'Leia a resposta. Confira as evidências.',
+          'Lee la respuesta. Revisa las evidencias.',
+        ],
+        'A workspace for source-based questions': [
+          'Um espaço para perguntas baseadas em fontes',
+          'Un espacio para preguntas basadas en fuentes',
+        ],
+        'Ask a question.': ['Faça uma pergunta.', 'Haz una pregunta.'],
+        'Keep the sources in view.': [
+          'Mantenha as fontes à vista.',
+          'Mantén las fuentes a la vista.',
+        ],
+        'Explore four original documents about API contracts, evidence checks, CI quality gates and regression testing.':
+          [
+            'Explore quatro documentos originais sobre contratos de API, verificação de evidências, qualidade no CI e testes de regressão.',
+            'Explora cuatro documentos originales sobre contratos de API, verificación de evidencias, controles de calidad en CI y pruebas de regresión.',
+          ],
+        'Your question': ['Sua pergunta', 'Tu pregunta'],
+        'Ask about this collection · up to 1,000 characters.': [
+          'Pergunte sobre esta coleção · até 1.000 caracteres.',
+          'Pregunta sobre esta colección · hasta 1.000 caracteres.',
+        ],
+        'How are citations checked?': [
+          'Como as citações são verificadas?',
+          '¿Cómo se verifican las citas?',
+        ],
+        'What should CI check?': [
+          'O que o CI deve verificar?',
+          '¿Qué debe verificar el CI?',
+        ],
+        'How should tests be selected?': [
+          'Como selecionar os testes?',
+          '¿Cómo seleccionar las pruebas?',
+        ],
+        'Answer mode': ['Modo de resposta', 'Modo de respuesta'],
+        'Demo · extractive answers': [
+          'Demo · respostas extrativas',
+          'Demo · respuestas extractivas',
+        ],
+        'AI · generated answers': [
+          'IA · respostas geradas',
+          'IA · respuestas generadas',
+        ],
+        'Demo selects exact source sentences. AI generates text from retrieved excerpts.':
+          [
+            'O demo seleciona frases exatas das fontes. A IA gera texto a partir dos trechos recuperados.',
+            'El demo selecciona frases exactas de las fuentes. La IA genera texto a partir de los fragmentos recuperados.',
+          ],
+        'AI is unavailable in this installation. Demo works without external credentials.':
+          [
+            'A IA está indisponível nesta instalação. O demo funciona sem credenciais externas.',
+            'La IA no está disponible en esta instalación. El demo funciona sin credenciales externas.',
+          ],
+        Cancel: ['Cancelar', 'Cancelar'],
+        'Ask the collection': ['Consultar a coleção', 'Consultar la colección'],
+        'Demo · extractive answer': [
+          'Demo · resposta extrativa',
+          'Demo · respuesta extractiva',
+        ],
+        'AI · generated answer preview': [
+          'IA · prévia de resposta gerada',
+          'IA · vista previa de respuesta generada',
+        ],
+        Answer: ['Resposta', 'Respuesta'],
+        'Inspect source 1': ['Inspecionar fonte 1', 'Inspeccionar fuente 1'],
+        'This sentence was selected from the collection.': [
+          'Esta frase foi selecionada da coleção.',
+          'Esta frase se seleccionó de la colección.',
+        ],
+        'What was checked?': ['O que foi verificado?', '¿Qué se verificó?'],
+        'Response structure, source identifiers and exact quoted text. These checks do not establish semantic correctness or source truth.':
+          [
+            'Estrutura da resposta, identificadores das fontes e correspondência exata dos trechos citados. Essas verificações não comprovam correção semântica nem a veracidade das fontes.',
+            'Estructura de la respuesta, identificadores de las fuentes y coincidencia exacta del texto citado. Estas verificaciones no demuestran corrección semántica ni la veracidad de las fuentes.',
+          ],
+        'Compare with the collection': [
+          'Compare com a coleção',
+          'Compara con la colección',
+        ],
+        Sources: ['Fontes', 'Fuentes'],
+        'Sources will appear here when the collection has relevant evidence.': [
+          'As fontes aparecerão aqui quando a coleção tiver evidências relevantes.',
+          'Las fuentes aparecerán aquí cuando la colección tenga evidencias relevantes.',
+        ],
+        'Citation checks · relevance 0.57': [
+          'Citation checks · relevância 0,57',
+          'Citation checks · relevancia 0,57',
+        ],
+        'Selected source · lexical relevance is not certainty.': [
+          'Fonte selecionada · relevância lexical não significa certeza.',
+          'Fuente seleccionada · la relevancia léxica no significa certeza.',
+        ],
+        'Read original document': [
+          'Ler documento original',
+          'Leer documento original',
+        ],
+        'Independent project · original collection · no conversation storage in this proposal':
+          [
+            'Projeto independente · coleção original · esta proposta não armazena conversas',
+            'Proyecto independiente · colección original · esta propuesta no almacena conversaciones',
+          ],
+        'Searching the collection… You can cancel this request.': [
+          'Consultando a coleção… Você pode cancelar esta solicitação.',
+          'Consultando la colección… Puedes cancelar esta solicitud.',
+        ],
+        'Your answer starts here. Choose a suggested question or write your own.':
+          [
+            'Sua resposta começa aqui. Escolha uma pergunta sugerida ou escreva a sua.',
+            'Tu respuesta empieza aquí. Elige una pregunta sugerida o escribe la tuya.',
+          ],
+        'The collection does not contain enough evidence to answer this question.':
+          [
+            'A coleção não contém evidências suficientes para responder a esta pergunta.',
+            'La colección no contiene evidencias suficientes para responder a esta pregunta.',
+          ],
+        'Try asking about citation checks, API contracts, CI gates or regression testing.':
+          [
+            'Tente perguntar sobre citações, contratos de API, qualidade no CI ou testes de regressão.',
+            'Prueba con una pregunta sobre citas, contratos de API, calidad en CI o pruebas de regresión.',
+          ],
+        'We could not complete this request. Your question is still here.': [
+          'Não foi possível concluir a solicitação. Sua pergunta foi preservada.',
+          'No se pudo completar la solicitud. Tu pregunta se ha conservado.',
+        ],
+        'Try again': ['Tentar novamente', 'Intentar de nuevo'],
+        'Troubleshooting details': [
+          'Detalhes para diagnóstico',
+          'Detalles de diagnóstico',
+        ],
+        'Request ID: preview-request': [
+          'ID da solicitação: preview-request',
+          'ID de solicitud: preview-request',
+        ],
+        'A generated answer would appear here with references to retrieved excerpts. This preview does not call an AI provider.':
+          [
+            'Uma resposta gerada apareceria aqui com referências aos trechos recuperados. Esta proposta não chama um provedor de IA.',
+            'Aquí aparecería una respuesta generada con referencias a los fragmentos recuperados. Esta propuesta no llama a un proveedor de IA.',
+          ],
+        'Collection language: English. Suggested questions use the original language; quotes and source documents are not translated.':
+          [
+            'Idioma da coleção: inglês. As perguntas sugeridas usam o idioma original; citações e documentos fonte não são traduzidos.',
+            'Idioma de la colección: inglés. Las preguntas sugeridas usan el idioma original; las citas y los documentos fuente no se traducen.',
+          ],
+      };
+
+      previewTranslations['Question composer'] = [
+        'Editor de pergunta',
+        'Editor de pregunta',
+      ];
+      previewTranslations['Suggested questions'] = [
+        'Perguntas sugeridas',
+        'Preguntas sugeridas',
+      ];
+      previewTranslations[
+        (
+          'Long-content layout fixture: ' +
+          'Evidence and original sources stay readable as the response grows. '.repeat(
+            24,
+          )
+        ).trim()
+      ] = [
+        'Exemplo de conteúdo longo: ' +
+          'As evidências e as fontes originais continuam legíveis conforme a resposta cresce. '.repeat(
+            24,
+          ),
+        'Ejemplo de contenido largo: ' +
+          'Las evidencias y las fuentes originales siguen siendo legibles a medida que la respuesta crece. '.repeat(
+            24,
+          ),
+      ];
+      const originalPreviewText = new WeakMap();
+      const originalPreviewAttributes = new WeakMap();
+      const languageSelector = document.querySelector('#language');
+      function localizePreview() {
+        const language = languageSelector.value;
+        document.documentElement.lang = language;
+        document.title =
+          'Evidence Assistant — ' +
+          {
+            en: 'visual proposal',
+            'pt-BR': 'proposta visual',
+            es: 'propuesta visual',
+          }[language];
+        const translate = (english) =>
+          previewTranslations[english]?.[language === 'pt-BR' ? 0 : 1] ??
+          english;
+        const walker = document.createTreeWalker(
+          document.body,
+          NodeFilter.SHOW_TEXT,
+        );
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          const parent = node.parentElement;
+          if (
+            !parent ||
+            parent.closest(
+              'script, textarea, blockquote, [data-original], h3[lang], #original p, #original h3',
+            )
+          )
+            continue;
+          const english =
+            originalPreviewText.get(node) ??
+            node.textContent.replace(/\s+/g, ' ').trim();
+          originalPreviewText.set(node, english);
+          if (previewTranslations[english])
+            node.textContent = language === 'en' ? english : translate(english);
+        }
+        document.querySelectorAll('[aria-label]').forEach((element) => {
+          const english =
+            originalPreviewAttributes.get(element) ??
+            element.getAttribute('aria-label');
+          originalPreviewAttributes.set(element, english);
+          element.setAttribute(
+            'aria-label',
+            language === 'en' ? english : translate(english),
+          );
+        });
+      }
+      languageSelector.addEventListener('change', localizePreview);
+
       const state = document.querySelector('#state');
       const content = document.querySelector('#answer-content');
       const initialContent = content.innerHTML;
@@ -512,6 +771,7 @@ How are evidence citations checked?</textarea>
             'A generated answer would appear here with references to retrieved excerpts. This preview does not call an AI provider.';
           content.append(paragraph);
         }
+        localizePreview();
       }
       state.addEventListener('change', render);
       document.querySelectorAll('[data-question]').forEach((button) =>
