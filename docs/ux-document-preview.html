@@ -1,0 +1,2389 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Evidence Assistant · proposta visual</title>
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --surface: #fff;
+        --text: #172033;
+        --muted: #475569;
+        --action: #4338ca;
+        --action-hover: #3730a3;
+        --soft: #eef2ff;
+        --teal: #2dd4bf;
+        --teal-ink: #115e59;
+        --teal-soft: #ccfbf1;
+        --coral: #fb7185;
+        --coral-soft: #fff1f2;
+        --line: #e2e8f0;
+        --control: #64748b;
+        --radius: 18px;
+        --motion: 180ms;
+        --font:
+          system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-padding: 20px;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        font: 16px/1.6 var(--font);
+        color: var(--text);
+      }
+      [hidden] {
+        display: none !important;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button,
+      a,
+      summary,
+      select {
+        touch-action: manipulation;
+      }
+      button,
+      select {
+        cursor: pointer;
+        min-height: 44px;
+        padding: 10px 16px;
+        border: 1px solid var(--control);
+        border-radius: 10px;
+        background: var(--surface);
+        color: var(--text);
+        max-width: 100%;
+      }
+      button {
+        transition:
+          background var(--motion),
+          border-color var(--motion),
+          box-shadow var(--motion);
+      }
+      button:hover {
+        background: var(--soft);
+        border-color: var(--action);
+      }
+      button:disabled {
+        cursor: default;
+        color: var(--muted);
+        background: #f1f5f9;
+      }
+      button.primary {
+        color: white;
+        background: var(--action);
+        border-color: var(--action);
+        font-weight: 650;
+      }
+      button.primary:hover {
+        background: var(--action-hover);
+      }
+      button.primary:disabled {
+        background: #64748b;
+        border-color: #64748b;
+      }
+      a {
+        color: var(--action);
+        text-underline-offset: 4px;
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+      }
+      summary {
+        cursor: pointer;
+        min-height: 44px;
+        padding: 10px 0;
+        font-weight: 600;
+      }
+      input[type='checkbox'] {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--action);
+        flex-shrink: 0;
+      }
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 96px;
+        padding: 14px;
+        border: 1px solid var(--control);
+        border-radius: 12px;
+        color: var(--text);
+        background: white;
+        resize: vertical;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: clamp(36px, 4.7vw, 64px);
+        line-height: 1.08;
+        letter-spacing: -2.4px;
+        text-wrap: balance;
+      }
+      h2 {
+        font-size: 26px;
+        line-height: 1.25;
+        letter-spacing: -0.7px;
+      }
+      h3 {
+        font-size: 18px;
+        line-height: 1.4;
+      }
+      p {
+        margin-top: 12px;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      fieldset {
+        min-width: 0;
+      }
+      label {
+        font-weight: 550;
+      }
+      :focus-visible {
+        outline: 3px solid var(--action);
+        outline-offset: 4px;
+      }
+      .shell {
+        width: min(1180px, calc(100% - 64px));
+        margin: auto;
+      }
+      .small {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .eyebrow {
+        font-size: 12px;
+        font-weight: 650;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin: 0 0 16px;
+        color: var(--action);
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .spaced {
+        justify-content: space-between;
+      }
+      .pill {
+        font-size: 12px;
+        padding: 5px 10px;
+        background: var(--soft);
+        color: var(--action);
+        border-radius: 7px;
+        display: inline-block;
+      }
+      .tag-teal {
+        background: var(--teal-soft);
+        color: var(--teal-ink);
+      }
+      .tag-coral {
+        background: var(--coral-soft);
+        color: #9f1239;
+      }
+      .primary svg,
+      .quiet svg {
+        width: 18px;
+        height: 18px;
+        vertical-align: middle;
+        margin-left: 8px;
+      }
+      .skip {
+        position: absolute;
+        top: -100px;
+        left: 16px;
+        background: white;
+        padding: 10px;
+        z-index: 5;
+      }
+      .skip:focus {
+        top: 10px;
+      }
+      .prototype {
+        background: #eef2ff;
+        border-bottom: 1px solid #c7d2fe;
+        padding: 9px 0;
+        font-size: 12px;
+      }
+      .prototype .shell {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .prototype label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .prototype select {
+        font-size: 12px;
+        padding: 6px 10px;
+        min-height: 36px;
+      }
+      header {
+        padding: 24px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        letter-spacing: -0.4px;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .brand img {
+        width: 36px;
+        height: 36px;
+      }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        flex-wrap: wrap;
+      }
+      .language {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 13px;
+        flex-wrap: wrap;
+      }
+      .language select {
+        font-size: 13px;
+        padding: 8px 10px;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 60px;
+        align-items: center;
+        padding: 64px 0 48px;
+      }
+      .hero-copy > p {
+        max-width: 48ch;
+        color: var(--muted);
+        font-size: 18px;
+        margin-top: 24px;
+      }
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 28px;
+      }
+      .hero-actions button {
+        padding: 13px 20px;
+      }
+      .hero-meta {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 16px;
+      }
+      .hero-art {
+        position: relative;
+        isolation: isolate;
+        min-height: 420px;
+        background:
+          radial-gradient(ellipse at 15% 35%, #bff3e8 0, transparent 55%),
+          radial-gradient(ellipse at 95% 5%, #fbcdd8 0, transparent 48%),
+          linear-gradient(145deg, #eef2ff, #ddd6fe);
+        border-radius: 28px;
+        padding: 30px;
+        overflow: hidden;
+      }
+      .art-label {
+        font-size: 11px;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: #3730a3;
+        font-weight: 650;
+      }
+      .paper-art {
+        width: 220px;
+        position: relative;
+        margin: 22px 0 0 8px;
+        transform: rotate(-7deg);
+        box-shadow: 0 16px 36px #17203320;
+        border-radius: 10px;
+      }
+      .floating-answer {
+        background: white;
+        position: absolute;
+        right: 20px;
+        bottom: 42px;
+        width: min(280px, 80%);
+        border: 1px solid #d7d5ee;
+        padding: 22px;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px #17203315;
+        animation: reveal 240ms ease-out both;
+      }
+      .floating-answer p {
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      .answer-reference {
+        margin-top: 16px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 12px;
+        color: var(--teal-ink);
+        font-weight: 650;
+      }
+      .answer-reference svg {
+        width: 18px;
+        height: 18px;
+      }
+      .art-connector {
+        position: absolute;
+        top: 120px;
+        right: 35px;
+        width: 85px;
+        height: 70px;
+        color: var(--action);
+      }
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 24px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+      }
+      .section-head p {
+        max-width: 50ch;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .examples {
+        padding: 24px 0 52px;
+      }
+      .example-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+      .example-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: white;
+        overflow: hidden;
+      }
+      .thumbnail {
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+        padding: 18px 20px 0;
+        background: var(--soft);
+      }
+      .thumbnail.teal {
+        background: #def7f1;
+      }
+      .thumbnail.coral {
+        background: #fff1f2;
+      }
+      .thumbnail img {
+        height: 180px;
+        width: 144px;
+        object-fit: cover;
+        object-position: top;
+        transform: rotate(-4deg);
+        box-shadow: 0 8px 20px #17203316;
+      }
+      .card-content {
+        padding: 22px;
+      }
+      .card-content p {
+        font-size: 14px;
+        color: var(--muted);
+        min-height: 46px;
+      }
+      .card-content button {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        text-align: left;
+        font-size: 14px;
+      }
+      .card-content .small {
+        margin-bottom: 8px;
+        display: block;
+      }
+      .how {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+        border-top: 1px solid var(--line);
+        padding: 28px 0 48px;
+      }
+      .how .number {
+        width: 30px;
+        height: 30px;
+        background: var(--soft);
+        color: var(--action);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+      .how p {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .view-heading {
+        padding: 34px 0 24px;
+      }
+      .view-heading h1 {
+        font-size: 34px;
+        letter-spacing: -1px;
+      }
+      .view-heading .row {
+        margin-bottom: 20px;
+      }
+      .upload-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+        gap: 24px;
+        margin-bottom: 48px;
+      }
+      .panel {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 28px;
+        min-width: 0;
+      }
+      .drop-area {
+        border: 2px dashed var(--control);
+        border-radius: 14px;
+        background: #fafaff;
+        padding: 40px 24px;
+        text-align: center;
+      }
+      .upload-icon {
+        width: 52px;
+        height: 52px;
+        color: var(--action);
+        margin: 0 auto 14px;
+      }
+      .drop-area button {
+        margin-top: 22px;
+      }
+      .file-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        margin: 20px 0;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+      .file-card img {
+        width: 40px;
+        border-radius: 4px;
+      }
+      .consent {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 400;
+        margin-top: 16px;
+      }
+      .consent input {
+        margin-top: 3px;
+      }
+      .callout {
+        padding: 16px 18px;
+        background: var(--soft);
+        border-radius: 12px;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+      .callout strong {
+        display: block;
+      }
+      .upload-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+      .workspace-heading {
+        padding: 28px 0 20px;
+      }
+      .workspace-heading h1 {
+        font-size: 28px;
+        letter-spacing: -0.8px;
+      }
+      .workspace-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+        padding-bottom: 42px;
+      }
+      .document-panel {
+        background: #edf0f6;
+        border: 1px solid #d6dde7;
+        border-radius: var(--radius);
+        overflow: hidden;
+        min-width: 0;
+      }
+      .document-toolbar {
+        padding: 14px 20px;
+        background: white;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .document-toolbar button {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+      .document-toolbar button[aria-pressed='true'] {
+        background: var(--soft);
+        color: var(--action);
+        border-color: var(--action);
+      }
+      .page-meta {
+        padding: 12px 22px;
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .page-wrap {
+        padding: 12px 28px 26px;
+      }
+      .paper {
+        background: #fffaf0;
+        border: 1px solid #e7dcc9;
+        padding: 38px 32px;
+        box-shadow: 0 8px 16px #17203308;
+        min-height: 400px;
+        color: #263446;
+        position: relative;
+        overflow-wrap: anywhere;
+      }
+      .paper::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          transparent 0 35px,
+          #17203305 35px 36px
+        );
+      }
+      .paper h2 {
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 28px;
+        line-height: 1.4;
+        position: relative;
+      }
+      .paper p {
+        position: relative;
+        font-family: Georgia, serif;
+        line-height: 1.9;
+        margin-top: 20px;
+        font-size: 17px;
+      }
+      .paper .date {
+        font: 13px var(--font);
+        color: var(--muted);
+      }
+      .paper blockquote {
+        font:
+          italic 20px/1.8 Georgia,
+          serif;
+        margin: 24px -8px;
+        padding: 12px 14px;
+        border-left: 3px solid var(--teal);
+        background: #ccfbf160;
+        position: relative;
+      }
+      .document-note {
+        padding: 0 22px 20px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .transcript {
+        background: white;
+        padding: 26px;
+        overflow-wrap: anywhere;
+      }
+      .transcript p {
+        margin-bottom: 16px;
+      }
+      .transcript textarea {
+        min-height: 260px;
+        margin-top: 18px;
+      }
+      .passage {
+        padding: 14px 16px;
+        border-left: 3px solid var(--teal);
+        background: var(--teal-soft);
+        color: var(--teal-ink);
+        border-radius: 0 8px 8px 0;
+        scroll-margin: 30px;
+      }
+      .question-panel label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      .question-panel h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+      }
+      .suggested {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+      .suggested button {
+        padding: 8px 10px;
+        font-size: 12px;
+        text-align: left;
+      }
+      .mode-select {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 18px 0;
+      }
+      .mode-select label {
+        font-size: 13px;
+        margin: 0;
+      }
+      .mode-select select {
+        font-size: 13px;
+      }
+      .ask-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 18px;
+        flex-wrap: wrap;
+      }
+      .result {
+        border-top: 1px solid var(--line);
+        margin-top: 24px;
+        padding-top: 24px;
+      }
+      .result h3 {
+        font-size: 18px;
+        margin: 12px 0;
+      }
+      .result p {
+        font-size: 15px;
+      }
+      .source-link {
+        margin-top: 18px;
+        font-size: 13px;
+        font-weight: 600;
+        background: var(--teal-soft);
+        color: var(--teal-ink);
+        padding: 8px 12px;
+        border-radius: 8px;
+        gap: 8px;
+      }
+      .checks {
+        margin-top: 16px;
+        border-top: 1px solid var(--line);
+        font-size: 13px;
+      }
+      .status-box {
+        padding: 18px;
+        background: var(--soft);
+        border: 1px solid #c7d2fe;
+        border-radius: 12px;
+        margin: 20px 0;
+      }
+      .status-box strong {
+        display: block;
+      }
+      .warning {
+        background: #fff7ed;
+        border-color: #fed7aa;
+      }
+      .warning strong {
+        color: #9a3412;
+      }
+      .status-box p {
+        font-size: 14px;
+      }
+      .mobile-switch {
+        display: none;
+      }
+      .brand-proposals {
+        border-top: 1px solid var(--line);
+        padding: 26px 0 40px;
+      }
+      .brand-proposals summary {
+        font-size: 14px;
+      }
+      .brand-options {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        padding: 20px 0;
+      }
+      .brand-options figure {
+        margin: 0;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 22px;
+      }
+      .brand-options img {
+        width: 56px;
+        height: 56px;
+      }
+      .brand-options figcaption {
+        font-size: 13px;
+        max-width: 220px;
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        padding: 24px 0 32px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .fade-in {
+        animation: reveal 220ms ease-out both;
+      }
+      @keyframes reveal {
+        from {
+          opacity: 1;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @media (max-width: 800px) {
+        .shell {
+          width: calc(100% - 36px);
+        }
+        header {
+          padding: 18px 0;
+          align-items: flex-start;
+        }
+        .header-right {
+          gap: 8px;
+        }
+        .header-right > a {
+          display: none;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 28px;
+          padding: 36px 0 24px;
+        }
+        .hero-copy > p {
+          font-size: 16px;
+        }
+        .hero-art {
+          min-height: 360px;
+          max-width: 560px;
+          width: 100%;
+          margin: auto;
+        }
+        .paper-art {
+          width: 190px;
+        }
+        .floating-answer {
+          bottom: 26px;
+        }
+        .example-grid {
+          grid-template-columns: 1fr;
+        }
+        .example-card {
+          display: grid;
+          grid-template-columns: 105px minmax(0, 1fr);
+        }
+        .thumbnail {
+          height: 100%;
+          padding: 16px 6px 0;
+        }
+        .thumbnail img {
+          width: 95px;
+          height: 145px;
+          margin-top: 22px;
+        }
+        .card-content {
+          padding: 18px;
+        }
+        .card-content p {
+          min-height: 0;
+        }
+        .card-content button {
+          margin-top: 12px;
+        }
+        .how {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .how .number {
+          float: left;
+          margin: 0 14px 12px 0;
+        }
+        .how p {
+          margin-top: 6px;
+        }
+        .workspace-grid,
+        .upload-grid {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+        .mobile-switch {
+          display: flex;
+          gap: 8px;
+          margin-top: 18px;
+        }
+        .mobile-switch button {
+          flex: 1;
+          font-size: 13px;
+          padding: 8px;
+          transition: box-shadow var(--motion);
+        }
+        .mobile-switch [aria-pressed='true'] {
+          background: var(--action);
+          color: white;
+          border-color: var(--action);
+        }
+        .workspace-grid[data-mobile='questions'] .document-panel {
+          display: none;
+        }
+        .workspace-grid[data-mobile='document'] .question-panel,
+        .workspace-grid[data-mobile='text'] .question-panel {
+          display: none;
+        }
+        .panel {
+          padding: 22px;
+        }
+        .page-wrap {
+          padding: 10px 16px 22px;
+        }
+        .paper {
+          padding: 30px 22px;
+          min-height: 370px;
+        }
+        .workspace-heading h1 {
+          font-size: 25px;
+        }
+        .prototype .shell {
+          align-items: flex-start;
+        }
+        .prototype label {
+          width: 100%;
+        }
+        .prototype select {
+          flex: 1;
+        }
+        .view-heading h1 {
+          font-size: 30px;
+        }
+        h1 {
+          letter-spacing: -1.5px;
+        }
+        .hero-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .hero-actions button {
+          width: 100%;
+        }
+        .language select {
+          max-width: 170px;
+        }
+        .brand {
+          font-size: 14px;
+          max-width: 160px;
+          line-height: 1.3;
+        }
+        .brand img {
+          flex-shrink: 0;
+        }
+        .language > span {
+          display: none;
+        }
+        .hero-art .art-connector {
+          right: 14px;
+        }
+        .drop-area {
+          padding: 28px 16px;
+        }
+      }
+      @media (max-width: 360px) {
+        .shell {
+          width: calc(100% - 28px);
+        }
+        header {
+          gap: 8px;
+        }
+        .language select {
+          max-width: 135px;
+          font-size: 12px;
+        }
+        .brand {
+          font-size: 12px;
+          max-width: 135px;
+        }
+        .hero-art {
+          padding: 22px;
+          min-height: 340px;
+        }
+        .paper-art {
+          width: 170px;
+          margin-left: 0;
+        }
+        .floating-answer {
+          width: 230px;
+          right: 14px;
+          padding: 18px;
+        }
+        .example-card {
+          grid-template-columns: 85px minmax(0, 1fr);
+        }
+        .thumbnail img {
+          width: 80px;
+        }
+        .card-content {
+          padding: 16px;
+        }
+        .card-content button {
+          font-size: 12px;
+          padding: 8px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <svg aria-hidden="true" style="display: none">
+      <defs>
+        <symbol id="arrow" viewBox="0 0 24 24">
+          <path
+            d="M4 12h15m-6-6 6 6-6 6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </symbol>
+        <symbol id="link" viewBox="0 0 24 24">
+          <path
+            d="m9 15 6-6m-5-2 2-2a5 5 0 0 1 7 7l-2 2m-3 3-2 2a5 5 0 0 1-7-7l2-2"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+        </symbol>
+      </defs>
+    </svg>
+    <a class="skip" href="#main" data-t="skip">Ir ao conteúdo</a>
+    <div
+      class="prototype"
+      role="region"
+      aria-label="Explorar estado"
+      data-aria="stateLabel"
+    >
+      <div class="shell">
+        <span data-t="prototype"
+          >Proposta visual · estados simulados · sem upload ou IA real</span
+        ><label
+          ><span data-t="stateLabel">Explorar estado</span
+          ><select id="preview-state">
+            <option value="home" data-t="stateHome">Entrada</option>
+            <option value="upload" data-t="stateUpload">Envio</option>
+            <option value="reading" data-t="stateReading">
+              Leitura do arquivo
+            </option>
+            <option value="ocr" data-t="stateOcr">Reconhecimento</option>
+            <option value="ready" data-t="stateReady">
+              Pronto para perguntar
+            </option>
+            <option value="review" data-t="stateReview">
+              Revisão do texto
+            </option>
+            <option value="answer" data-t="stateAnswer">
+              Resposta e fonte
+            </option>
+            <option value="illegible" data-t="stateIllegible">
+              Trecho ilegível
+            </option>
+            <option value="error" data-t="stateError">Erro</option>
+            <option value="expired" data-t="stateExpired">
+              Sessão expirada
+            </option>
+          </select></label
+        >
+      </div>
+    </div>
+    <header class="shell">
+      <a class="brand" href="#" id="home-link"
+        ><img src="preview-assets/brand-highlight.svg" alt="" />Evidence
+        Assistant</a
+      >
+      <div class="header-right">
+        <a href="#brand-proposals" data-t="brandLink">A identidade</a
+        ><label class="language"
+          ><span data-t="language">Idioma</span
+          ><select id="language" aria-label="Idioma" data-aria="language">
+            <option value="pt-BR">Português (Brasil)</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+          </select></label
+        >
+      </div>
+    </header>
+    <main id="main" class="shell">
+      <div id="home">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow" data-t="eyebrow">Do papel à resposta</p>
+            <h1 data-t="heroTitle">
+              Seu documento tem respostas. Encontre-as.
+            </h1>
+            <p data-t="heroBody">
+              Uma anotação, um manual ou uma página escaneada. Leia, pergunte e
+              confira cada resposta no documento original.
+            </p>
+            <div class="hero-actions">
+              <button class="primary" id="try-example">
+                <span data-t="tryExample">Experimentar um exemplo</span
+                ><svg aria-hidden="true"><use href="#arrow" /></svg></button
+              ><button id="use-document" data-t="useDocument">
+                Usar meu documento
+              </button>
+            </div>
+            <p class="hero-meta" data-t="heroMeta">
+              Sem cadastro · PDF e imagens · manuscritos experimentais
+            </p>
+          </div>
+          <div
+            class="hero-art"
+            role="img"
+            aria-label="Ilustração: uma página com um trecho destacado conectada à resposta"
+            data-aria="heroArt"
+          >
+            <div class="art-label" data-t="artLabel">
+              Um trecho. Uma resposta que você pode conferir.
+            </div>
+            <img
+              class="paper-art"
+              src="preview-assets/document-note.svg"
+              alt=""
+            /><svg class="art-connector" viewBox="0 0 90 80" aria-hidden="true">
+              <path
+                d="M8 15c55-35 62 30 62 43m-9-10 9 11 9-11"
+                stroke="currentColor"
+                fill="none"
+                stroke-width="2"
+                stroke-dasharray="5 5"
+              />
+            </svg>
+            <div class="floating-answer">
+              <span class="pill tag-teal" data-t="demoLabel"
+                >Exemplo · texto preparado</span
+              >
+              <p data-t="heroAnswer">
+                A oficina começa às 14h. Os materiais estão incluídos.
+              </p>
+              <div class="answer-reference">
+                <svg aria-hidden="true"><use href="#link" /></svg
+                ><span data-t="heroReference"
+                  >Página 1 · ligado ao trecho original</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="examples" aria-labelledby="examples-title">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow" data-t="examplesEyebrow">
+                Comece com uma descoberta
+              </p>
+              <h2 id="examples-title" data-t="examplesTitle">
+                Um documento. Muitas perguntas.
+              </h2>
+            </div>
+            <p data-t="examplesBody">
+              Escolha um exemplo para conhecer o fluxo. As transcrições já estão
+              preparadas; aqui não simulamos OCR ao vivo.
+            </p>
+          </div>
+          <div class="example-grid">
+            <article class="example-card">
+              <div class="thumbnail">
+                <img src="preview-assets/document-manual.svg" alt="" />
+              </div>
+              <div class="card-content">
+                <span class="small" data-t="exampleMeta"
+                  >Exemplo autoral · 1 página</span
+                >
+                <h3 data-t="manualTitle">Um manual prático</h3>
+                <p data-t="manualBody">
+                  Encontre orientações sem procurar em cada parágrafo.
+                </p>
+                <button data-example="manual">
+                  <span data-t="manualQuestion"
+                    >Como cuidar da minha planta?</span
+                  ><svg width="18" height="18" aria-hidden="true">
+                    <use href="#arrow" />
+                  </svg>
+                </button>
+              </div>
+            </article>
+            <article class="example-card">
+              <div class="thumbnail coral">
+                <img src="preview-assets/document-scan.svg" alt="" />
+              </div>
+              <div class="card-content">
+                <span class="small" data-t="exampleMeta"
+                  >Exemplo autoral · 1 página</span
+                >
+                <h3 data-t="scanTitle">Uma página escaneada</h3>
+                <p data-t="scanBody">
+                  Transforme uma informação difícil de localizar em uma
+                  resposta.
+                </p>
+                <button data-example="scan">
+                  <span data-t="scanQuestion">Quando acontece a oficina?</span
+                  ><svg width="18" height="18" aria-hidden="true">
+                    <use href="#arrow" />
+                  </svg>
+                </button>
+              </div>
+            </article>
+            <article class="example-card">
+              <div class="thumbnail teal">
+                <img src="preview-assets/document-note.svg" alt="" />
+              </div>
+              <div class="card-content">
+                <span class="small" data-t="experimentalMeta"
+                  >Ilustração autoral · experimental</span
+                >
+                <h3 data-t="noteTitle">Uma anotação no papel</h3>
+                <p data-t="noteBody">
+                  Veja como revisar palavras incertas antes de perguntar.
+                </p>
+                <button data-example="note">
+                  <span data-t="noteQuestion">O que preciso levar?</span
+                  ><svg width="18" height="18" aria-hidden="true">
+                    <use href="#arrow" />
+                  </svg>
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section class="how" aria-label="Como funciona" data-aria="how">
+          <div>
+            <span class="number">01</span>
+            <h3 data-t="step1">Traga seu documento</h3>
+            <p data-t="step1Body">
+              Escolha um arquivo ou comece por um exemplo.
+            </p>
+          </div>
+          <div>
+            <span class="number">02</span>
+            <h3 data-t="step2">Confira o texto</h3>
+            <p data-t="step2Body">
+              Revise a transcrição e palavras que precisam de atenção.
+            </p>
+          </div>
+          <div>
+            <span class="number">03</span>
+            <h3 data-t="step3">Pergunte e compare</h3>
+            <p data-t="step3Body">
+              Siga a referência da resposta até a passagem usada.
+            </p>
+          </div>
+        </section>
+      </div>
+      <section id="upload" hidden>
+        <div class="view-heading">
+          <div class="row">
+            <button class="back" data-t="back">Voltar</button
+            ><span class="pill" data-t="uploadPill">Um documento por vez</span>
+          </div>
+          <h1 data-t="uploadTitle">Comece pelo seu documento.</h1>
+          <p class="muted" data-t="uploadBody">
+            Escolha um PDF ou uma imagem. Você poderá revisar o texto antes de
+            fazer perguntas.
+          </p>
+        </div>
+        <div class="upload-grid">
+          <div class="panel">
+            <div class="drop-area">
+              <svg class="upload-icon" viewBox="0 0 64 64" aria-hidden="true">
+                <path
+                  d="M19 8h20l10 10v38H15V8h4m24 0v13h13M32 44V27m-7 7 7-7 7 7"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  fill="none"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <h2 data-t="dropTitle">Seu próximo arquivo começa aqui</h2>
+              <p class="small" data-t="fileLimits">
+                PDF, JPEG ou PNG · até 10 MiB · até 5 páginas
+              </p>
+              <button id="select-file" data-t="selectFile">
+                Selecionar arquivo</button
+              ><input
+                id="file"
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                hidden
+              />
+            </div>
+            <div class="file-card">
+              <img src="preview-assets/document-scan.svg" alt="" />
+              <div>
+                <strong id="file-name">oficina-criativa.pdf</strong>
+                <div class="small" data-t="fileExample">
+                  Arquivo de exemplo ilustrativo · 1 página
+                </div>
+              </div>
+            </div>
+            <div class="upload-actions">
+              <button class="primary" id="read-file" data-t="readFile">
+                Ler documento</button
+              ><button class="back" data-t="cancel">Cancelar</button>
+            </div>
+            <p class="small" data-t="previewOnly">
+              Nesta proposta, arquivos não são lidos nem enviados. A seleção
+              demonstra apenas a interação.
+            </p>
+          </div>
+          <aside class="panel">
+            <p class="eyebrow" data-t="beforeUpload">Antes de começar</p>
+            <h2 data-t="privacyTitle">Você decide o que será enviado.</h2>
+            <p class="muted" data-t="privacyBody">
+              O PDF com texto poderá ser lido no navegador. Uma imagem ou página
+              escaneada precisa de reconhecimento externo, quando disponível.
+            </p>
+            <div class="callout">
+              <strong data-t="recognitionTitle">Reconhecimento por IA</strong
+              ><span data-t="recognitionBody"
+                >Somente após sua confirmação, as páginas selecionadas serão
+                enviadas ao provedor configurado.</span
+              >
+            </div>
+            <label class="consent"
+              ><input id="consent" type="checkbox" /><span data-t="consent"
+                >Entendo o envio externo das páginas para reconhecer o
+                texto.</span
+              ></label
+            ><button
+              id="recognize"
+              class="primary"
+              disabled
+              style="margin-top: 20px"
+              data-t="recognize"
+            >
+              Reconhecer texto
+            </button>
+            <p class="small" data-t="recognitionUnavailable">
+              Sem provedor, use um PDF com texto ou experimente um exemplo
+              preparado.
+            </p>
+          </aside>
+        </div>
+      </section>
+      <section id="workspace" hidden>
+        <div class="workspace-heading">
+          <div class="row spaced">
+            <div>
+              <p class="eyebrow" data-t="workspaceEyebrow">
+                Seu documento, em contexto
+              </p>
+              <h1 id="document-title" data-t="workshopTitle">
+                Oficina criativa
+              </h1>
+            </div>
+            <button class="back" data-t="changeDocument">
+              Trocar documento
+            </button>
+          </div>
+          <div class="row" style="margin-top: 12px">
+            <span class="pill tag-teal" id="revision" data-t="revision"
+              >Transcrição preparada · revisão 1</span
+            ><span class="small" data-t="pageMeta"
+              >1 página · exemplo autoral</span
+            >
+          </div>
+          <div class="mobile-switch" aria-label="Visualização" data-aria="view">
+            <button
+              data-mobile="document"
+              aria-pressed="false"
+              data-t="documentTab"
+            >
+              Documento</button
+            ><button data-mobile="text" aria-pressed="false" data-t="textTab">
+              Texto</button
+            ><button
+              data-mobile="questions"
+              aria-pressed="true"
+              data-t="questionsTab"
+            >
+              Perguntas
+            </button>
+          </div>
+        </div>
+        <div class="workspace-grid" data-mobile="questions">
+          <section
+            class="document-panel"
+            aria-label="Documento e transcrição"
+            data-aria="documentAndText"
+          >
+            <div class="document-toolbar">
+              <button
+                id="show-original"
+                aria-pressed="true"
+                data-t="originalTab"
+              >
+                Original</button
+              ><button
+                id="show-text"
+                aria-pressed="false"
+                data-t="transcriptTab"
+              >
+                Transcrição</button
+              ><button id="edit-text" data-t="editText">Revisar texto</button>
+            </div>
+            <div class="page-meta">
+              <span data-t="page1">Página 1 de 1</span
+              ><span data-t="languageMeta">Idioma do exemplo: português</span>
+            </div>
+            <div id="original-page" class="page-wrap">
+              <div class="paper">
+                <h2 id="paper-title">Oficina criativa</h2>
+                <p class="date" data-t="paperDate">
+                  Anotação de exemplo · 6 de outubro
+                </p>
+                <p id="paper-intro">Encontro no ateliê do bairro, no sábado.</p>
+                <blockquote id="paper-excerpt">
+                  A oficina começa às 14h. Os materiais estão incluídos.
+                </blockquote>
+                <p id="paper-extra">
+                  Leve apenas um avental e sua vontade de aprender.
+                </p>
+                <p class="small" data-t="paperNote">
+                  Documento ilustrativo autoral. A imagem e o texto não são
+                  resultado de OCR ao vivo.
+                </p>
+              </div>
+            </div>
+            <div id="transcript-page" class="transcript" hidden>
+              <h2 data-t="transcriptTitle">Texto que você pode conferir</h2>
+              <p class="small" data-t="transcriptNote">
+                Compare com o original. Uma correspondência textual não garante
+                que a transcrição esteja correta.
+              </p>
+              <div id="passage" class="passage" tabindex="-1">
+                <strong data-t="passageTitle">Passagem usada · página 1</strong>
+                <p id="passage-text">
+                  A oficina começa às 14h. Os materiais estão incluídos.
+                </p>
+              </div>
+              <div id="edit-controls" hidden>
+                <label for="transcript-edit" data-t="editLabel"
+                  >Texto da página</label
+                ><textarea id="transcript-edit"></textarea>
+                <div class="upload-actions">
+                  <button id="save-text" class="primary" data-t="saveText">
+                    Salvar revisão</button
+                  ><button id="undo-text" data-t="undoText">Desfazer</button>
+                </div>
+                <p class="small" data-t="revisionHelp">
+                  Salvar cria uma nova revisão e remove respostas baseadas no
+                  texto anterior. Nesta proposta, a edição é local.
+                </p>
+              </div>
+            </div>
+            <p class="document-note" data-t="originalNotice">
+              Trechos do exemplo acompanham o idioma escolhido. Documentos
+              enviados manterão seu idioma original.
+            </p>
+          </section>
+          <section
+            class="panel question-panel"
+            aria-labelledby="question-title"
+          >
+            <h2 id="question-title" data-t="questionTitle">
+              Pergunte sobre este documento
+            </h2>
+            <form id="question-form">
+              <label for="question" data-t="yourQuestion">Sua pergunta</label
+              ><textarea
+                id="question"
+                maxlength="1000"
+                aria-describedby="question-help"
+              ></textarea>
+              <p id="question-help" class="small" data-t="questionHelp">
+                Até 1.000 caracteres. Use o idioma do documento no modo
+                extrativo.
+              </p>
+              <div class="suggested">
+                <button
+                  type="button"
+                  data-question="time"
+                  data-t="questionTime"
+                >
+                  A que horas começa?</button
+                ><button
+                  type="button"
+                  data-question="bring"
+                  data-t="questionBring"
+                >
+                  O que preciso levar?
+                </button>
+              </div>
+              <div class="mode-select">
+                <label for="mode" data-t="answerMode">Modo de resposta</label
+                ><select id="mode">
+                  <option value="demo" data-t="modeDemo">
+                    Demo · frases do documento
+                  </option>
+                  <option value="ai" disabled data-t="modeAi">
+                    IA · indisponível nesta proposta
+                  </option>
+                </select>
+              </div>
+              <p class="small" data-t="modeHelp">
+                O demo seleciona frases exatas. Uma resposta gerada por IA é um
+                modo diferente.
+              </p>
+              <div class="ask-actions">
+                <button id="ask" class="primary" data-t="ask">
+                  Perguntar ao documento</button
+                ><button
+                  type="button"
+                  id="cancel-process"
+                  hidden
+                  data-t="cancel"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+            <div
+              id="status-box"
+              class="status-box"
+              role="status"
+              aria-live="polite"
+              hidden
+            >
+              <strong id="status-title"></strong>
+              <p id="status-body"></p>
+              <button
+                type="button"
+                id="status-action"
+                style="margin-top: 14px"
+                hidden
+              ></button>
+            </div>
+            <div id="result" class="result" hidden>
+              <span class="pill tag-teal" data-t="answerExtracted"
+                >Resposta extrativa · exemplo preparado</span
+              >
+              <h3 data-t="answerTitle">A resposta está no documento.</h3>
+              <p id="answer-text">
+                A oficina começa às 14h. Os materiais estão incluídos.
+              </p>
+              <a class="source-link" id="citation" href="#passage"
+                ><svg width="16" height="16" aria-hidden="true">
+                  <use href="#link" /></svg
+                ><span data-t="citation">Página 1 · ver trecho</span></a
+              >
+              <details class="checks">
+                <summary data-t="checksTitle">
+                  O que essa referência verifica?
+                </summary>
+                <p data-t="checksBody">
+                  A citação corresponde ao texto preparado. Não verifica a
+                  fidelidade de OCR, a veracidade do original ou a correção
+                  semântica da resposta.
+                </p>
+              </details>
+            </div>
+          </section>
+        </div>
+      </section>
+      <section id="brand-proposals" class="brand-proposals">
+        <details>
+          <summary data-t="brandTitle">
+            Dois caminhos para a identidade visual
+          </summary>
+          <p class="small" data-t="brandBody">
+            Esboços vetoriais originais para revisão. O primeiro conecta leitura
+            e passagem; o segundo conecta páginas e pergunta.
+          </p>
+          <div class="brand-options">
+            <figure>
+              <img src="preview-assets/brand-highlight.svg" alt="" />
+              <figcaption data-t="brandA">
+                A · Página com trecho destacado. Marca usada nesta proposta.
+              </figcaption>
+            </figure>
+            <figure>
+              <img src="preview-assets/brand-question.svg" alt="" />
+              <figcaption data-t="brandB">
+                B · Páginas e pergunta. Alternativa mais direta.
+              </figcaption>
+            </figure>
+          </div>
+        </details>
+      </section>
+    </main>
+    <footer class="shell row spaced">
+      <span data-t="footer"
+        >Projeto independente · documentos de exemplo autorais</span
+      ><span data-t="footerNote"
+        >Sem envio, OCR ou cobrança nesta proposta visual.</span
+      >
+    </footer>
+    <script>
+      const copy = {
+        'pt-BR': {
+          skip: 'Ir ao conteúdo',
+          prototype:
+            'Proposta visual · estados simulados · sem upload ou IA real',
+          stateLabel: 'Explorar estado',
+          stateHome: 'Entrada',
+          stateUpload: 'Envio',
+          stateReading: 'Leitura do arquivo',
+          stateOcr: 'Reconhecimento',
+          stateReady: 'Pronto para perguntar',
+          stateReview: 'Revisão do texto',
+          stateAnswer: 'Resposta e fonte',
+          stateIllegible: 'Trecho ilegível',
+          stateError: 'Erro',
+          stateExpired: 'Sessão expirada',
+          language: 'Idioma',
+          brandLink: 'A identidade',
+          eyebrow: 'Do papel à resposta',
+          heroTitle: 'Seu documento tem respostas. Encontre-as.',
+          heroBody:
+            'Uma anotação, um manual ou uma página escaneada. Leia, pergunte e confira cada resposta no documento original.',
+          tryExample: 'Experimentar um exemplo',
+          useDocument: 'Usar meu documento',
+          heroMeta: 'Sem cadastro · PDF e imagens · manuscritos experimentais',
+          heroArt:
+            'Ilustração: uma página com um trecho destacado conectada à resposta',
+          artLabel: 'Um trecho. Uma resposta que você pode conferir.',
+          demoLabel: 'Exemplo · texto preparado',
+          heroAnswer: 'A oficina começa às 14h. Os materiais estão incluídos.',
+          heroReference: 'Página 1 · ligado ao trecho original',
+          examplesEyebrow: 'Comece com uma descoberta',
+          examplesTitle: 'Um documento. Muitas perguntas.',
+          examplesBody:
+            'Escolha um exemplo para conhecer o fluxo. As transcrições já estão preparadas; aqui não simulamos OCR ao vivo.',
+          exampleMeta: 'Exemplo autoral · 1 página',
+          experimentalMeta: 'Ilustração autoral · experimental',
+          manualTitle: 'Um manual prático',
+          manualBody: 'Encontre orientações sem procurar em cada parágrafo.',
+          manualQuestion: 'Como cuidar da minha planta?',
+          scanTitle: 'Uma página escaneada',
+          scanBody:
+            'Transforme uma informação difícil de localizar em uma resposta.',
+          scanQuestion: 'Quando acontece a oficina?',
+          noteTitle: 'Uma anotação no papel',
+          noteBody: 'Veja como revisar palavras incertas antes de perguntar.',
+          noteQuestion: 'O que preciso levar?',
+          how: 'Como funciona',
+          step1: 'Traga seu documento',
+          step1Body: 'Escolha um arquivo ou comece por um exemplo.',
+          step2: 'Confira o texto',
+          step2Body: 'Revise a transcrição e palavras que precisam de atenção.',
+          step3: 'Pergunte e compare',
+          step3Body: 'Siga a referência da resposta até a passagem usada.',
+          back: 'Voltar',
+          uploadPill: 'Um documento por vez',
+          uploadTitle: 'Comece pelo seu documento.',
+          uploadBody:
+            'Escolha um PDF ou uma imagem. Você poderá revisar o texto antes de fazer perguntas.',
+          dropTitle: 'Seu próximo arquivo começa aqui',
+          fileLimits: 'PDF, JPEG ou PNG · até 10 MiB · até 5 páginas',
+          selectFile: 'Selecionar arquivo',
+          fileExample: 'Arquivo de exemplo ilustrativo · 1 página',
+          readFile: 'Ler documento',
+          cancel: 'Cancelar',
+          previewOnly:
+            'Nesta proposta, arquivos não são lidos nem enviados. A seleção demonstra apenas a interação.',
+          beforeUpload: 'Antes de começar',
+          privacyTitle: 'Você decide o que será enviado.',
+          privacyBody:
+            'O PDF com texto poderá ser lido no navegador. Uma imagem ou página escaneada precisa de reconhecimento externo, quando disponível.',
+          recognitionTitle: 'Reconhecimento por IA',
+          recognitionBody:
+            'Somente após sua confirmação, as páginas selecionadas serão enviadas ao provedor configurado.',
+          consent:
+            'Entendo o envio externo das páginas para reconhecer o texto.',
+          recognize: 'Reconhecer texto',
+          recognitionUnavailable:
+            'Sem provedor, use um PDF com texto ou experimente um exemplo preparado.',
+          workspaceEyebrow: 'Seu documento, em contexto',
+          workshopTitle: 'Oficina criativa',
+          changeDocument: 'Trocar documento',
+          revision: 'Transcrição preparada · revisão 1',
+          pageMeta: '1 página · exemplo autoral',
+          view: 'Visualização',
+          documentTab: 'Documento',
+          textTab: 'Texto',
+          questionsTab: 'Perguntas',
+          documentAndText: 'Documento e transcrição',
+          originalTab: 'Original',
+          transcriptTab: 'Transcrição',
+          editText: 'Revisar texto',
+          page1: 'Página 1 de 1',
+          languageMeta: 'Idioma do exemplo: português',
+          paperDate: 'Anotação de exemplo · 6 de outubro',
+          paperNote:
+            'Documento ilustrativo autoral. A imagem e o texto não são resultado de OCR ao vivo.',
+          transcriptTitle: 'Texto que você pode conferir',
+          transcriptNote:
+            'Compare com o original. Uma correspondência textual não garante que a transcrição esteja correta.',
+          passageTitle: 'Passagem usada · página 1',
+          editLabel: 'Texto da página',
+          saveText: 'Salvar revisão',
+          undoText: 'Desfazer',
+          revisionHelp:
+            'Salvar cria uma nova revisão e remove respostas baseadas no texto anterior. Nesta proposta, a edição é local.',
+          originalNotice:
+            'Trechos do exemplo acompanham o idioma escolhido. Documentos enviados manterão seu idioma original.',
+          questionTitle: 'Pergunte sobre este documento',
+          yourQuestion: 'Sua pergunta',
+          questionHelp:
+            'Até 1.000 caracteres. Use o idioma do documento no modo extrativo.',
+          questionTime: 'A que horas começa?',
+          questionBring: 'O que preciso levar?',
+          answerMode: 'Modo de resposta',
+          modeDemo: 'Demo · frases do documento',
+          modeAi: 'IA · indisponível nesta proposta',
+          modeHelp:
+            'O demo seleciona frases exatas. Uma resposta gerada por IA é um modo diferente.',
+          ask: 'Perguntar ao documento',
+          answerExtracted: 'Resposta extrativa · exemplo preparado',
+          answerTitle: 'A resposta está no documento.',
+          citation: 'Página 1 · ver trecho',
+          checksTitle: 'O que essa referência verifica?',
+          checksBody:
+            'A citação corresponde ao texto preparado. Não verifica a fidelidade de OCR, a veracidade do original ou a correção semântica da resposta.',
+          brandTitle: 'Dois caminhos para a identidade visual',
+          brandBody:
+            'Esboços vetoriais originais para revisão. O primeiro conecta leitura e passagem; o segundo conecta páginas e pergunta.',
+          brandA:
+            'A · Página com trecho destacado. Marca usada nesta proposta.',
+          brandB: 'B · Páginas e pergunta. Alternativa mais direta.',
+          footer: 'Projeto independente · documentos de exemplo autorais',
+          footerNote: 'Sem envio, OCR ou cobrança nesta proposta visual.',
+          readingTitle: 'Lendo o arquivo · simulação',
+          readingBody:
+            'Separando as páginas para preparar a leitura. Seu documento não está sendo processado nesta proposta.',
+          ocrTitle: 'Reconhecendo texto · simulação',
+          ocrBody:
+            'Este estado ilustra o processamento de páginas. Não há chamada de IA nem progresso percentual inventado.',
+          readyTitle: 'Pronto para perguntar',
+          readyBody:
+            'O exemplo tem uma transcrição preparada. Escolha uma pergunta ou escreva a sua.',
+          reviewTitle: 'Revise antes de perguntar',
+          reviewBody:
+            'Compare o texto com a página original. Salvar uma alteração remove respostas da revisão anterior.',
+          illegibleTitle: 'Uma palavra precisa de revisão',
+          illegibleBody:
+            'A passagem tem [ilegível]. Não completamos a palavra por suposição. Confira o original ou corrija a transcrição.',
+          errorTitle: 'Não foi possível ler este documento',
+          errorBody:
+            'Pode ser um arquivo protegido ou sem texto legível. Tente outro arquivo ou escolha um exemplo.',
+          expiredTitle: 'Esta sessão expirou',
+          expiredBody:
+            'A sessão temporária foi encerrada. Reabra seu documento para continuar.',
+          retry: 'Tentar novamente',
+          reopen: 'Reabrir documento',
+          editedRevision: 'Texto corrigido por você · revisão ',
+          noEvidenceTitle: 'A resposta não está neste exemplo.',
+          noEvidenceBody:
+            'A proposta só responde às perguntas sugeridas com trechos preparados. A busca real será integrada depois.',
+          paperIntro: 'Encontro no ateliê do bairro, no sábado.',
+          paperExtra: 'Leve apenas um avental e sua vontade de aprender.',
+          manualExcerpt:
+            'Regue a planta quando a camada superficial da terra estiver seca.',
+          manualIntro: 'Guia de cuidados da planta do ateliê.',
+          manualExtra:
+            'Mantenha o vaso em luz indireta e evite água acumulada.',
+          noteExcerpt: 'Leve apenas um avental. Os materiais estão incluídos.',
+          noteIntro: 'Lembrete para a oficina de sábado.',
+          noteExtra: 'Encontro no ateliê às 14h.',
+          illegibleExcerpt:
+            'A oficina começa às [ilegível]. Os materiais estão incluídos.',
+        },
+        en: {
+          skip: 'Skip to content',
+          prototype:
+            'Visual proposal · simulated states · no real upload or AI',
+          stateLabel: 'Explore state',
+          stateHome: 'Start',
+          stateUpload: 'Upload',
+          stateReading: 'Reading file',
+          stateOcr: 'Recognition',
+          stateReady: 'Ready to ask',
+          stateReview: 'Review text',
+          stateAnswer: 'Answer and source',
+          stateIllegible: 'Illegible passage',
+          stateError: 'Error',
+          stateExpired: 'Session expired',
+          language: 'Language',
+          brandLink: 'The identity',
+          eyebrow: 'From paper to answer',
+          heroTitle: 'Your document has answers. Find them.',
+          heroBody:
+            'A note, a manual or a scanned page. Read, ask and check each answer against the original document.',
+          tryExample: 'Try an example',
+          useDocument: 'Use my document',
+          heroMeta: 'No account · PDF and images · experimental handwriting',
+          heroArt: 'Illustration: a highlighted page connected to an answer',
+          artLabel: 'A passage. An answer you can check.',
+          demoLabel: 'Example · prepared text',
+          heroAnswer: 'The workshop starts at 2 pm. Materials are included.',
+          heroReference: 'Page 1 · connected to the original passage',
+          examplesEyebrow: 'Start with a discovery',
+          examplesTitle: 'One document. Many questions.',
+          examplesBody:
+            'Choose an example to explore the flow. Transcripts are prepared in advance; this is not live OCR.',
+          exampleMeta: 'Original example · 1 page',
+          experimentalMeta: 'Original illustration · experimental',
+          manualTitle: 'A practical manual',
+          manualBody: 'Find instructions without searching every paragraph.',
+          manualQuestion: 'How do I care for my plant?',
+          scanTitle: 'A scanned page',
+          scanBody: 'Turn hard-to-find information into an answer.',
+          scanQuestion: 'When does the workshop take place?',
+          noteTitle: 'A note on paper',
+          noteBody: 'See how to review uncertain words before asking.',
+          noteQuestion: 'What should I bring?',
+          how: 'How it works',
+          step1: 'Bring your document',
+          step1Body: 'Choose a file or start with an example.',
+          step2: 'Check the text',
+          step2Body: 'Review the transcript and words needing attention.',
+          step3: 'Ask and compare',
+          step3Body: 'Follow the answer reference to the passage used.',
+          back: 'Back',
+          uploadPill: 'One document at a time',
+          uploadTitle: 'Start with your document.',
+          uploadBody:
+            'Choose a PDF or an image. You can review the text before asking questions.',
+          dropTitle: 'Your next file starts here',
+          fileLimits: 'PDF, JPEG or PNG · up to 10 MiB · up to 5 pages',
+          selectFile: 'Select file',
+          fileExample: 'Illustrative example file · 1 page',
+          readFile: 'Read document',
+          cancel: 'Cancel',
+          previewOnly:
+            'Files are not read or sent in this proposal. Selection only demonstrates the interaction.',
+          beforeUpload: 'Before you start',
+          privacyTitle: 'You decide what gets sent.',
+          privacyBody:
+            'A text PDF can be read in your browser. Images and scanned pages require external recognition when available.',
+          recognitionTitle: 'AI recognition',
+          recognitionBody:
+            'Only after confirmation will selected pages be sent to the configured provider.',
+          consent:
+            'I understand that pages will be sent externally to recognize the text.',
+          recognize: 'Recognize text',
+          recognitionUnavailable:
+            'Without a provider, use a text PDF or try a prepared example.',
+          workspaceEyebrow: 'Your document, in context',
+          workshopTitle: 'Creative workshop',
+          changeDocument: 'Change document',
+          revision: 'Prepared transcript · revision 1',
+          pageMeta: '1 page · original example',
+          view: 'View',
+          documentTab: 'Document',
+          textTab: 'Text',
+          questionsTab: 'Questions',
+          documentAndText: 'Document and transcript',
+          originalTab: 'Original',
+          transcriptTab: 'Transcript',
+          editText: 'Review text',
+          page1: 'Page 1 of 1',
+          languageMeta: 'Example language: English',
+          paperDate: 'Example note · October 6',
+          paperNote:
+            'Original illustrative document. The image and text are not the result of live OCR.',
+          transcriptTitle: 'Text you can check',
+          transcriptNote:
+            'Compare with the original. A text match does not guarantee an accurate transcript.',
+          passageTitle: 'Passage used · page 1',
+          editLabel: 'Page text',
+          saveText: 'Save revision',
+          undoText: 'Undo',
+          revisionHelp:
+            'Saving creates a new revision and removes answers based on the old text. Edits in this proposal are local.',
+          originalNotice:
+            'Example passages follow your chosen language. Uploaded documents will keep their original language.',
+          questionTitle: 'Ask about this document',
+          yourQuestion: 'Your question',
+          questionHelp:
+            'Up to 1,000 characters. Use the document language in extractive mode.',
+          questionTime: 'What time does it start?',
+          questionBring: 'What should I bring?',
+          answerMode: 'Answer mode',
+          modeDemo: 'Demo · document sentences',
+          modeAi: 'AI · unavailable in this proposal',
+          modeHelp:
+            'Demo selects exact sentences. AI-generated answers are a different mode.',
+          ask: 'Ask the document',
+          answerExtracted: 'Extractive answer · prepared example',
+          answerTitle: 'The answer is in the document.',
+          citation: 'Page 1 · view passage',
+          checksTitle: 'What does this reference check?',
+          checksBody:
+            'The citation matches the prepared text. It does not verify OCR fidelity, source truth or semantic correctness.',
+          brandTitle: 'Two directions for the visual identity',
+          brandBody:
+            'Original vector sketches for review. The first connects reading and passages; the second connects pages and questions.',
+          brandA: 'A · Page with a highlighted passage. Used in this proposal.',
+          brandB: 'B · Pages and a question. A more direct alternative.',
+          footer: 'Independent project · original example documents',
+          footerNote: 'No upload, OCR or charges in this visual proposal.',
+          readingTitle: 'Reading file · simulation',
+          readingBody:
+            'Separating pages to prepare reading. Your document is not being processed in this proposal.',
+          ocrTitle: 'Recognizing text · simulation',
+          ocrBody:
+            'This state illustrates page processing. There is no AI call or invented progress percentage.',
+          readyTitle: 'Ready to ask',
+          readyBody:
+            'This example has a prepared transcript. Choose a question or write your own.',
+          reviewTitle: 'Review before asking',
+          reviewBody:
+            'Compare the text with the original page. Saving a change removes answers from the previous revision.',
+          illegibleTitle: 'A word needs review',
+          illegibleBody:
+            'This passage has [illegible]. We do not guess the missing word. Check the original or correct the transcript.',
+          errorTitle: 'Could not read this document',
+          errorBody:
+            'The file may be protected or have no readable text. Try another file or choose an example.',
+          expiredTitle: 'This session expired',
+          expiredBody:
+            'The temporary session has ended. Reopen your document to continue.',
+          retry: 'Try again',
+          reopen: 'Reopen document',
+          editedRevision: 'Text corrected by you · revision ',
+          noEvidenceTitle: 'The answer is not in this example.',
+          noEvidenceBody:
+            'This proposal only answers suggested questions using prepared passages. Real retrieval will be integrated later.',
+          paperIntro: 'Meet at the neighborhood studio on Saturday.',
+          paperExtra: 'Bring only an apron and your curiosity.',
+          manualExcerpt: 'Water the plant when the top layer of soil is dry.',
+          manualIntro: 'Care guide for the studio plant.',
+          manualExtra:
+            'Keep the pot in indirect light and avoid standing water.',
+          noteExcerpt: 'Bring only an apron. Materials are included.',
+          noteIntro: 'Reminder for the Saturday workshop.',
+          noteExtra: 'Meet at the studio at 2 pm.',
+          illegibleExcerpt:
+            'The workshop starts at [illegible]. Materials are included.',
+        },
+        es: {
+          skip: 'Ir al contenido',
+          prototype:
+            'Propuesta visual · estados simulados · sin carga ni IA real',
+          stateLabel: 'Explorar estado',
+          stateHome: 'Inicio',
+          stateUpload: 'Carga',
+          stateReading: 'Lectura del archivo',
+          stateOcr: 'Reconocimiento',
+          stateReady: 'Listo para preguntar',
+          stateReview: 'Revisión del texto',
+          stateAnswer: 'Respuesta y fuente',
+          stateIllegible: 'Fragmento ilegible',
+          stateError: 'Error',
+          stateExpired: 'Sesión caducada',
+          language: 'Idioma',
+          brandLink: 'La identidad',
+          eyebrow: 'Del papel a la respuesta',
+          heroTitle: 'Tu documento tiene respuestas. Encuéntralas.',
+          heroBody:
+            'Una nota, un manual o una página escaneada. Lee, pregunta y comprueba cada respuesta en el documento original.',
+          tryExample: 'Probar un ejemplo',
+          useDocument: 'Usar mi documento',
+          heroMeta: 'Sin cuenta · PDF e imágenes · manuscritos experimentales',
+          heroArt:
+            'Ilustración: una página destacada conectada a una respuesta',
+          artLabel: 'Un fragmento. Una respuesta que puedes comprobar.',
+          demoLabel: 'Ejemplo · texto preparado',
+          heroAnswer:
+            'El taller empieza a las 14 h. Los materiales están incluidos.',
+          heroReference: 'Página 1 · conectada al fragmento original',
+          examplesEyebrow: 'Empieza con un descubrimiento',
+          examplesTitle: 'Un documento. Muchas preguntas.',
+          examplesBody:
+            'Elige un ejemplo para conocer el flujo. Las transcripciones están preparadas; no es OCR en vivo.',
+          exampleMeta: 'Ejemplo original · 1 página',
+          experimentalMeta: 'Ilustración original · experimental',
+          manualTitle: 'Un manual práctico',
+          manualBody: 'Encuentra instrucciones sin buscar en cada párrafo.',
+          manualQuestion: '¿Cómo cuido mi planta?',
+          scanTitle: 'Una página escaneada',
+          scanBody:
+            'Convierte información difícil de encontrar en una respuesta.',
+          scanQuestion: '¿Cuándo se celebra el taller?',
+          noteTitle: 'Una nota en papel',
+          noteBody: 'Aprende a revisar palabras inciertas antes de preguntar.',
+          noteQuestion: '¿Qué debo llevar?',
+          how: 'Cómo funciona',
+          step1: 'Trae tu documento',
+          step1Body: 'Elige un archivo o empieza con un ejemplo.',
+          step2: 'Comprueba el texto',
+          step2Body:
+            'Revisa la transcripción y las palabras que necesitan atención.',
+          step3: 'Pregunta y compara',
+          step3Body: 'Sigue la referencia hasta el fragmento utilizado.',
+          back: 'Volver',
+          uploadPill: 'Un documento a la vez',
+          uploadTitle: 'Empieza con tu documento.',
+          uploadBody:
+            'Elige un PDF o una imagen. Podrás revisar el texto antes de preguntar.',
+          dropTitle: 'Tu próximo archivo empieza aquí',
+          fileLimits: 'PDF, JPEG o PNG · hasta 10 MiB · hasta 5 páginas',
+          selectFile: 'Seleccionar archivo',
+          fileExample: 'Archivo de ejemplo ilustrativo · 1 página',
+          readFile: 'Leer documento',
+          cancel: 'Cancelar',
+          previewOnly:
+            'Los archivos no se leen ni se envían en esta propuesta. La selección solo demuestra la interacción.',
+          beforeUpload: 'Antes de empezar',
+          privacyTitle: 'Tú decides qué se envía.',
+          privacyBody:
+            'Un PDF con texto se puede leer en el navegador. Las imágenes y páginas escaneadas necesitan reconocimiento externo, cuando esté disponible.',
+          recognitionTitle: 'Reconocimiento con IA',
+          recognitionBody:
+            'Las páginas seleccionadas se enviarán al proveedor configurado solo después de tu confirmación.',
+          consent:
+            'Entiendo el envío externo de páginas para reconocer el texto.',
+          recognize: 'Reconocer texto',
+          recognitionUnavailable:
+            'Sin proveedor, usa un PDF con texto o prueba un ejemplo preparado.',
+          workspaceEyebrow: 'Tu documento, en contexto',
+          workshopTitle: 'Taller creativo',
+          changeDocument: 'Cambiar documento',
+          revision: 'Transcripción preparada · revisión 1',
+          pageMeta: '1 página · ejemplo original',
+          view: 'Vista',
+          documentTab: 'Documento',
+          textTab: 'Texto',
+          questionsTab: 'Preguntas',
+          documentAndText: 'Documento y transcripción',
+          originalTab: 'Original',
+          transcriptTab: 'Transcripción',
+          editText: 'Revisar texto',
+          page1: 'Página 1 de 1',
+          languageMeta: 'Idioma del ejemplo: español',
+          paperDate: 'Nota de ejemplo · 6 de octubre',
+          paperNote:
+            'Documento ilustrativo original. La imagen y el texto no son resultado de OCR en vivo.',
+          transcriptTitle: 'Texto que puedes comprobar',
+          transcriptNote:
+            'Compara con el original. Una coincidencia textual no garantiza una transcripción correcta.',
+          passageTitle: 'Fragmento utilizado · página 1',
+          editLabel: 'Texto de la página',
+          saveText: 'Guardar revisión',
+          undoText: 'Deshacer',
+          revisionHelp:
+            'Guardar crea una revisión nueva y elimina respuestas del texto anterior. Los cambios de esta propuesta son locales.',
+          originalNotice:
+            'Los ejemplos siguen el idioma elegido. Los documentos cargados conservarán su idioma original.',
+          questionTitle: 'Pregunta sobre este documento',
+          yourQuestion: 'Tu pregunta',
+          questionHelp:
+            'Hasta 1.000 caracteres. Usa el idioma del documento en el modo extractivo.',
+          questionTime: '¿A qué hora empieza?',
+          questionBring: '¿Qué debo llevar?',
+          answerMode: 'Modo de respuesta',
+          modeDemo: 'Demo · frases del documento',
+          modeAi: 'IA · no disponible en esta propuesta',
+          modeHelp:
+            'El demo selecciona frases exactas. Las respuestas generadas con IA son un modo distinto.',
+          ask: 'Preguntar al documento',
+          answerExtracted: 'Respuesta extractiva · ejemplo preparado',
+          answerTitle: 'La respuesta está en el documento.',
+          citation: 'Página 1 · ver fragmento',
+          checksTitle: '¿Qué verifica esta referencia?',
+          checksBody:
+            'La cita coincide con el texto preparado. No verifica la fidelidad del OCR, la veracidad del original ni la corrección semántica.',
+          brandTitle: 'Dos caminos para la identidad visual',
+          brandBody:
+            'Bocetos vectoriales originales para revisar. El primero conecta lectura y fragmentos; el segundo conecta páginas y preguntas.',
+          brandA:
+            'A · Página con fragmento destacado. Usado en esta propuesta.',
+          brandB: 'B · Páginas y una pregunta. Una alternativa más directa.',
+          footer: 'Proyecto independiente · documentos de ejemplo originales',
+          footerNote: 'Sin carga, OCR ni cargos en esta propuesta visual.',
+          readingTitle: 'Leyendo el archivo · simulación',
+          readingBody:
+            'Separando páginas para preparar la lectura. Tu documento no se está procesando en esta propuesta.',
+          ocrTitle: 'Reconociendo texto · simulación',
+          ocrBody:
+            'Este estado ilustra el procesamiento. No hay llamadas de IA ni porcentajes de progreso inventados.',
+          readyTitle: 'Listo para preguntar',
+          readyBody:
+            'Este ejemplo tiene una transcripción preparada. Elige una pregunta o escribe la tuya.',
+          reviewTitle: 'Revisa antes de preguntar',
+          reviewBody:
+            'Compara con la página original. Guardar un cambio elimina las respuestas de la revisión anterior.',
+          illegibleTitle: 'Una palabra necesita revisión',
+          illegibleBody:
+            'El fragmento tiene [ilegible]. No adivinamos la palabra. Comprueba el original o corrige la transcripción.',
+          errorTitle: 'No se pudo leer este documento',
+          errorBody:
+            'Puede estar protegido o no contener texto legible. Prueba otro archivo o elige un ejemplo.',
+          expiredTitle: 'Esta sesión ha caducado',
+          expiredBody:
+            'La sesión temporal ha terminado. Vuelve a abrir tu documento para continuar.',
+          retry: 'Intentar de nuevo',
+          reopen: 'Volver a abrir el documento',
+          editedRevision: 'Texto corregido por ti · revisión ',
+          noEvidenceTitle: 'La respuesta no está en este ejemplo.',
+          noEvidenceBody:
+            'Esta propuesta solo responde a preguntas sugeridas con fragmentos preparados. La búsqueda real se integrará después.',
+          paperIntro: 'Encuentro en el estudio del barrio el sábado.',
+          paperExtra: 'Trae solo un delantal y tus ganas de aprender.',
+          manualExcerpt:
+            'Riega la planta cuando la capa superficial de tierra esté seca.',
+          manualIntro: 'Guía de cuidados de la planta del estudio.',
+          manualExtra:
+            'Mantén la maceta con luz indirecta y evita el agua estancada.',
+          noteExcerpt: 'Trae solo un delantal. Los materiales están incluidos.',
+          noteIntro: 'Recordatorio para el taller del sábado.',
+          noteExtra: 'Encuentro en el estudio a las 14 h.',
+          illegibleExcerpt:
+            'El taller empieza a las [ilegible]. Los materiales están incluidos.',
+        },
+      };
+      const $ = (selector) => document.querySelector(selector);
+      let locale = 'pt-BR';
+      let example = 'scan';
+      let revision = 1;
+      let editedText = null;
+      let editedLocale = null;
+      let answerPart = 'main';
+      const t = (key) => copy[locale][key];
+      const exampleText = () =>
+        example === 'manual'
+          ? t('manualExcerpt')
+          : example === 'note'
+            ? t('noteExcerpt')
+            : t('heroAnswer');
+      function displayText() {
+        return editedText !== null ? editedText : exampleText();
+      }
+      function setMobile(view) {
+        $('.workspace-grid').dataset.mobile = view;
+        document
+          .querySelectorAll('.mobile-switch [data-mobile]')
+          .forEach((button) =>
+            button.setAttribute(
+              'aria-pressed',
+              String(button.dataset.mobile === view),
+            ),
+          );
+      }
+      function showText(edit = false) {
+        $('#original-page').hidden = true;
+        $('#transcript-page').hidden = false;
+        $('#edit-controls').hidden = !edit;
+        $('#show-original').setAttribute('aria-pressed', 'false');
+        $('#show-text').setAttribute('aria-pressed', 'true');
+        if (edit) $('#transcript-edit').value = displayText();
+      }
+      function updateDocument() {
+        const title =
+          example === 'manual'
+            ? t('manualTitle')
+            : example === 'note'
+              ? t('noteTitle')
+              : t('workshopTitle');
+        $('#document-title').textContent = title;
+        $('#paper-title').textContent = title;
+        $('#paper-intro').textContent =
+          example === 'manual'
+            ? t('manualIntro')
+            : example === 'note'
+              ? t('noteIntro')
+              : t('paperIntro');
+        $('#paper-extra').textContent =
+          example === 'manual'
+            ? t('manualExtra')
+            : example === 'note'
+              ? t('noteExtra')
+              : t('paperExtra');
+        $('#paper-excerpt').textContent = exampleText();
+        const passage =
+          editedText !== null
+            ? editedText
+            : answerPart === 'extra' && example === 'scan'
+              ? t('paperExtra')
+              : exampleText();
+        $('#passage-text').textContent = passage;
+        $('#answer-text').textContent = passage;
+        $('#revision').textContent =
+          revision > 1 ? t('editedRevision') + revision : t('revision');
+        $('#passage-text').lang = editedLocale ?? locale;
+        $('#answer-text').lang = editedLocale ?? locale;
+        $('#paper-excerpt').lang = locale;
+      }
+      function status(title, body, action) {
+        $('#status-box').hidden = false;
+        $('#status-title').textContent = t(title);
+        $('#status-body').textContent = t(body);
+        $('#status-action').hidden = !action;
+        if (action) $('#status-action').textContent = t(action);
+      }
+      function render() {
+        document.documentElement.lang = locale;
+        document.title = 'Evidence Assistant · ' + t('prototype');
+        document.querySelectorAll('[data-t]').forEach((element) => {
+          element.textContent = t(element.dataset.t);
+        });
+        document
+          .querySelectorAll('[data-aria]')
+          .forEach((element) =>
+            element.setAttribute('aria-label', t(element.dataset.aria)),
+          );
+        const state = $('#preview-state').value;
+        $('#home').hidden = state !== 'home';
+        $('#upload').hidden = state !== 'upload';
+        $('#workspace').hidden = ['home', 'upload'].includes(state);
+        $('#status-box').hidden = true;
+        $('#status-box').classList.remove('warning');
+        $('#result').hidden = state !== 'answer';
+        $('#ask').disabled = ['reading', 'ocr', 'expired'].includes(state);
+        $('#cancel-process').hidden = !['reading', 'ocr'].includes(state);
+        $('#status-action').hidden = true;
+        $('#question-form').hidden = state === 'expired';
+        $('#original-page').hidden = false;
+        $('#transcript-page').hidden = true;
+        $('#edit-controls').hidden = true;
+        $('#show-original').setAttribute('aria-pressed', 'true');
+        $('#show-text').setAttribute('aria-pressed', 'false');
+        updateDocument();
+        if (state === 'reading') status('readingTitle', 'readingBody');
+        if (state === 'ocr') status('ocrTitle', 'ocrBody');
+        if (state === 'ready') status('readyTitle', 'readyBody');
+        if (state === 'review') {
+          status('reviewTitle', 'reviewBody');
+          showText(true);
+          setMobile('text');
+        }
+        if (state === 'illegible') {
+          status('illegibleTitle', 'illegibleBody');
+          $('#status-box').classList.add('warning');
+          $('#passage-text').textContent = t('illegibleExcerpt');
+          showText();
+          setMobile('text');
+        }
+        if (state === 'error') {
+          status('errorTitle', 'errorBody', 'retry');
+          $('#status-box').classList.add('warning');
+        }
+        if (state === 'expired')
+          status('expiredTitle', 'expiredBody', 'reopen');
+      }
+      function go(state) {
+        $('#preview-state').value = state;
+        setMobile('questions');
+        render();
+      }
+      function newExample(kind) {
+        answerPart = 'main';
+        example = kind;
+        revision = 1;
+        editedText = null;
+        editedLocale = null;
+        $('#question').value =
+          example === 'manual'
+            ? t('manualQuestion')
+            : example === 'note'
+              ? t('noteQuestion')
+              : t('questionTime');
+        go('answer');
+      }
+      $('#preview-state').addEventListener('change', () => {
+        setMobile('questions');
+        render();
+      });
+      $('#language').addEventListener('change', (event) => {
+        locale = event.target.value;
+        render();
+      });
+      $('#home-link').addEventListener('click', (event) => {
+        event.preventDefault();
+        go('home');
+      });
+      $('#try-example').addEventListener('click', () => newExample('scan'));
+      $('#use-document').addEventListener('click', () => go('upload'));
+      document
+        .querySelectorAll('[data-example]')
+        .forEach((button) =>
+          button.addEventListener('click', () =>
+            newExample(button.dataset.example),
+          ),
+        );
+      document
+        .querySelectorAll('.back')
+        .forEach((button) =>
+          button.addEventListener('click', () => go('home')),
+        );
+      $('#consent').addEventListener('change', (event) => {
+        $('#recognize').disabled = !event.target.checked;
+      });
+      $('#recognize').addEventListener('click', () => go('ocr'));
+      $('#read-file').addEventListener('click', () => go('reading'));
+      $('#select-file').addEventListener('click', () => $('#file').click());
+      $('#file').addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) $('#file-name').textContent = file.name;
+      });
+      $('#cancel-process').addEventListener('click', () => go('ready'));
+      $('#status-action').addEventListener('click', () => go('upload'));
+      $('#show-original').addEventListener('click', () => {
+        $('#original-page').hidden = false;
+        $('#transcript-page').hidden = true;
+        $('#show-original').setAttribute('aria-pressed', 'true');
+        $('#show-text').setAttribute('aria-pressed', 'false');
+      });
+      $('#show-text').addEventListener('click', () => showText());
+      $('#edit-text').addEventListener('click', () => {
+        go('review');
+        $('#transcript-edit').focus();
+      });
+      $('#undo-text').addEventListener('click', () => {
+        $('#transcript-edit').value = displayText();
+      });
+      $('#save-text').addEventListener('click', () => {
+        const value = $('#transcript-edit').value.trim();
+        if (!value) return;
+        editedText = value;
+        editedLocale = locale;
+        revision++;
+        go('ready');
+        showText();
+        setMobile('text');
+      });
+      $('#citation').addEventListener('click', (event) => {
+        event.preventDefault();
+        showText();
+        setMobile('text');
+        $('#passage').focus();
+        $('#passage').scrollIntoView({ block: 'nearest' });
+      });
+      document
+        .querySelectorAll('.mobile-switch [data-mobile]')
+        .forEach((button) =>
+          button.addEventListener('click', () => {
+            setMobile(button.dataset.mobile);
+            if (button.dataset.mobile === 'text') showText();
+            if (button.dataset.mobile === 'document')
+              $('#show-original').click();
+          }),
+        );
+      document.querySelectorAll('[data-question]').forEach((button) =>
+        button.addEventListener('click', () => {
+          $('#question').value = t(
+            button.dataset.question === 'time'
+              ? 'questionTime'
+              : 'questionBring',
+          );
+          $('#question').focus();
+        }),
+      );
+      $('#question-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const question = $('#question').value.trim();
+        if (!question) return;
+        const supported = [
+          t('questionTime'),
+          t('questionBring'),
+          t('manualQuestion'),
+          t('scanQuestion'),
+          t('noteQuestion'),
+        ].includes(question);
+        answerPart = question === t('questionBring') ? 'extra' : 'main';
+        go('answer');
+        if (!supported) {
+          $('#result').hidden = true;
+          status('noEvidenceTitle', 'noEvidenceBody');
+        }
+      });
+      render();
+    </script>
+  </body>
+</html>

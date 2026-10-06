@@ -8,16 +8,16 @@
 
 **Tech Stack:** TypeScript/React/Vite existentes; PDF.js em worker (versão e compatibilidade a verificar); Fastify; adaptador visual OpenAI opcional; Vitest, Playwright, axe e Storybook existentes.
 
-**Status:** roteiro proposto para revisão junto da especificação; nenhuma tarefa autorizada como concluída. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
+**Status:** roteiro aprovado por Marcelo nesta conversa em 6 October 2026. Task 1 em execução; a prévia visual aguarda revisão humana antes de consolidar o frontend. Referência normativa: [especificação revisada](../specs/2026-10-06-document-workspace-design.md). Não continuar o plano antigo de coleção fixa como direção de produto.
 
 ## Task 1 — proposta visual e baseline preservado
 
 Arquivos: `docs/ux-document-preview.html`, `docs/ux-design.md`, `docs/execution-ledger.md`, `apps/web/src/assets/brand-*.svg` (na implementação), configurações existentes.
 
-- [ ] Registrar aprovação da especificação/plano e ponto de retomada; preservar alterações locais atuais. Separar baseline antigo e nova experiência por commits, sem reset destrutivo.
-- [ ] Aplicar UI UX Pro Max com stack React e foco/reduced motion. Criar preview dos caminhos exemplo/upload e estados leitura/OCR/revisão/resposta/ilegível/erro/expiração nos três idiomas; dois sketches de marca e miniaturas autorais.
+- [x] Registrar aprovação da especificação/plano e ponto de retomada; preservar alterações locais atuais. Separar baseline antigo e nova experiência por commits, sem reset destrutivo.
+- [x] Aplicar UI UX Pro Max com stack React e foco/reduced motion. Criar preview dos caminhos exemplo/upload e estados leitura/OCR/revisão/resposta/ilegível/erro/expiração nos três idiomas; dois sketches de marca e miniaturas autorais.
 - [ ] Revisar desktop/mobile, propósito, contraste e fluxo com Marcelo antes de consolidar visual. Atualizar a proibição antiga de gradientes para a regra localizada da nova especificação.
-- [ ] Corrigir shell de stories com heading/landmark próprios; testar RED/GREEN. Rodar gates atuais e registrar capturas ainda não aprovadas. Commit somente após verificar o escopo efetivamente entregue.
+- [x] Corrigir shell de stories com heading/landmark próprios; testar RED/GREEN. Rodar gates atuais e registrar capturas ainda não aprovadas. Commit somente após verificar o escopo efetivamente entregue.
 
 ## Task 2 — ingestão local e exemplos úteis
 
