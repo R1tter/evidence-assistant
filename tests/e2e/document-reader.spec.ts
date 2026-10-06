@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { pdfFixture, imagePdfFixture } from './pdf-fixture.js';
+import { transcriptionErrors } from '../../scripts/evaluation-metrics.js';
 test('a plausible PNG header with corrupt image data fails safely', async ({
   page,
 }) => {
@@ -66,7 +67,7 @@ test('aborting an active PDF worker terminates it', async ({ page }) => {
 });
 test('original localized examples load with matching prepared transcriptions', async ({
   page,
-}) => {
+}, testInfo) => {
   await page.goto('/');
   const outputs = await page.evaluate(async () => {
     const modulePath = '/src/documents/load-example.ts';
@@ -82,6 +83,8 @@ test('original localized examples load with matching prepared transcriptions', a
           new AbortController().signal,
         );
         results.push({
+          kind,
+          locale,
           pages: result.document.pages.length,
           text: result.document.pages[0]!.text,
           expected: result.example.text,
@@ -100,6 +103,24 @@ test('original localized examples load with matching prepared transcriptions', a
       output.expected.replaceAll(/\s+/g, ' '),
     );
   }
+  const measurements = outputs.map((output) => ({
+    locale: output.locale,
+    kind: output.kind,
+    category:
+      output.kind === 'manual'
+        ? 'embedded PDF extraction'
+        : 'prepared transcript consistency (not OCR)',
+    ...transcriptionErrors(output.expected, output.text),
+  }));
+  expect(
+    measurements.every(
+      (result) => result.characterErrors === 0 && result.wordErrors === 0,
+    ),
+  ).toBe(true);
+  await testInfo.attach('transcription-measurements', {
+    body: JSON.stringify(measurements, null, 2),
+    contentType: 'application/json',
+  });
 });
 test('real browser worker extracts pages and releases local previews', async ({
   page,

@@ -1,0 +1,35 @@
+{
+  "expectedFragments": {
+    "en-manual": ["twice a week", "window", "soil"],
+    "en-scan": ["14:00", "apron", "room 2"],
+    "en-note": ["09:00", "notebook", "platform 3"],
+    "pt-BR-manual": ["duas vezes", "janela", "terra"],
+    "pt-BR-scan": ["14h", "avental", "sala 2"],
+    "pt-BR-note": ["9h", "caderno", "plataforma 3"],
+    "es-manual": ["dos veces", "ventana", "tierra"],
+    "es-scan": ["14:00", "delantal", "sala 2"],
+    "es-note": ["09:00", "cuaderno", "andén 3"]
+  },
+  "unsupportedQueries": [
+    "galactic penguin recipes",
+    "receitas galácticas de pinguins",
+    "recetas galácticas de pingüinos"
+  ],
+  "simulatedRecognition": [
+    {
+      "locale": "en",
+      "reference": "Meet Ana at the station at 09:00.",
+      "actual": "Meet Ana at the station at 09:00."
+    },
+    {
+      "locale": "pt-BR",
+      "reference": "Encontrar Ana na estação às 9h.",
+      "actual": "Encontrar Ana na estação às [illegible]."
+    },
+    {
+      "locale": "es",
+      "reference": "El tren sale a las 09:30 del andén 3.",
+      "actual": "El tren sale a las 09:30 del andén 8."
+    }
+  ]
+}

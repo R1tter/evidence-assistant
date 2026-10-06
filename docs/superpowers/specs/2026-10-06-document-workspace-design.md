@@ -73,6 +73,6 @@ Configuração: manter modelo visual e de geração explícitos no servidor e ne
 
 ## Estado e decisão
 
-Etapas 1–4 anteriores estão na main (fa0438d). React atual está local, incompleto e sem commit; quatro testes de componente e dois primeiros testes browser passaram. A expansão revelou falha de acessibilidade no shell de Storybook (heading principal ausente); reflow com texto aumentado foi corrigido e passou. Não considerar etapa 5 anterior concluída nem aceitar screenshots automaticamente.
+Etapas 1–4 anteriores estão na main (fa0438d). Marcelo aprovou escopo, plano e proposta visual nesta conversa. A adaptação foi implementada na branch codex/deterministic-retrieval: leitura local, exemplos, sessões/revisões, reconhecimento opcional e workspace. O baseline técnico anterior permanece separado. O ledger registra verificações executadas por entrega.
 
-Aprovação necessária do escopo escrito antes da execução da adaptação. Marcos sugeridos: experiência com exemplos/PDF textual; reconhecimento/revisão; respostas e verificação integrada. Esta especificação define a direção, não afirma suporte implementado.
+PDF textual e exemplos preparados foram verificados com API local sem chave; reconhecimento foi testado com provedor simulado. Não afirmar qualidade de OCR/manuscritos, chamadas pagas ou hospedagem ao vivo. Publicação de código está autorizada; integração em main depende de autorização aplicável à adaptação.

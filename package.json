@@ -11,6 +11,8 @@
     "apps/*"
   ],
   "scripts": {
+    "evaluate": "npm run build && tsx scripts/evaluate.ts",
+    "benchmark": "npm run build && tsx scripts/benchmark.ts",
     "test": "npm run build && vitest run",
     "test:coverage": "npm run build && vitest run --coverage",
     "typecheck": "tsc --noEmit",
