@@ -101,6 +101,7 @@ export function DocumentApp({
         )}
       </main>
       <footer className="shell">
+        <span className="author-credit">{t.authorCredit}</span>
         <span>{t.footer}</span>
         <span>{t.footerNote}</span>
       </footer>

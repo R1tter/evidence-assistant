@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { ExpandedDocument } from './ExpandedDocument.js';
+import { useRef, useState } from 'react';
 import type { RefObject } from 'react';
 import type { PageText } from '@evidence/core';
 import type { PagePreview } from './types.js';
@@ -71,6 +72,8 @@ export function DocumentViewer({
   returnToQuestion(this: void): void;
 }) {
   const page = pages.find((item) => item.page === number)!;
+  const enlargeButton = useRef<HTMLButtonElement>(null);
+  const [expanded, setExpanded] = useState(false);
   const [drafts, setDrafts] = useState<Record<number, string>>({});
   const preview = previews.find((item) => item.page === number)!;
   return (
@@ -105,6 +108,13 @@ export function DocumentViewer({
       <p className="page-provenance pill tag-teal">{provenance}</p>
       {view === 'original' && (
         <div className="original-page">
+          <button
+            ref={enlargeButton}
+            className="enlarge-document"
+            onClick={() => setExpanded(true)}
+          >
+            {t.enlarge}
+          </button>
           <img
             src={preview.url}
             width={preview.width}
@@ -112,6 +122,17 @@ export function DocumentViewer({
             alt={`${t.documentTab} ${number}`}
           />
         </div>
+      )}
+      {expanded && (
+        <ExpandedDocument
+          key={number}
+          t={t}
+          preview={preview}
+          close={() => {
+            setExpanded(false);
+            enlargeButton.current?.focus();
+          }}
+        />
       )}
       {view !== 'original' && (
         <div className="transcript">
@@ -131,7 +152,15 @@ export function DocumentViewer({
             </div>
           )}
           {view === 'text' && (
-            <div className="page-text">{page.text || t.illegibleTitle}</div>
+            <section
+              className="page-text transcript-sheet"
+              aria-label={`${t.transcriptTab} · ${t.pageLabel} ${number}`}
+            >
+              <strong className="transcript-label">
+                {t.transcriptTab} · {number}
+              </strong>
+              <div>{page.text || t.illegibleTitle}</div>
+            </section>
           )}
           {view === 'edit' && (
             <TranscriptEditor
