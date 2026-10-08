@@ -1,0 +1,31 @@
+name: Capture Windows UI baselines for review
+on:
+  push:
+    branches: [feat/document-workspace-ui-polish]
+    paths: [.github/workflows/capture-ui-baselines.yml]
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      OPENAI_API_KEY: ''
+      OPENAI_MODEL: ''
+      OPENAI_VISION_MODEL: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.17.0'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run build:web
+      - run: npm run build:storybook
+      - run: npx playwright install chromium
+      - run: npx playwright test --update-snapshots
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-windows-baseline-candidates
+          path: tests/e2e/*-snapshots/*win32.png
