@@ -382,3 +382,36 @@ it('preserves the draft and blocks questions until an uncertain revision can be 
     screen.getByRole('button', { name: 'Perguntar ao documento' }),
   ).toBeEnabled();
 });
+it('offers explicit walkthrough playback without starting a document session', async () => {
+  const user = userEvent.setup();
+  const dependencies = services();
+  render(<DocumentApp services={dependencies} />);
+  await user.click(screen.getByRole('button', { name: 'Ver demonstração' }));
+  expect(
+    screen.getByRole('button', { name: 'Pausar demonstração' }),
+  ).toBeVisible();
+  await user.click(screen.getByRole('button', { name: 'Confira o texto' }));
+  expect(
+    screen.getByRole('button', { name: 'Continuar demonstração' }),
+  ).toBeVisible();
+  expect(screen.getByTestId('walkthrough-preview')).toHaveTextContent(
+    'Transcrição',
+  );
+  expect(
+    screen.queryByRole('heading', { name: 'Oficina criativa', level: 1 }),
+  ).not.toBeInTheDocument();
+});
+it('offers enlargement of the original page and identifies the transcript', async () => {
+  const user = userEvent.setup();
+  render(<DocumentApp services={services()} />);
+  await user.click(
+    screen.getByRole('button', { name: 'Experimentar um exemplo' }),
+  );
+  expect(
+    await screen.findByRole('button', { name: 'Ampliar documento' }),
+  ).toBeVisible();
+  await user.click(screen.getByRole('button', { name: 'Transcrição' }));
+  expect(
+    screen.getByRole('region', { name: 'Transcrição · página 1' }),
+  ).toHaveTextContent('Oficina criativa');
+});

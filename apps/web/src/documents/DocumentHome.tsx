@@ -1,3 +1,4 @@
+import { DocumentWalkthrough } from './DocumentWalkthrough.js';
 import { documentExamples } from './examples.js';
 import type { ExampleKind, ExampleLocale } from './examples.js';
 import type { DocumentMessages } from './messages.js';
@@ -93,19 +94,7 @@ export function DocumentHome({
       </section>
       <section className="how-section" aria-labelledby="how-title">
         <h2 id="how-title">{t.how}</h2>
-        <div className="how">
-          {[
-            [t.step1, t.step1Body],
-            [t.step2, t.step2Body],
-            [t.step3, t.step3Body],
-          ].map(([title, body], index) => (
-            <article key={title}>
-              <span className="number">{index + 1}</span>
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </article>
-          ))}
-        </div>
+        <DocumentWalkthrough t={t} example={examples[1]!} />
       </section>
     </div>
   );
