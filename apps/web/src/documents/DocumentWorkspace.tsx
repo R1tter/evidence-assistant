@@ -1,3 +1,5 @@
+import { SessionHistory } from './SessionHistory.js';
+import { SessionExport } from './SessionExport.js';
 import { useEffect, useRef, useState } from 'react';
 import type { ExampleLocale } from './examples.js';
 import type { DocumentMessages } from './messages.js';
@@ -107,6 +109,12 @@ export function DocumentWorkspace({
           · {loaded.document.pages.length} {t.documentTab.toLowerCase()} ·{' '}
           {loaded.example?.locale ?? t.originalTab}
         </p>
+        <SessionExport
+          t={t}
+          document={loaded.document}
+          history={controller.history}
+          disabled={busy}
+        />
         <div className="mobile-switch" aria-label={t.view}>
           {(['document', 'text', 'questions'] as const).map((item, index) => (
             <button
@@ -124,7 +132,7 @@ export function DocumentWorkspace({
           ))}
         </div>
       </section>
-      <div className="workspace-grid" data-mobile={mobile}>
+      <div className="workspace-grid" data-mobile={mobile} data-reading={view}>
         <DocumentViewer
           provenance={provenance}
           t={t}
@@ -161,6 +169,11 @@ export function DocumentWorkspace({
               controller.ask(question, mode, locale);
             }}
             source={source}
+          />
+          <SessionHistory
+            t={t}
+            history={controller.history}
+            revision={loaded.document.revision}
           />
           <RecognitionControls
             key={loaded.document.id}
