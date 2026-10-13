@@ -2,7 +2,11 @@ name: Capture Windows UI baselines for review
 on:
   push:
     branches: [feat/document-reading-tools]
-    paths: [.github/workflows/capture-ui-baselines.yml]
+    paths:
+      [
+        .github/workflows/capture-ui-baselines.yml,
+        apps/web/src/documents/workspace.css,
+      ]
 permissions:
   contents: read
 jobs:
