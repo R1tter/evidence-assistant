@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { cleanup, render, screen, within } from '@testing-library/react';
+import { act, cleanup, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { DocumentApp } from './DocumentApp.js';
 import { documentExamples } from './examples.js';
@@ -115,7 +115,9 @@ it('lets a visitor ask about an example, inspect its source and invalidate the a
   await user.click(
     screen.getByRole('button', { name: 'Perguntar ao documento' }),
   );
-  await screen.findByText('A oficina começa às 14h no sábado.');
+  expect(await screen.findByTestId('document-answer')).toHaveTextContent(
+    'A oficina começa às 14h no sábado.',
+  );
   await user.click(
     screen.getByRole('button', { name: 'Página 1 · ver trecho' }),
   );
@@ -414,4 +416,110 @@ it('offers enlargement of the original page and identifies the transcript', asyn
   expect(
     screen.getByRole('region', { name: 'Transcrição · página 1' }),
   ).toHaveTextContent('Oficina criativa');
+});
+it('keeps completed questions tied to their original revision after editing and clears history on document change', async () => {
+  const user = userEvent.setup();
+  render(<DocumentApp services={services()} />);
+  await user.click(
+    screen.getByRole('button', { name: 'Experimentar um exemplo' }),
+  );
+  await user.type(await screen.findByLabelText('Sua pergunta'), 'Que horas?');
+  await user.click(
+    screen.getByRole('button', { name: 'Perguntar ao documento' }),
+  );
+  const history = await screen.findByRole('region', {
+    name: 'Histórico da sessão',
+  });
+  expect(history).toHaveTextContent('Que horas?');
+  expect(history).toHaveTextContent('A oficina começa às 14h no sábado.');
+  await user.click(screen.getByRole('button', { name: 'Revisar texto' }));
+  await user.clear(screen.getByLabelText('Texto da página'));
+  await user.type(
+    screen.getByLabelText('Texto da página'),
+    'A oficina começa às 16h.',
+  );
+  await user.click(screen.getByRole('button', { name: 'Salvar revisão' }));
+  await vi.waitFor(() => expect(history).toHaveTextContent('Revisão anterior'));
+  expect(
+    within(history).queryByRole('button', { name: /ver trecho/ }),
+  ).not.toBeInTheDocument();
+  await user.click(screen.getByRole('button', { name: 'Trocar documento' }));
+  expect(
+    screen.queryByRole('region', { name: 'Histórico da sessão' }),
+  ).not.toBeInTheDocument();
+});
+it('does not add a cancelled late answer to the history', async () => {
+  const user = userEvent.setup();
+  const deps = services();
+  const result = await deps.client.ask(
+    'token',
+    1,
+    'question',
+    'demo',
+    'pt-BR',
+    new AbortController().signal,
+  );
+  let finish!: (value: typeof result) => void;
+  deps.client.ask = () =>
+    new Promise((resolve) => {
+      finish = resolve;
+    });
+  render(<DocumentApp services={deps} />);
+  await user.click(
+    screen.getByRole('button', { name: 'Experimentar um exemplo' }),
+  );
+  await user.type(await screen.findByLabelText('Sua pergunta'), 'Que horas?');
+  await user.click(
+    screen.getByRole('button', { name: 'Perguntar ao documento' }),
+  );
+  await user.click(screen.getByRole('button', { name: 'Cancelar' }));
+  await act(async () => {
+    finish(result);
+    await Promise.resolve();
+  });
+  await vi.waitFor(() =>
+    expect(
+      screen.queryByText('Que horas?', { selector: 'summary' }),
+    ).not.toBeInTheDocument(),
+  );
+  expect(
+    screen.getByRole('region', { name: 'Histórico da sessão' }),
+  ).toHaveTextContent('Nenhuma pergunta concluída ainda.');
+});
+it('records the submitted question even when the composer changes before completion', async () => {
+  const user = userEvent.setup();
+  const deps = services();
+  const result = await deps.client.ask(
+    'token',
+    1,
+    'question',
+    'demo',
+    'pt-BR',
+    new AbortController().signal,
+  );
+  let finish!: (value: typeof result) => void;
+  deps.client.ask = () =>
+    new Promise((resolve) => {
+      finish = resolve;
+    });
+  render(<DocumentApp services={deps} />);
+  await user.click(
+    screen.getByRole('button', { name: 'Experimentar um exemplo' }),
+  );
+  await user.type(
+    await screen.findByLabelText('Sua pergunta'),
+    'Pergunta enviada',
+  );
+  await user.click(
+    screen.getByRole('button', { name: 'Perguntar ao documento' }),
+  );
+  await user.clear(screen.getByLabelText('Sua pergunta'));
+  await user.type(screen.getByLabelText('Sua pergunta'), 'Outra pergunta');
+  await act(async () => {
+    finish(result);
+    await Promise.resolve();
+  });
+  const history = screen.getByRole('region', { name: 'Histórico da sessão' });
+  expect(history).toHaveTextContent('Pergunta enviada');
+  expect(history).not.toHaveTextContent('Outra pergunta');
 });

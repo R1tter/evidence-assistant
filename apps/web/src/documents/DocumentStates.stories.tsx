@@ -93,7 +93,10 @@ function DocumentState({
   const controller: DocumentController = {
     status: state === 'reading' || state === 'recognizing' ? state : 'ready',
     loaded,
-    answer: state === 'answer' || state === 'abstained' ? answer : undefined,
+    history: ['answer', 'abstained'].includes(state)
+      ? [{ question: example.questions[0]!, answer }]
+      : [],
+    answer: ['answer', 'abstained'].includes(state) ? answer : undefined,
     error: storyError(state),
     config: { llmAvailable: false, recognitionAvailable: true },
     clearError: noop,

@@ -44,3 +44,15 @@ npm run test:e2e
 [Resultados executados e limitações](eval/documents/README.md). CI usa Windows para capturas revisadas; resultado remoto e hospedagem são verificações separadas.
 
 As verificações cobrem formatação, lint sem avisos, dependências entre pacotes, tipos, testes, cobertura do core e build. Nenhuma credencial externa é necessária. Consulte o [baseline de recuperação](docs/retrieval.md) para as fórmulas, regras e limitações.
+
+### Conferir e localizar texto
+
+No leitor, **Comparar** mostra o original e a transcrição lado a lado em telas grandes. No celular, use os controles dentro desse modo para alternar entre eles. **Vincular rolagem** acompanha a posição proporcional na página; não associa palavras a regiões da imagem. **Ampliar documento** continua disponível para ler o original de perto.
+
+**Buscar no documento** procura texto literal na transcrição salva de todas as páginas, sem distinguir maiúsculas/minúsculas. Acentos continuam distintos. Use os controles de anterior/próximo para visitar os resultados destacados. Rascunhos não salvos não entram na busca; salvar uma revisão atualiza os resultados. Busca e comparação não fazem chamadas de OCR ou geração.
+
+### Histórico e exportação
+
+O **Histórico da sessão** guarda perguntas concluídas, respostas e trechos citados enquanto o documento estiver aberto. Ao salvar uma revisão, as respostas antigas permanecem identificadas como **Revisão anterior**, com os trechos originais daquela revisão. Perguntas canceladas ou com erro não entram no histórico. Trocar o documento ou recarregar a página limpa esse histórico local.
+
+**Exportar sessão em TXT** baixa a transcrição salva atual e o histórico completo, incluindo o modo de resposta e a revisão de cada registro. Rascunhos não salvos, credenciais e imagens do original ficam de fora. O arquivo baixado permanece no dispositivo mesmo após o fim da sessão. As citações continuam sendo verificações textuais; a exportação não comprova correção semântica nem qualidade de OCR.

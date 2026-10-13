@@ -1,3 +1,4 @@
+import type { HistoryEntry } from './session-history.js';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { DocumentRevision } from '@evidence/core';
 import { sessionClient, SessionApiError } from './session-client.js';
@@ -52,6 +53,7 @@ export function useDocumentSession(services: DocumentServices) {
   const [status, setStatus] = useState<WorkStatus>('home');
   const [loaded, setLoaded] = useState<LoadedDocument>();
   const [answer, setAnswer] = useState<SessionAnswer>();
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [error, setError] = useState<string>();
   const [config, setConfig] = useState({
     llmAvailable: false,
@@ -112,6 +114,7 @@ export function useDocumentSession(services: DocumentServices) {
     if (previous)
       void services.client.remove(previous.token).catch(() => undefined);
     setLoaded(undefined);
+    setHistory([]);
     setAnswer(undefined);
     setError(undefined);
   };
@@ -194,6 +197,7 @@ export function useDocumentSession(services: DocumentServices) {
     status,
     loaded,
     answer,
+    history,
     error,
     config,
     refresh,
@@ -251,8 +255,13 @@ export function useDocumentSession(services: DocumentServices) {
         if (
           id === sequence.current &&
           result.revision === current.current?.document.revision
-        )
+        ) {
           setAnswer(result);
+          setHistory((previous) => [
+            ...previous,
+            { question, answer: structuredClone(result) },
+          ]);
+        }
       });
     },
     edit: (page: number, text: string) => {

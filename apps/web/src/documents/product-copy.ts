@@ -1,6 +1,36 @@
 import { documentMessages } from './messages.js';
 const updates = {
   'pt-BR': {
+    historyTitle: 'Histórico da sessão',
+    historyHelp:
+      'Perguntas concluídas ficam disponíveis enquanto este documento estiver aberto.',
+    historyEmpty: 'Nenhuma pergunta concluída ainda.',
+    revisionLabel: 'Revisão',
+    currentRevision: 'Revisão atual',
+    previousRevision: 'Revisão anterior',
+    historyStaleHelp:
+      'Esta resposta usa uma versão anterior do texto. Os trechos abaixo pertencem àquela revisão.',
+    exportSession: 'Exportar sessão em TXT',
+    exportHelp:
+      'Baixa a transcrição salva, perguntas, respostas e trechos citados. Rascunhos não salvos ficam de fora. O arquivo salvo permanece no seu dispositivo.',
+    savedTranscript: 'Transcrição salva',
+    exportFailed: 'Não foi possível baixar o arquivo. Tente novamente.',
+
+    compareTab: 'Comparar',
+    searchDocument: 'Buscar no documento',
+    previousMatch: 'Resultado anterior',
+    nextMatch: 'Próximo resultado',
+    clearSearch: 'Limpar busca',
+    searchCount: '{current} de {total}',
+    noSearchResults:
+      'Nenhum resultado. Tente outra palavra ou confira a transcrição.',
+    searchPrompt: 'Digite uma palavra para localizar no texto.',
+    searchHelp:
+      'Busca literal na transcrição salva, sem distinguir maiúsculas de minúsculas.',
+    linkScroll: 'Vincular rolagem',
+    linkScrollHelp:
+      'Acompanha a posição proporcional na página; não alinha palavras.',
+
     syncingTitle: 'Recuperando a sessão',
     syncingBody:
       'Conferindo a revisão salva no servidor. Seus rascunhos locais são preservados.',
@@ -31,6 +61,34 @@ const updates = {
     errorTitle: 'Não foi possível concluir',
   },
   en: {
+    historyTitle: 'Session history',
+    historyHelp:
+      'Completed questions remain available while this document is open.',
+    historyEmpty: 'No completed questions yet.',
+    revisionLabel: 'Revision',
+    currentRevision: 'Current revision',
+    previousRevision: 'Previous revision',
+    historyStaleHelp:
+      'This answer uses a previous text version. The excerpts below belong to that revision.',
+    exportSession: 'Export session as TXT',
+    exportHelp:
+      'Downloads the saved transcript, questions, answers and quoted excerpts. Unsaved drafts are excluded. The saved file remains on your device.',
+    savedTranscript: 'Saved transcript',
+    exportFailed: 'The file could not be downloaded. Try again.',
+
+    compareTab: 'Compare',
+    searchDocument: 'Search document',
+    previousMatch: 'Previous result',
+    nextMatch: 'Next result',
+    clearSearch: 'Clear search',
+    searchCount: '{current} of {total}',
+    noSearchResults: 'No results. Try another word or check the transcript.',
+    searchPrompt: 'Type a word to find it in the text.',
+    searchHelp: 'Literal search in the saved transcript, ignoring letter case.',
+    linkScroll: 'Link scrolling',
+    linkScrollHelp:
+      'Follows the proportional position on the page; does not align words.',
+
     syncingTitle: 'Recovering session',
     syncingBody:
       'Checking the saved server revision. Local drafts are preserved.',
@@ -60,6 +118,36 @@ const updates = {
     errorTitle: 'The operation could not finish',
   },
   es: {
+    historyTitle: 'Historial de la sesión',
+    historyHelp:
+      'Las preguntas completadas siguen disponibles mientras este documento esté abierto.',
+    historyEmpty: 'Todavía no hay preguntas completadas.',
+    revisionLabel: 'Revisión',
+    currentRevision: 'Revisión actual',
+    previousRevision: 'Revisión anterior',
+    historyStaleHelp:
+      'Esta respuesta usa una versión anterior del texto. Los fragmentos siguientes pertenecen a esa revisión.',
+    exportSession: 'Exportar sesión en TXT',
+    exportHelp:
+      'Descarga la transcripción guardada, preguntas, respuestas y fragmentos citados. No incluye borradores sin guardar. El archivo guardado permanece en tu dispositivo.',
+    savedTranscript: 'Transcripción guardada',
+    exportFailed: 'No se pudo descargar el archivo. Inténtalo de nuevo.',
+
+    compareTab: 'Comparar',
+    searchDocument: 'Buscar en el documento',
+    previousMatch: 'Resultado anterior',
+    nextMatch: 'Resultado siguiente',
+    clearSearch: 'Limpiar búsqueda',
+    searchCount: '{current} de {total}',
+    noSearchResults:
+      'Sin resultados. Prueba otra palabra o revisa la transcripción.',
+    searchPrompt: 'Escribe una palabra para localizarla en el texto.',
+    searchHelp:
+      'Búsqueda literal en la transcripción guardada, sin distinguir mayúsculas.',
+    linkScroll: 'Vincular desplazamiento',
+    linkScrollHelp:
+      'Sigue la posición proporcional en la página; no alinea palabras.',
+
     syncingTitle: 'Recuperando sesión',
     syncingBody:
       'Comprobando la revisión guardada. Se conservan los borradores locales.',

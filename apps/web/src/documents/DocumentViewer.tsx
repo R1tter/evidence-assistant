@@ -1,10 +1,14 @@
-import { ExpandedDocument } from './ExpandedDocument.js';
-import { useRef, useState } from 'react';
+import { CompareDocument } from './CompareDocument.js';
+import { DocumentSearch } from './DocumentSearch.js';
+import { TranscriptSheet, TranscriptNotice } from './DocumentTranscript.js';
+import { OriginalDocument } from './OriginalDocument.js';
+import { useDocumentSearch } from './useDocumentSearch.js';
+import { useState } from 'react';
 import type { RefObject } from 'react';
 import type { PageText } from '@evidence/core';
 import type { PagePreview } from './types.js';
 import type { DocumentMessages } from './messages.js';
-export type DocumentView = 'original' | 'text' | 'edit';
+export type DocumentView = 'original' | 'text' | 'edit' | 'compare';
 export function TranscriptEditor({
   t,
   busy,
@@ -72,23 +76,32 @@ export function DocumentViewer({
   returnToQuestion(this: void): void;
 }) {
   const page = pages.find((item) => item.page === number)!;
-  const enlargeButton = useRef<HTMLButtonElement>(null);
-  const [expanded, setExpanded] = useState(false);
   const [drafts, setDrafts] = useState<Record<number, string>>({});
   const preview = previews.find((item) => item.page === number)!;
+  const [comparePane, setComparePane] = useState('text');
+  const search = useDocumentSearch(pages, onPage, view, onView, () =>
+    setComparePane('text'),
+  );
   return (
     <section className="document-panel" aria-label={t.documentAndText}>
       <div className="document-toolbar">
-        {(['original', 'text', 'edit'] as const).map((item, index) => (
-          <button
-            key={item}
-            aria-pressed={view === item}
-            onClick={() => onView(item)}
-          >
-            {[t.originalTab, t.transcriptTab, t.editText][index]}
-          </button>
-        ))}
+        {(['original', 'text', 'edit', 'compare'] as const).map(
+          (item, index) => (
+            <button
+              key={item}
+              aria-pressed={view === item}
+              onClick={() => onView(item)}
+            >
+              {
+                [t.originalTab, t.transcriptTab, t.editText, t.compareTab][
+                  index
+                ]
+              }
+            </button>
+          ),
+        )}
       </div>
+      <DocumentSearch t={t} {...search} count={search.matches.length} />
       <div className="page-meta">
         <label>
           {t.documentTab}{' '}
@@ -106,61 +119,53 @@ export function DocumentViewer({
         </label>
       </div>
       <p className="page-provenance pill tag-teal">{provenance}</p>
-      {view === 'original' && (
-        <div className="original-page">
-          <button
-            ref={enlargeButton}
-            className="enlarge-document"
-            onClick={() => setExpanded(true)}
-          >
-            {t.enlarge}
-          </button>
-          <img
-            src={preview.url}
-            width={preview.width}
-            height={preview.height}
-            alt={`${t.documentTab} ${number}`}
-          />
-        </div>
-      )}
-      {expanded && (
-        <ExpandedDocument
-          key={number}
+      {(view === 'original' || view === 'compare') && (
+        <OriginalDocument
           t={t}
           preview={preview}
-          close={() => {
-            setExpanded(false);
-            enlargeButton.current?.focus();
-          }}
+          showImage={view === 'original'}
         />
       )}
-      {view !== 'original' && (
+      {view === 'compare' && (
+        <CompareDocument
+          t={t}
+          preview={preview}
+          pane={comparePane}
+          setPane={setComparePane}
+        >
+          <TranscriptNotice
+            t={t}
+            page={page}
+            provenance={provenance}
+            passage={passage}
+            passageRef={passageRef}
+            returnToQuestion={returnToQuestion}
+          />
+          <TranscriptSheet
+            t={t}
+            page={page}
+            matches={search.matches}
+            active={search.active}
+          />
+        </CompareDocument>
+      )}
+      {view !== 'original' && view !== 'compare' && (
         <div className="transcript">
-          <h2>{t.transcriptTitle}</h2>
-          <p>{t.transcriptNote}</p>
-          {passage && (
-            <div
-              className="passage"
-              ref={passageRef}
-              data-testid="source-passage"
-              tabIndex={-1}
-            >
-              <strong>{t.passageTitle.replace('1', String(number))}</strong>
-              <p className="help">{provenance}</p>
-              <p>{passage}</p>
-              <button onClick={returnToQuestion}>{t.questionsTab}</button>
-            </div>
-          )}
+          <TranscriptNotice
+            t={t}
+            page={page}
+            provenance={provenance}
+            passage={passage}
+            passageRef={passageRef}
+            returnToQuestion={returnToQuestion}
+          />
           {view === 'text' && (
-            <section
-              className="page-text transcript-sheet"
-              aria-label={`${t.transcriptTab} · ${t.pageLabel} ${number}`}
-            >
-              <strong className="transcript-label">
-                {t.transcriptTab} · {number}
-              </strong>
-              <div>{page.text || t.illegibleTitle}</div>
-            </section>
+            <TranscriptSheet
+              t={t}
+              page={page}
+              matches={search.matches}
+              active={search.active}
+            />
           )}
           {view === 'edit' && (
             <TranscriptEditor
@@ -175,13 +180,6 @@ export function DocumentViewer({
                 setDrafts((previous) => ({ ...previous, [number]: page.text }))
               }
             />
-          )}
-          {page.uncertainties.length > 0 && (
-            <ul>
-              {page.uncertainties.map((notice, index) => (
-                <li key={index}>{notice}</li>
-              ))}
-            </ul>
           )}
         </div>
       )}
