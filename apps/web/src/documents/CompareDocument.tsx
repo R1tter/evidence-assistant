@@ -1,16 +1,8 @@
+import { synchronizeScroll } from './scroll-link.js';
 import { useRef, useState } from 'react';
 import type { ReactNode, UIEvent } from 'react';
 import type { DocumentMessages } from './messages.js';
 import type { PagePreview } from './types.js';
-function linkScroll(source: HTMLElement, target: HTMLElement | null) {
-  if (!target) return;
-  const range = source.scrollHeight - source.clientHeight;
-  if (range <= 0) return;
-  const position =
-    (source.scrollTop / range) *
-    Math.max(0, target.scrollHeight - target.clientHeight);
-  if (Math.abs(target.scrollTop - position) > 1) target.scrollTop = position;
-}
 export function CompareDocument({
   t,
   preview,
@@ -27,11 +19,12 @@ export function CompareDocument({
   const [linked, setLinked] = useState(false);
   const original = useRef<HTMLDivElement>(null);
   const text = useRef<HTMLDivElement>(null);
+  const pending = useRef(new WeakMap<HTMLElement, number>());
   const scroll = (
     event: UIEvent<HTMLDivElement>,
     target: HTMLDivElement | null,
   ) => {
-    if (linked) linkScroll(event.currentTarget, target);
+    if (linked) synchronizeScroll(event.currentTarget, target, pending.current);
   };
   return (
     <div className="comparison">
@@ -39,7 +32,10 @@ export function CompareDocument({
         <input
           type="checkbox"
           checked={linked}
-          onChange={(event) => setLinked(event.target.checked)}
+          onChange={(event) => {
+            pending.current = new WeakMap();
+            setLinked(event.target.checked);
+          }}
         />
         {t.linkScroll}
       </label>
